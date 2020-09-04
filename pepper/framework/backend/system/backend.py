@@ -1,16 +1,15 @@
 from pepper import config, logger, CameraResolution
 from pepper.framework.abstract.backend import AbstractBackend
-from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech, \
     SystemMotion, SystemLed, SystemTablet
 from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.resource.api import ResourceContainer
 from pepper.framework.sensor.api import SensorContainer
 
 
-class SystemBackendContainer(BackendContainer, SensorContainer, EventBusContainer, Res):
+class SystemBackendContainer(BackendContainer, SensorContainer, EventBusContainer, ResourceContainer):
     logger.info("Initialized SystemBackendContainer")
 
     @property
