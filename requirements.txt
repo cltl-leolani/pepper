@@ -26,4 +26,5 @@ tornado==5.1.1
 typing
 pyaudio
 
+configparser
 mock

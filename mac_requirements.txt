@@ -28,4 +28,5 @@ pyaudio
 pycountry
 reverse-geocoder
 
+configparser
 mock
