@@ -1,6 +1,13 @@
 import unittest
 
+from enum import Enum
+
 from pepper.framework.config.local import LocalConfigurationContainer
+
+
+class TestEnum(Enum):
+    VALUE = 1
+    OTHER_VALUE = 2
 
 
 class SynchronousEventBusTestCase(unittest.TestCase):
@@ -25,6 +32,7 @@ class SynchronousEventBusTestCase(unittest.TestCase):
         self.assertEqual(False, default_config.get_boolean("bool_false"))
         self.assertEqual(False, default_config.get_boolean("bool_no"))
         self.assertEqual(False, default_config.get_boolean("bool_off"))
+        self.assertEqual(TestEnum.VALUE, default_config.get_enum("enum", TestEnum))
 
     def test_section(self):
         default_config = self.configuration_manager.get_config("section")
@@ -42,4 +50,5 @@ class SynchronousEventBusTestCase(unittest.TestCase):
         self.assertEqual(False, default_config.get_boolean("bool_false"))
         self.assertEqual(False, default_config.get_boolean("bool_no"))
         self.assertEqual(False, default_config.get_boolean("bool_off"))
+        self.assertEqual(TestEnum.VALUE, default_config.get_enum("enum", TestEnum))
         self.assertEqual("default/test section/True", default_config.get("interpolated"))

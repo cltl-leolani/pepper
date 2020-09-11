@@ -53,6 +53,9 @@ class LocalConfig(Configuration):
     def get_boolean(self, key):
         return self._parser.getboolean(self._section, key)
 
+    def get_enum(self, key, type):
+        return type[self.get_str(key).upper()]
+
     def __contains__(self, key):
         return self._parser.items(self._section).__contains__(key)
 

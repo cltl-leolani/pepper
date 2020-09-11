@@ -1,4 +1,5 @@
-from typing import Iterable, Callable
+import enum
+from typing import Iterable, Callable, Type
 
 from pepper.framework.di_container import DIContainer
 
@@ -166,6 +167,35 @@ class Configuration(object):
         :class:`ValueError`
             If the requested value cannot be coerced into a boolean
             value.
+        :class:`KeyError`
+            If there is no value configured for the provided key.
+        """
+        raise NotImplementedError()
+
+    def get_enum(self, key, type):
+        # type: (str, Type[enum.Enum]) -> enum.Enum
+        """
+        A convenience method which coerces the configuration value for the
+        specified key to an :class:`enum.Enum` instance.
+
+        Parameters
+        ----------
+        key : str
+            The key for the configuration value to be retrieved.
+        type :
+            The type of :class:`enum.Enum` to be resolved from the
+            configuration value.
+
+        Returns
+        -------
+        str
+            The configuration value as :class:`enum.Enum` instance
+
+        Raises
+        ------
+        :class:`ValueError`
+            If the requested value cannot be coerced into an Enum instance for
+            the specified Enum type.
         :class:`KeyError`
             If there is no value configured for the provided key.
         """
