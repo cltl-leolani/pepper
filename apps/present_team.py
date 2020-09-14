@@ -35,9 +35,6 @@ TOPIC_QUESTION = "How do you think humans and robots will work together?"
 TOPIC_ANSWER = "Do you have a question for me?"
 MIN_ANSWER_LENGTH = 4
 
-# Override Speech Speed for added clarity!
-config.NAOQI_SPEECH_SPEED = 80
-
 RESPONDERS = [
     BrainResponder(),
     VisionResponder(), PreviousUtteranceResponder(), IdentityResponder(), LocationResponder(), TimeResponder(),

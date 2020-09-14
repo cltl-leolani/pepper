@@ -17,8 +17,6 @@ DEFAULT_SPEAKER = "Human"
 NAME = "Sigmund Freud"
 
 MIN_ANSWER_LENGTH = 4
-# Override Speech Speed for added clarity!
-config.NAOQI_SPEECH_SPEED = 80
 
 
 class ElizaApplication(ApplicationContainer,

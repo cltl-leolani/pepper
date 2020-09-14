@@ -27,16 +27,6 @@ HUMAN_UNKNOWN = "Stranger"
 HUMAN_CROWD = "Humans"
 
 
-# Application Language to use
-# Full list of Languages and their formats can be found at
-#   https://cloud.google.com/speech-to-text/docs/languages
-# Please keep in mind that the internal system is English (en) only
-#   Translation happens during Speech-to-Text & Text-to-Speech steps
-#   Translation can induce quite a bit of lag in the System
-APPLICATION_LANGUAGE = 'en-GB'
-INTERNAL_LANGUAGE = 'en-GB'  # Must start with 'en-' (Must by a dialect of English)
-
-
 # <<< Application Paths >>>
 
 # pepper/                  PROJECT_ROOT
@@ -120,12 +110,6 @@ BRAIN_LOG_ROOT = os.path.join(PACKAGE_ROOT, "../backups/brain/brain_log_{}")
 BRAIN_URL_LOCAL = "http://localhost:7200/repositories/leolani"
 BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
 
-# NAOqi Robot URL
-NAOQI_IP = "192.168.1.176"  # Default WiFi
-NAOQI_PORT = 9559
-NAOQI_URL = "tcp://{}:{}".format(NAOQI_IP, NAOQI_PORT)
-
-
 # <<< Application Sensor Parameters >>>
 FACE_RECOGNITION_THRESHOLD = 0.3
 OBJECT_RECOGNITION_THRESHOLD = 0.25
@@ -138,26 +122,6 @@ OBJECT_RECOGNITION_TARGETS = [
     pepper.ObjectDetectionTarget.COCO,
     # pepper.ObjectDetectionTarget.OID
 ]
-
-# Microphone sample rate (Hz) and number of channels
-# NOTE: Fixed at 16000 Hz and 1 Channel (mono)
-MICROPHONE_SAMPLE_RATE = 16000
-MICROPHONE_CHANNELS = 1
-
-# Camera resolution (in pixels) and frame rate (Hz)
-# NOTE: Both resolution and frame rate impact system performance...
-CAMERA_RESOLUTION = pepper.CameraResolution.QVGA
-CAMERA_FRAME_RATE = 3
-
-# NAOqi Text to Speech Speed
-NAOQI_SPEECH_SPEED = 90
-
-# NAOqi Specific Overrides
-NAOQI_USE_SYSTEM_CAMERA = False
-NAOQI_USE_SYSTEM_MICROPHONE = False
-NAOQI_USE_SYSTEM_TEXT_TO_SPEECH = False
-NAOQI_MICROPHONE_INDEX = pepper.NAOqiMicrophoneIndex.FRONT
-
 
 # .json file with id tokens, with keys:
 #   "wolfram": <appid>

@@ -7,13 +7,14 @@ from pepper.framework.di_container import singleton
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.event.api import EventBusContainer
 from pepper import logger
+from ..config.api import ConfigurationContainer
 
 
-class DefaultSensorContainer(BackendContainer, SensorContainer, EventBusContainer):
+class DefaultSensorContainer(BackendContainer, SensorContainer, EventBusContainer, ConfigurationContainer):
     logger.info("Initialized DefaultSensorContainer")
 
     def asr(self, language=None):
-        return StreamedGoogleASR() if language is None else StreamedGoogleASR(language)
+        return StreamedGoogleASR(config=self.config_manager) if language is None else StreamedGoogleASR(language, config=self.config_manager)
 
     @property
     @singleton

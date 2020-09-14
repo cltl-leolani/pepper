@@ -33,9 +33,6 @@ BREXIT_QUESTION = "What do you think are the implications of the Brexit for scie
 BREXIT_ANSWER = "Do you have a question for me?"
 MIN_ANSWER_LENGTH = 4
 
-# Override Speech Speed for added clarity!
-config.NAOQI_SPEECH_SPEED = 80
-
 RESPONDERS = [
     BrainResponder(),
     VisionResponder(), PreviousUtteranceResponder(), IdentityResponder(), LocationResponder(), TimeResponder(),

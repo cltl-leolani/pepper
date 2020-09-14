@@ -103,7 +103,7 @@ class ResourceManager(object):
 
         Raises
         ------
-        :exception:ValueError
+        :class:`ValueError`
             if there is already a resource registered with the given name.
         """
         raise NotImplementedError()
@@ -195,7 +195,8 @@ class Lock(object):
 
         Raises
         ------
-            :class:`LockTimeoutError` if the lock wasn't acquired within `timeout` seconds.
+        :class:`LockTimeoutError`
+            if the lock wasn't acquired within `timeout` seconds.
         """
         raise NotImplementedError()
 
