@@ -2,7 +2,6 @@ from threading import Lock
 
 from typing import List, Dict
 
-from pepper import config
 from pepper.framework.abstract import AbstractImage
 from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.abstract.component import AbstractComponent
@@ -14,14 +13,15 @@ class ObjectDetectionComponent(AbstractComponent):
     Perform Object Detection using `Pepper Tensorflow <https://github.com/cltl/pepper_tensorflow>`_
     """
 
-    # The Object Detection Servers to Target (See pepper_tensorflow)
-    TARGETS = config.OBJECT_RECOGNITION_TARGETS
-
     def __init__(self):
         # type: () -> None
         super(ObjectDetectionComponent, self).__init__()
 
         self._log.info("Initializing ObjectDetectionComponent")
+
+        config = self.config_manager.get_config("pepper.framework.component.object")
+        threshold = config.get_float("threshold")
+        targets = config.get("targets")
 
         # Public List of On Object Callbacks:
         # Allowing other Components to Subscribe to it
@@ -29,7 +29,7 @@ class ObjectDetectionComponent(AbstractComponent):
 
         # Create Object Detection Client and a Mailbox per Target
         # Make sure the corresponding server @ pepper_tensorflow is actually running
-        clients = [self.object_detector(target) for target in ObjectDetectionComponent.TARGETS]
+        clients = [self.object_detector(target) for target in targets]
         mailboxes = {client: Mailbox() for client in clients}  # type: Dict[ObjectDetectionClient, Mailbox]
 
         lock = Lock()
@@ -54,12 +54,10 @@ class ObjectDetectionComponent(AbstractComponent):
             image = mailboxes[client].get()
 
             # Classify Objects in this Image using Client
-            objects = [obj for obj in client.classify(image) if obj.confidence > config.OBJECT_RECOGNITION_THRESHOLD]
+            objects = [obj for obj in client.classify(image) if obj.confidence > threshold]
 
             if objects:
-
                 with lock:
-
                     # Call on_object Callback Functions
                     for callback in self.on_object_callbacks:
                         callback(objects)

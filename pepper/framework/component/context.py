@@ -46,6 +46,10 @@ class ContextComponent(AbstractComponent):
 
         self._log.info("Initializing ContextComponent")
 
+        #TODO rename
+        configuration = self.config_manager.get_config("pepper.framework.component.context")
+        name = configuration.get_str("name")
+
         # The ContextComponent requires the following Components:
         speech_comp = self.require(ContextComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
         object_comp = self.require(ContextComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
@@ -59,7 +63,7 @@ class ContextComponent(AbstractComponent):
                 self.__class__.__name__, ObjectDetectionTarget.COCO, "config.OBJECT_RECOGNITION_TARGETS"))
 
         # Initialize the Context for this Application
-        self._context = Context()
+        self._context = Context(name)
 
         # To keep track of conversation duration
         self._conversation_time = time()

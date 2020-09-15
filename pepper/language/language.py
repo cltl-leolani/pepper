@@ -152,7 +152,6 @@ class Chat(object):
 
 
 class Utterance(object):
-
     def __init__(self, chat, hypotheses, me, turn):
         # type: (Chat, List[UtteranceHypothesis], bool, int) -> Utterance
         """
@@ -555,7 +554,7 @@ class Utterance(object):
         return tokens
 
     def __repr__(self):
-        author = config.NAME if self.me else self.chat.speaker
+        author = self.chat.context.own_name if self.me else self.chat.speaker
         return '{:>10s}: "{}"'.format(author, self.transcript)
 
 

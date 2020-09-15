@@ -20,6 +20,9 @@ class FaceRecognitionComponent(AbstractComponent):
 
         self._log.info("Initializing FaceRecognitionComponent")
 
+        configuration = self.config_manager.get_config("pepper.framework.component.face")
+        self._threshold = configuration.get_float("threshold")
+
         # Public Lists of Callbacks:
         # Allowing other Components to Subscribe to them
         self.on_face_callbacks = []
@@ -66,7 +69,7 @@ class FaceRecognitionComponent(AbstractComponent):
                 if face.name == config.HUMAN_UNKNOWN:
                     if face.confidence >= 1.0:
                         on_face_new.append(face)
-                elif face.confidence > config.FACE_RECOGNITION_THRESHOLD:
+                elif face.confidence > self._threshold:
                     on_face_known.append(face)
 
             # Call Appropriate Callbacks

@@ -13,19 +13,14 @@ import pepper
 import json
 import os
 
-
 # <<< Application Configuration Settings >>>
 
 # Application Backend to Use (SYSTEM or NAOQI)
 APPLICATION_BACKEND = pepper.ApplicationBackend.NAOQI
 
-# Name of Robot
-NAME = "Leolani"
-
 # Name of Unknown and Groups of Humans
 HUMAN_UNKNOWN = "Stranger"
 HUMAN_CROWD = "Humans"
-
 
 # <<< Application Paths >>>
 
@@ -109,19 +104,6 @@ BRAIN_LOG_ROOT = os.path.join(PACKAGE_ROOT, "../backups/brain/brain_log_{}")
 # Brain URL (Local GraphDB or Remote Database)
 BRAIN_URL_LOCAL = "http://localhost:7200/repositories/leolani"
 BRAIN_URL_REMOTE = "http://145.100.58.167:50053/sparql"
-
-# <<< Application Sensor Parameters >>>
-FACE_RECOGNITION_THRESHOLD = 0.3
-OBJECT_RECOGNITION_THRESHOLD = 0.25
-VOICE_ACTIVITY_DETECTION_THRESHOLD = 0.6
-
-# Set which Object Recognition Backends to use
-# NOTE: adding more target is only possible when the backends actually run: see pepper_tensorflow
-# NOTE: running multiple targets at once
-OBJECT_RECOGNITION_TARGETS = [
-    pepper.ObjectDetectionTarget.COCO,
-    # pepper.ObjectDetectionTarget.OID
-]
 
 # .json file with id tokens, with keys:
 #   "wolfram": <appid>

@@ -33,8 +33,10 @@ class Context(object):
     _people = None  # type: Dict[str, Tuple[Face, float]]
     _objects = None  # type: Observations
 
-    def __init__(self):
+    def __init__(self, name):
         self._id = getrandbits(128)
+
+        self._name = name
 
         self._chats = []
         self._chatting = False
@@ -56,6 +58,17 @@ class Context(object):
         id: int
         """
         return self._id
+
+    @property
+    def own_name(self):
+        # type: () -> str
+        """
+        Returns
+        -------
+        str
+            The robot's own name
+        """
+        return self._name
 
     @property
     def chats(self):

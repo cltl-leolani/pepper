@@ -317,7 +317,7 @@ class IdentityResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
             if utterance.transcript.lower() in self.CUE_ME:
-                return 1.0, lambda: app.say("{} {}!".format(choice(self.ANSWER_ME), config.NAME))
+                return 1.0, lambda: app.say("{} {}!".format(choice(self.ANSWER_ME), utterance.chat.context.own_name))
 
             if utterance.transcript.lower() in self.CUE_YOU:
                 return 1.0, lambda: app.say("{} {}!".format(choice(self.ANSWER_YOU), utterance.chat.speaker))
