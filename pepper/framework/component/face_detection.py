@@ -22,6 +22,8 @@ class FaceRecognitionComponent(AbstractComponent):
 
         configuration = self.config_manager.get_config("pepper.framework.component.face")
         self._threshold = configuration.get_float("threshold")
+        friends_dir = configuration.get_str("friends_dir")
+        new_dir = configuration.get_str("new_dir")
 
         # Public Lists of Callbacks:
         # Allowing other Components to Subscribe to them
@@ -32,8 +34,8 @@ class FaceRecognitionComponent(AbstractComponent):
         face_detector = self.face_detector
 
         # Import Face Data (Friends & New)
-        people = FaceClassifier.load_directory(config.PEOPLE_FRIENDS_ROOT)
-        people.update(FaceClassifier.load_directory(config.PEOPLE_NEW_ROOT))
+        people = FaceClassifier.load_directory(friends_dir)
+        people.update(FaceClassifier.load_directory(new_dir))
 
         # Initialize Face Classifier
         self.face_classifier = FaceClassifier(people)

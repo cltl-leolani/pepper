@@ -98,7 +98,7 @@ def fake_context(empty=False, no_people=False, place=False):
     else:
         faces = {Face('Selene', 0.90, None, None, None), Face('Piek', 0.90, None, None, None)}
 
-    context = Context()
+    context = Context("Leolani", [])
     if place:
         context.location._label = choice(places)
 

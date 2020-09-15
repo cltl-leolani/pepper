@@ -117,6 +117,8 @@ class MeetIntention(AbstractIntention, ResponderApp):
     def __init__(self, application):
         super(MeetIntention, self).__init__(application)
 
+        self._friends_dir = application.config_manager.get_config("DEFAULT").get_str("peoples_friends_dir")
+
         self.response_picker = ResponsePicker(self, RESPONDERS)
 
         self._asrs = [self.asr(language) for language in ['nl-NL', 'es-ES']]
@@ -219,7 +221,7 @@ class MeetIntention(AbstractIntention, ResponderApp):
 
         if name != "NEW":  # Prevent Overwrite of NEW.bin
             self.face_classifier.add(name, features)
-            features.tofile(os.path.join(config.PEOPLE_NEW_ROOT, "{}.bin".format(name)))
+            features.tofile(os.path.join(self._friends_dir, "{}.bin".format(name)))
 
 
 if __name__ == '__main__':

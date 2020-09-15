@@ -35,7 +35,7 @@ class QnAResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        result = self._qna.query(utterance.transcript)
+        result = self._qna.query(utterance.transcript, utterance.context)
 
         if result:
             score, answer = result

@@ -7,6 +7,7 @@ from pepper.framework.di_container import DIContainer
 class ConfigurationContainer(DIContainer):
     @property
     def config_manager(self):
+        # type: () -> ConfigurationManager
         raise ValueError("No ConfigurationManager configured")
 
 

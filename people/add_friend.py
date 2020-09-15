@@ -40,8 +40,9 @@ def add_friend_from_directory(directory, name, max_size=1024):
             print("\rWarning: Couldn't read {}, skipping file...".format(item))
 
     # Write Data to .bin file
-    with open(os.path.join(config.PEOPLE_FRIENDS_ROOT, "{}.bin".format(name)), 'wb') as bin:
-        bin.write(np.concatenate(vectors))
+    path = os.path.join(os.path.dirname(__file__), "friends", "{}.bin".format(name))
+    with open(path, 'wb') as person_file:
+        person_file.write(np.concatenate(vectors))
 
 
 if __name__ == '__main__':

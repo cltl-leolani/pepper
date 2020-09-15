@@ -7,8 +7,8 @@ import requests
 
 
 class FameAwareMemory(LongTermMemory):
-    def __init__(self, address="http://localhost:7200/repositories/famous", clear_all=False):
-        # type: (str, bool) -> None
+    def __init__(self, address, log_dir=None, clear_all=False):
+        # type: (str, str, bool) -> None
         """
         Interact with Triple store
 
@@ -18,7 +18,7 @@ class FameAwareMemory(LongTermMemory):
             IP address and port of the Triple store
         """
 
-        super(FameAwareMemory, self).__init__(address, clear_all)
+        super(FameAwareMemory, self).__init__(address, log_dir, clear_all)
 
     def lookup_person_wikidata(self, person_name):
         """

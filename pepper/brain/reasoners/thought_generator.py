@@ -9,8 +9,8 @@ from pepper import config
 
 class ThoughtGenerator(BasicBrain):
 
-    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False):
-        # type: (str, bool) -> ThoughtGenerator
+    def __init__(self, address, log_dir, clear_all=False):
+        # type: (str, str, bool) -> ThoughtGenerator
         """
         Interact with Triple store
 
@@ -20,7 +20,7 @@ class ThoughtGenerator(BasicBrain):
             IP address and port of the Triple store
         """
 
-        super(ThoughtGenerator, self).__init__(address, clear_all, is_submodule=True)
+        super(ThoughtGenerator, self).__init__(address, log_dir, clear_all, is_submodule=True)
 
     ########## novelty ##########
     def _fill_statement_novelty_(self, raw_provenance):

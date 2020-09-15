@@ -11,7 +11,7 @@ def fake_context():
     #           Object('cat', 0.51, None, None)}
     # faces = {Face('Selene', 0.90, None, None, None), Face('Stranger', 0.90, None, None, None)}
 
-    context = Context()
+    context = Context("Leolani", [])
     # context.add_objects(objects)
     # context.add_people(faces)
     return context

@@ -1,3 +1,5 @@
+import os
+
 from pepper.brain.utils.helper_functions import read_query
 from pepper.brain.infrastructure import StoreConnector, RdfBuilder
 from pepper import config, logger
@@ -16,7 +18,7 @@ class BasicBrain(object):
 
     _NOT_TO_ASK_PREDICATES = ['faceID', 'name']
 
-    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False, is_submodule=False):
+    def __init__(self, address, log_dir, clear_all=False, is_submodule=False):
         # type: (str, bool) -> None
         """
         Interact with Triple store
@@ -32,7 +34,7 @@ class BasicBrain(object):
         self._log = logger.getChild(self.__class__.__name__)
         self._log.debug("Booted")
 
-        self._brain_log = config.BRAIN_LOG_ROOT.format(datetime.now().strftime('%Y-%m-%d-%H-%M'))
+        self._brain_log = os.path.join(log_dir, "brain_log_{}".format(datetime.now().strftime('%Y-%m-%d-%H-%M')))
 
         # Start with a clean local memory
         self.clean_local_memory()
@@ -100,7 +102,7 @@ class BasicBrain(object):
 
             self._log.info("Uploading ontology to brain")
             data = self._serialize(self._brain_log)
-            _ = self._connection.upload(data)
+            self._connection.upload(data)
 
     def ontology_is_uploaded(self):
         """

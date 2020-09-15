@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import os
+import tempfile
 from random import getrandbits
 
 from google.cloud import texttospeech
@@ -20,8 +21,6 @@ class SystemTextToSpeech(AbstractTextToSpeech):
     language: str
         `Language Code <https://cloud.google.com/speech/docs/languages>`_
     """
-
-    TMP = os.path.join(config.PROJECT_ROOT, 'tmp', 'speech')
     GENDER = 2  # "Female" or 1 "Male"
     TYPE = "Standard"
 
@@ -29,9 +28,6 @@ class SystemTextToSpeech(AbstractTextToSpeech):
         # type: (str) -> None
         AbstractTextToSpeech.__init__(self, language, resource_manager)
         self._translator = translator
-
-        if not os.path.exists(self.TMP):
-            os.makedirs(self.TMP)
 
         self._client = texttospeech.TextToSpeechClient()
         self._voice = texttospeech.types.VoiceSelectionParams(language_code=language, ssml_gender=self.GENDER)
@@ -62,15 +58,14 @@ class SystemTextToSpeech(AbstractTextToSpeech):
                 self._log.error("Couldn't Synthesize Speech ({})".format(i+1))
 
     def _play_sound(self, mp3):
-        file_hash = os.path.join(self.TMP, "{}.mp3".format(str(getrandbits(128))))
-
         try:
-            with open(file_hash, 'wb') as out:
+            fd, path = tempfile.mkstemp()
+            with open(fd, 'wb') as out:
                 out.write(mp3)
-            playsound(file_hash)
+            playsound(path)
         finally:
-            if os.path.exists(file_hash):
+            if os.path.exists(path):
                 # TODO: Sometimes we need to save all data from an experiment. Comment the line below and pass
-                os.remove(file_hash)
+                os.remove(path)
 
 

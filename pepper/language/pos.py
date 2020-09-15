@@ -1,13 +1,15 @@
 from nltk.tag.stanford import StanfordPOSTagger
-from pepper.config import PACKAGE_ROOT
 from pepper import logger
 import os
 
+import pkgutil
 
+data = pkgutil.get_data(__name__, "templates/temp_file")
 class POS(object):
     """Part of Speech tagging using Stanford POSTagger"""
 
-    STANFORD_POS = os.path.join(PACKAGE_ROOT, 'language', 'stanford-pos')
+    package_root = os.path.dirname(__file__)
+    STANFORD_POS = os.path.join(package_root, 'stanford-pos')
     STANFORD_POS_JAR = os.path.join(STANFORD_POS, 'stanford-postagger.jar')
     STANFORD_POS_TAGGER = os.path.join(STANFORD_POS, 'models/english-bidirectional-distsim.tagger')
     

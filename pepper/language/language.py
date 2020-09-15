@@ -428,7 +428,7 @@ class Utterance(object):
                 transcript = []
 
                 for word in hypothesis.transcript.split():
-                    name = Utterance._get_closest_name(word)
+                    name = Utterance._get_closest_name(word, self.context.friends)
 
                     if name:
                         names.append(name)
@@ -451,7 +451,7 @@ class Utterance(object):
         return hypotheses
 
     @staticmethod
-    def _get_closest_name(word, names=config.PEOPLE_FRIENDS_NAMES, max_name_distance=2):
+    def _get_closest_name(word, names, max_name_distance=2):
         # type: (str, List[str], int) -> str
         if word[0].isupper() and names:
             name, distance = sorted([(name, edit_distance(name, word)) for name in names], key=lambda key: key[1])[0]

@@ -1,3 +1,4 @@
+import os
 from collections import deque
 from threading import Thread, Lock
 from time import time
@@ -49,6 +50,8 @@ class ContextComponent(AbstractComponent):
         #TODO rename
         configuration = self.config_manager.get_config("pepper.framework.component.context")
         name = configuration.get_str("name")
+        object_recognition_targets = configuration.get("object_recognition_targets")
+        friends_dir = configuration.get_str("friends_dir")
 
         # The ContextComponent requires the following Components:
         speech_comp = self.require(ContextComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
@@ -57,13 +60,14 @@ class ContextComponent(AbstractComponent):
         self.require(ContextComponent, TextToSpeechComponent)  # type: TextToSpeechComponent
 
         # Raise Warning if COCO is not used, due to reliance on 'person' object
-        if ObjectDetectionTarget.COCO not in config.OBJECT_RECOGNITION_TARGETS:
+        if ObjectDetectionTarget.COCO not in object_recognition_targets:
             self.log.warning("{0} relies on the {1} 'person' object, but {1} is not included in {2}. "
                              "Face Recognition and the on_chat_enter event might not work as expected.".format(
                 self.__class__.__name__, ObjectDetectionTarget.COCO, "config.OBJECT_RECOGNITION_TARGETS"))
 
         # Initialize the Context for this Application
-        self._context = Context(name)
+        friends = [os.path.splitext(path)[0] for path in os.listdir(friends_dir) if path.endswith(".bin")]
+        self._context = Context(name, friends)
 
         # To keep track of conversation duration
         self._conversation_time = time()

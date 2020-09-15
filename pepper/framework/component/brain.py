@@ -14,7 +14,13 @@ class BrainComponent(AbstractComponent):
         super(BrainComponent, self).__init__()
 
         self._log.info("Initializing BrainComponent")
-        self._brain = LongTermMemory()
+
+        config = self.config_manager.get_config("pepper.framework.component.brain")
+        url = config.get_str("url")
+        log_dir = config.get_str("log_dir")
+
+        self._brain = LongTermMemory(url, log_dir)
+
         self._log.info("Initialized BrainComponent")
 
     @property

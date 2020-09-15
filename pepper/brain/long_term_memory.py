@@ -10,8 +10,8 @@ from pepper import config
 
 
 class LongTermMemory(BasicBrain):
-    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False):
-        # type: (str, bool) -> None
+    def __init__(self, address, log_dir, clear_all=False):
+        # type: (str, str, bool) -> None
         """
         Interact with Triple store
 
@@ -21,13 +21,13 @@ class LongTermMemory(BasicBrain):
             IP address and port of the Triple store
         """
 
-        super(LongTermMemory, self).__init__(address, clear_all)
+        super(LongTermMemory, self).__init__(address, log_dir, clear_all)
 
         self.myself = None
         self.query_prefixes = read_query('prefixes')  # USED ONLY WHEN QUERYING
-        self.thought_generator = ThoughtGenerator()
-        self.location_reasoner = LocationReasoner()
-        self.type_reasoner = TypeReasoner()
+        self.thought_generator = ThoughtGenerator(address, log_dir)
+        self.location_reasoner = LocationReasoner(address, log_dir)
+        self.type_reasoner = TypeReasoner(address, log_dir)
 
         self.set_location_label = self.location_reasoner.set_location_label
         self.reason_location = self.location_reasoner.reason_location

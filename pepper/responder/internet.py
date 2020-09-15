@@ -1,13 +1,13 @@
-from pepper import logger
 import re
 
 from typing import Optional, Union, Tuple, Callable
-from random import random
 
+from pepper import logger
 from pepper.framework.component import TextToSpeechComponent
 from pepper.knowledge import Wikipedia, Wolfram, animations
 from pepper.language import Utterance
 from .responder import Responder, ResponderType
+
 
 class WikipediaResponder(Responder):
     WEB_CUE = [
@@ -22,7 +22,6 @@ class WikipediaResponder(Responder):
     ]
 
     def __init__(self):
-        self._wolfram = Wolfram()
         self._log = logger.getChild(self.__class__.__name__)
 
     @property
@@ -38,7 +37,6 @@ class WikipediaResponder(Responder):
 
         for que in self.WEB_CUE:
             if utterance.transcript.lower().startswith(que):
-
                 result = Wikipedia.query(utterance.transcript.lower().replace(que, ""))
 
                 if result:
@@ -70,8 +68,8 @@ class WolframResponder(Responder):
     ]
 
     def __init__(self):
-        self._wolfram = Wolfram()
         self._log = logger.getChild(self.__class__.__name__)
+        self._app_id = None
 
     @property
     def type(self):
@@ -83,9 +81,14 @@ class WolframResponder(Responder):
 
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
+        if not self._app_id:
+            config = app.config_manager.get_config("credentials")
+            self._app_id = config.get_str("wolfram")
+
+        wolfram = Wolfram(self._app_id)
 
         transcript = utterance.transcript.lower().strip()
-        wellformed_query = self._wolfram.is_query(transcript)
+        wellformed_query = wolfram.is_query(transcript)
 
         for que in self.WEB_CUE:
             # if transcript.lower().startswith(que) or wellformed_query:
@@ -94,8 +97,8 @@ class WolframResponder(Responder):
 
                 transcript = transcript.replace(que, "")
 
-                if self._wolfram.is_query(transcript):
-                    result = self._wolfram.query(transcript)
+                if wolfram.is_query(transcript):
+                    result = wolfram.query(transcript)
 
                     if result:
                         return 1.0, lambda: app.say(result, animations.EXPLAIN)

@@ -33,10 +33,12 @@ class Context(object):
     _people = None  # type: Dict[str, Tuple[Face, float]]
     _objects = None  # type: Observations
 
-    def __init__(self, name):
+    def __init__(self, name, friends):
+        #type: (str, Iterable[str]) -> None
         self._id = getrandbits(128)
 
         self._name = name
+        self._friends = friends
 
         self._chats = []
         self._chatting = False
@@ -143,6 +145,19 @@ class Context(object):
             List of People seen within Observation Timeout
         """
         return [person for person, t in self._people.values() if (time() - t) < Context.OBSERVATION_TIMEOUT]
+
+    @property
+    def friends(self):
+        # type: () -> List[str]
+        """
+        Names of all friends.
+
+        Returns
+        -------
+        List[str]
+            List of all friends names
+        """
+        return self._friends
 
     @property
     def all_people(self):
