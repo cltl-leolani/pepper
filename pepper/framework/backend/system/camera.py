@@ -45,9 +45,9 @@ class SystemCamera(AbstractCamera):
         # Get Camera and request resolution
         self._camera = cv2.VideoCapture(index)
 
-        if not self.resolution == CameraResolution.NATIVE:
-            self._camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
-            self._camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
+        if not self._resolution == CameraResolution.NATIVE:
+            self._camera.set(cv2.CAP_PROP_FRAME_WIDTH, self._width)
+            self._camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self._height)
 
         # Check if camera is working
         if not self._camera.isOpened():
@@ -74,7 +74,7 @@ class SystemCamera(AbstractCamera):
         if status:
             if self._running:
                 # Resize Image and Convert to RGB
-                image = cv2.resize(image, (self.width, self.height))
+                image = cv2.resize(image, (self._width, self._height))
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
                 # Call On Image Event
@@ -84,4 +84,4 @@ class SystemCamera(AbstractCamera):
             raise RuntimeError("{} could not fetch image".format(self.__class__.__name__))
 
         # Maintain frame rate
-        sleep(max(0, 1. / self.rate - (time() - t0)))
+        sleep(max(0, 1. / self._rate - (time() - t0)))

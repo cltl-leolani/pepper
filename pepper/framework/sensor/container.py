@@ -19,7 +19,7 @@ class DefaultSensorContainer(BackendContainer, SensorContainer, EventBusContaine
     @property
     @singleton
     def vad(self):
-        return WebRtcVAD(self.backend.microphone, self.event_bus)
+        return WebRtcVAD(self.backend.microphone, self.event_bus, self.resource_manager, self.config_manager)
 
     def translator(self, source_language, target_language):
         return GoogleTranslator(source_language, target_language)

@@ -82,7 +82,6 @@ class NAOqiCamera(AbstractCamera):
         self._resolution = resolution
         self._resolution_3D = resolution
 
-        self._rate = rate
         self._index = index
 
         # Connect to Camera Service and Subscribe with Settings
@@ -167,7 +166,7 @@ class NAOqiCamera(AbstractCamera):
                     self.on_image(NAOqiImage(image_rgb, bounds, image_3D))
 
                 # Maintain frame rate
-                sleep(max(1.0E-4, 1.0 / self.rate - (time() - t0)))
+                sleep(max(1.0E-4, 1.0 / self._rate - (time() - t0)))
 
     def _yuv2rgb(self, width, height, data):
         # type: (int, int, bytes) -> np.ndarray

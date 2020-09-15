@@ -4,11 +4,12 @@ import numpy as np
 import webrtcvad
 from typing import Iterable
 
-from .api import VAD, Voice
 from pepper.framework.abstract import AbstractMicrophone
 from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
+from pepper.framework.config.api import ConfigurationManager
 from pepper.framework.event.api import EventBus, Event
 from pepper.framework.resource.api import ResourceManager
+from .api import VAD, Voice
 
 
 class WebRtcVAD(VAD):
@@ -19,20 +20,19 @@ class WebRtcVAD(VAD):
     ----------
     microphone: AbstractMicrophone
     """
-
-    AUDIO_FRAME_MS = 10
-    BUFFER_SIZE = 100
-
     AUDIO_TYPE = np.int16
     AUDIO_TYPE_BYTES = 2
 
-    VOICE_THRESHOLD = 0.6
-    VOICE_WINDOW = 50
-
     MODE = 3
 
-    def __init__(self, microphone, event_bus, resource_manager):
-        # type: (AbstractMicrophone, EventBus, ResourceManager) -> None
+    def __init__(self, microphone, event_bus, resource_manager, configuration_manager):
+        # type: (AbstractMicrophone, EventBus, ResourceManager, ConfigurationManager) -> None
+        config = configuration_manager("pepper.framework.sensors.vad.webrtc")
+        self._mic_rate = config.get_int("microphone_sample_rate")
+        self._threshold = config.get_float("threshold")
+        self._buffer_size = config.get_int("buffer_size")
+        self._voice_window = config.get_int("voice_window")
+        audio_frame_ms = config.get_int("audio_frame_ms")
 
         self._resource_manager = resource_manager
         self._microphone = microphone
@@ -40,12 +40,12 @@ class WebRtcVAD(VAD):
         self._vad = webrtcvad.Vad(WebRtcVAD.MODE)
 
         # Voice Activity Detection Frame Size: VAD works in units of 'frames'
-        self._frame_size = WebRtcVAD.AUDIO_FRAME_MS * self.microphone.rate // 1000
-        self._frame_size_bytes = self._frame_size * WebRtcVAD.AUDIO_TYPE_BYTES
+        frame_size = audio_frame_ms * self._mic_rate // 1000
+        self._frame_size_bytes = frame_size * WebRtcVAD.AUDIO_TYPE_BYTES
 
         # Audio & Voice Ring-Buffers
-        self._audio_buffer = np.zeros((WebRtcVAD.BUFFER_SIZE, self._frame_size), WebRtcVAD.AUDIO_TYPE)
-        self._voice_buffer = np.zeros(WebRtcVAD.BUFFER_SIZE, np.bool)
+        self._audio_buffer = np.zeros((self._buffer_size, frame_size), WebRtcVAD.AUDIO_TYPE)
+        self._voice_buffer = np.zeros(self._buffer_size, np.bool)
         self._buffer_index = 0
 
         self._voice = None
@@ -57,18 +57,6 @@ class WebRtcVAD(VAD):
 
         # Subscribe VAD to Microphone on_audio event
         event_bus.subscribe(MIC_TOPIC, self._on_audio)
-
-    @property
-    def microphone(self):
-        # type: () -> AbstractMicrophone
-        """
-        VAD Microphone
-
-        Returns
-        -------
-        microphone: AbstractMicrophone
-        """
-        return self._microphone
 
     @property
     def activation(self):
@@ -139,7 +127,7 @@ class WebRtcVAD(VAD):
                 self._mic_lock.release()
                 return
 
-            if self._activation > WebRtcVAD.VOICE_THRESHOLD:
+            if self._activation > self._threshold:
                 # Create New Utterance Object
                 self._voice = Voice()
 
@@ -151,7 +139,7 @@ class WebRtcVAD(VAD):
                 self._voice_queue.put(self._voice)
         else:
             # If Utterance Ongoing: Add Frame to Utterance Object
-            if self.activation > WebRtcVAD.VOICE_THRESHOLD:
+            if self.activation > self._threshold:
                 self._voice.add_frame(frame)
 
             # Else: Terminate Utterance
@@ -175,11 +163,11 @@ class WebRtcVAD(VAD):
         # Update Buffers
         self._audio_buffer[self._buffer_index] = frame
         self._voice_buffer[self._buffer_index] = self._is_speech(frame)
-        self._buffer_index = (self._buffer_index + 1) % WebRtcVAD.BUFFER_SIZE
+        self._buffer_index = (self._buffer_index + 1) % self._buffer_size
 
         # Calculate Activation
-        voice_window = np.arange(self._buffer_index - WebRtcVAD.VOICE_WINDOW, self._buffer_index) % WebRtcVAD.BUFFER_SIZE
+        voice_window = np.arange(self._buffer_index - self._voice_window, self._buffer_index) % self._buffer_size
         return float(np.mean(self._voice_buffer[voice_window]))
 
     def _is_speech(self, frame):
-        return self._vad.is_speech(frame.tobytes(), self.microphone.rate, len(frame))
+        return self._vad.is_speech(frame.tobytes(), self._mic_rate, len(frame))

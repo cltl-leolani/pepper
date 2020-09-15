@@ -1,17 +1,13 @@
-from pepper.framework.event.api import Event
-from pepper.framework.resource.api import ResourceManager
-from pepper.framework.util import Scheduler
-from pepper import logger
+from Queue import Queue
+from collections import deque
+from time import time
 
 import numpy as np
 
-from Queue import Queue
-from time import time
-
-from collections import deque
-
-from typing import List, Callable
-
+from pepper import logger
+from pepper.framework.event.api import Event
+from pepper.framework.resource.api import ResourceManager
+from pepper.framework.util import Scheduler
 
 TOPIC = "pepper.framework.abstract.microphone.audio"
 
@@ -63,19 +59,6 @@ class AbstractMicrophone(object):
         self._resource_manager.retract_resource(TOPIC)
 
     @property
-    def rate(self):
-        # type: () -> int
-        """
-        Audio bit rate
-
-        Returns
-        -------
-        rate: int
-            Audio bit rate
-        """
-        return self._rate
-
-    @property
     def true_rate(self):
         # type: () -> float
         """
@@ -89,19 +72,6 @@ class AbstractMicrophone(object):
             Actual Audio bit rate
         """
         return self._true_rate
-
-    @property
-    def channels(self):
-        # type: () -> int
-        """
-        Audio channels
-
-        Returns
-        -------
-        channels: int
-            Audio channels
-        """
-        return self._channels
 
     # TODO With an async event bus we can directly post events to the event bus
     def on_audio(self, audio):

@@ -14,24 +14,21 @@ from pepper import logger
 class StatisticsComponent(AbstractComponent):
     """
     Display Realtime Application Performance Statistics
-
-    Parameters
-    ----------
-    backend: AbstractBackend
-        Application Backend
     """
-
-    PERFORMANCE_ERROR_THRESHOLD = 0.8
-
-    LIVE_SPEECH = ""
-    LIVE_SPEECH_TIMEOUT = 3
-    LIVE_SPEECH_TIME = 0
 
     def __init__(self):
         # type: () -> None
         super(StatisticsComponent, self).__init__()
-
         self._log.info("Initializing StatisticsComponent")
+
+        config = self.config_manager("pepper.framework.component.statistics")
+        cam_rate = config.get_int("camera_frame_rate")
+        mic_rate = config.get_int("microphone_sample_rate")
+        performance_error_threshold = config.get_float("performance_error_threshold")
+        live_speech_timeout = config.get_int("live_speech_timeout")
+
+        self.live_speech = ""
+        self.live_speech_time = 0
 
         # Require Speech Recognition Component and Get Information from it
         speech_recognition = self.require(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
@@ -50,23 +47,21 @@ class StatisticsComponent(AbstractComponent):
                 mic_lock.release()
             else:
                 mic_running = mic_lock.locked or mic_lock.acquire(blocking=False)
-            mic_rate = self.backend.microphone.rate
             mic_rate_true = self.backend.microphone.true_rate
 
             # Get Camera Related Information
-            cam_rate = self.backend.camera.rate
             cam_rate_true = self.backend.camera.true_rate
 
             # If Camera and/or Microphone are not running as fast as expected -> show stderr message instead of stdout
-            error = (cam_rate_true < cam_rate * self.PERFORMANCE_ERROR_THRESHOLD or
-                     mic_rate_true < float(mic_rate) * self.PERFORMANCE_ERROR_THRESHOLD)
+            error = (cam_rate_true < cam_rate * performance_error_threshold or
+                     mic_rate_true < float(mic_rate) * performance_error_threshold)
 
             # Show Speech to Text Transcript 'live' as it happens
             if asr.live:
-                self.LIVE_SPEECH = asr.live
-                self.LIVE_SPEECH_TIME = time()
-            elif time() - self.LIVE_SPEECH_TIME > self.LIVE_SPEECH_TIMEOUT:
-                self.LIVE_SPEECH = ""
+                self.live_speech = asr.live
+                self.live_speech_time = time()
+            elif time() - self.live_speech_time > live_speech_timeout:
+                self.live_speech = ""
 
             # Display Statistics
             print("\rThreads {:2d} | Cam {:4.1f} Hz | Mic {:4.1f} kHz | STT {:12s} >>> {}".format(
@@ -74,7 +69,7 @@ class StatisticsComponent(AbstractComponent):
                 cam_rate_true,
                 mic_rate_true / 1000.0,
                 voice_print if mic_running else empty_voice_print,
-                self.LIVE_SPEECH),
+                self.live_speech),
                 end="", file=(stderr if error else stdout))
 
         # Run 10 times a second

@@ -69,7 +69,7 @@ class NAOqiBackend(AbstractBackend):
         if use_system_microphone:
             microphone = SystemMicrophone(microphone_rate, microphone_channels, event_bus, resource_manager)
         else:
-            microphone = NAOqiMicrophone(self.session, microphone_index, event_bus, resource_manager)
+            microphone = NAOqiMicrophone(self.session, microphone_rate, microphone_index, event_bus, resource_manager)
 
         # System Text To Speech Override
         if use_system_text_to_speech:

@@ -18,19 +18,18 @@ class NAOqiMicrophone(AbstractMicrophone):
     index: NAOqiMicrophoneIndex or int
         Which Microphone to Use
     """
-
     SERVICE = "ALAudioDevice"
-    RATE = 16000
 
-    def __init__(self, session, index, event_bus):
+    def __init__(self, session, rate, index, event_bus):
         # type: (qi.Session, NAOqiMicrophoneIndex, EventBus) -> None
+        # TODO Is there a reason only to use rear or front mic?
         super(NAOqiMicrophone, self).__init__(
-            NAOqiMicrophone.RATE, 4 if index == NAOqiMicrophoneIndex.ALL else 1, event_bus)
+            rate, 4 if index == NAOqiMicrophoneIndex.ALL else 1, event_bus)
 
         # Register Service and Subscribe this class as callback
         self._service = session.service(NAOqiMicrophone.SERVICE)
         session.registerService(self.__class__.__name__, self)
-        self._service.setClientPreferences(self.__class__.__name__, self.rate, int(index), 0)
+        self._service.setClientPreferences(self.__class__.__name__, rate, int(index), 0)
         self._service.subscribe(self.__class__.__name__)
 
         self._log.debug("Booted")

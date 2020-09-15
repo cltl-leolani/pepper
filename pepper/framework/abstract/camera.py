@@ -215,35 +215,30 @@ class AbstractImage(object):
 
 
 class AbstractCamera(object):
-    """
-    Abstract Camera
-
-    Parameters
-    ----------
-    resolution: CameraResolution
-        :class:`~pepper.config.CameraResolution`
-    rate: int
-        Camera Frames per Second
-    event_bus: EventBus
-        Event bus of the application
-    """
-
     def __init__(self, resolution, rate, event_bus):
         # type: (CameraResolution, int, EventBus) -> None
+        """
+        Abstract Camera
 
+        Parameters
+        ----------
+        resolution: CameraResolution
+            :class:`~pepper.config.CameraResolution`
+        rate: int
+            Camera Frames per Second
+        event_bus: EventBus
+            Event bus of the application
+        """
         # Extract Image Dimensions from CameraResolution
         self._resolution = resolution
         self._width = self._resolution.value[1]
         self._height = self._resolution.value[0]
-        self._shape = np.array([self.height, self.width, self.channels])
         self._event_bus = event_bus
 
-        # Store Camera Rate and Callbacks
         self._rate = rate
-
         # Variables to do some performance statistics
-        self._dt_buffer = deque([], maxlen=10)
         self._true_rate = rate
+        self._dt_buffer = deque([], maxlen=10)
         self._t0 = time()
 
         # Create Mailbox and Image Processor:
@@ -260,70 +255,6 @@ class AbstractCamera(object):
         self._log = logger.getChild(self.__class__.__name__)
 
     @property
-    def resolution(self):
-        # type: () -> CameraResolution
-        """
-        Returns :class:`~pepper.config.CameraResolution`
-
-        Returns
-        -------
-        resolution: CameraResolution
-        """
-        return self._resolution
-
-    @property
-    def width(self):
-        # type: () -> int
-        """
-        Image Width
-
-        Returns
-        -------
-        width: int
-            Image width
-        """
-        return self._width
-
-    @property
-    def height(self):
-        # type: () -> int
-        """
-        Image Height
-
-        Returns
-        -------
-        height: int
-            Image height
-        """
-        return self._height
-
-    @property
-    def channels(self):
-        # type: () -> int
-        """
-        Number of Image (Color) Channels
-
-        Returns
-        -------
-        channels: int
-            Number of Image (Color) channels
-        """
-        return 3
-
-    @property
-    def rate(self):
-        # type: () -> int
-        """
-        Image Rate (Frames per Second)
-
-        Returns
-        -------
-        rate: int
-            Image rate (Frames per Second)
-        """
-        return self._rate
-
-    @property
     def true_rate(self):
         # type: () -> float
         """
@@ -337,19 +268,6 @@ class AbstractCamera(object):
             Actual Image Rate (Frames per Second)
         """
         return self._true_rate
-
-    @property
-    def shape(self):
-        # type: () -> np.ndarray
-        """
-        Image Shape (height, width, channels)
-
-        Returns
-        -------
-        shape: np.ndarray
-            Image Shape (height, width, channels)
-        """
-        return self._shape
 
     @property
     def running(self):
