@@ -1,12 +1,12 @@
-from pepper.framework.abstract import AbstractCamera, AbstractImage
-from pepper.framework.util import Scheduler, Bounds
-from pepper import CameraResolution
-
-import numpy as np
-import cv2
-
 from time import time, sleep
-from typing import List, Callable
+
+import cv2
+import numpy as np
+
+from pepper import CameraResolution
+from pepper.framework.abstract import AbstractCamera, AbstractImage
+from pepper.framework.event.api import EventBus
+from pepper.framework.util import Scheduler, Bounds
 
 
 class SystemImage(AbstractImage):
@@ -57,7 +57,13 @@ class SystemCamera(AbstractCamera):
         self._scheduler = Scheduler(self._run, name="SystemCameraThread")
         self._scheduler.start()
 
-        self._log.debug("Booted")
+        super(SystemCamera, self).start()
+
+        self._log.debug("Started SystemCamera")
+
+    def stop(self):
+        super(SystemCamera, self).stop()
+        self._scheduler.stop()
 
     def _run(self):
         t0 = time()

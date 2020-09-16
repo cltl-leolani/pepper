@@ -11,7 +11,7 @@ from nltk.stem import WordNetLemmatizer
 
 import wordnet_utils as wu
 
-LOG = logging.getChild(__name__)
+LOG = logging.getLogger(__name__)
 
 wnl = WordNetLemmatizer()
 
