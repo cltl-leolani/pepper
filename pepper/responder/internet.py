@@ -1,13 +1,14 @@
+import logging
 import re
 
 from typing import Optional, Union, Tuple, Callable
 
-from pepper import logger
 from pepper.framework.component import TextToSpeechComponent
 from pepper.knowledge import Wikipedia, Wolfram, animations
 from pepper.language import Utterance
 from .responder import Responder, ResponderType
 
+logger = logging.getLogger(__name__)
 
 class WikipediaResponder(Responder):
     WEB_CUE = [

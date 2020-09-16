@@ -1,6 +1,9 @@
-from nltk.tag.stanford import StanfordPOSTagger
-from pepper import logger
+import logging
 import os
+
+from nltk.tag.stanford import StanfordPOSTagger
+
+logger = logging.getLogger(__name__)
 
 
 class POS(object):

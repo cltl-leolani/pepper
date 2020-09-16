@@ -1,14 +1,13 @@
-from pepper import logger
 
-from contextlib import contextmanager, closing
-from threading import Thread
-
+import logging
+import os
 import socket
 import subprocess
-import os
-
+from contextlib import contextmanager, closing
+from threading import Thread
 from time import sleep
 
+logger = logging.getLogger(__name__)
 
 class NER(object):
 

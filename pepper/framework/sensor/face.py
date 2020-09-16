@@ -1,3 +1,4 @@
+import logging
 import os
 
 import numpy as np
@@ -5,11 +6,13 @@ from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
 from typing import Dict
 
-from pepper import logger, config
+from pepper import config
 from pepper.framework.abstract import AbstractImage
 from pepper.framework.util import Bounds
 from .api import FaceDetector
 from .obj import Object
+
+logger = logging.getLogger(__name__)
 
 
 # TODO extract interfaces to .api

@@ -1,9 +1,12 @@
-from pepper.framework.abstract.component import AbstractComponent
-from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.component import ComponentDependencyError
-from pepper import logger
+import logging
 
 from typing import Iterator, ClassVar
+
+from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.abstract.component import ComponentDependencyError
+
+logger = logging.getLogger(__name__)
 
 
 class AbstractIntention(object):

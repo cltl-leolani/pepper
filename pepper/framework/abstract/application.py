@@ -1,9 +1,11 @@
-from pepper.framework.abstract import *
-from pepper.framework.abstract.component import AbstractComponent
-from pepper import logger
-
+import logging
 from logging import Logger
 from time import sleep
+
+from pepper.framework.abstract import *
+from pepper.framework.abstract.component import AbstractComponent
+
+logger = logging.getLogger(__name__)
 
 
 class AbstractApplication(AbstractComponent):

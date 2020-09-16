@@ -1,7 +1,9 @@
+import logging
+
 import qi
 from naoqi import ALProxy
 
-from pepper import logger, CameraResolution, NAOqiMicrophoneIndex
+from pepper import CameraResolution, NAOqiMicrophoneIndex
 from pepper.framework.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech, \
@@ -12,6 +14,8 @@ from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer, EventBus
 from pepper.framework.resource.api import ResourceContainer, ResourceManager
 from pepper.framework.sensor.api import SensorContainer
+
+logger = logging.getLogger(__name__)
 
 
 class NAOqiBackendContainer(BackendContainer, SensorContainer, EventBusContainer, ResourceContainer, ConfigurationContainer):

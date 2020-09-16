@@ -1,8 +1,10 @@
-from pepper.framework.event.api import *
-from pepper.framework.di_container import singleton
-
+import logging
 from threading import RLock
-from pepper import logger
+
+from pepper.framework.di_container import singleton
+from pepper.framework.event.api import *
+
+logger = logging.getLogger(__name__)
 
 
 class SynchronousEventBusContainer(EventBusContainer):

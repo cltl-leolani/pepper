@@ -1,9 +1,12 @@
+import logging
 import os
 from datetime import datetime
 
-from pepper import logger
 from pepper.brain.infrastructure import StoreConnector, RdfBuilder
 from pepper.brain.utils.helper_functions import read_query
+
+
+logger = logging.getLogger(__name__)
 
 
 class BasicBrain(object):

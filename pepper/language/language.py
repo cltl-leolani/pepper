@@ -1,26 +1,25 @@
 from __future__ import unicode_literals
 
-from pepper.language.pos import POS
-from pepper.language.ner import NER
-from pepper.language.analyzer import Analyzer
-from pepper.language.utils.atoms import UtteranceType
-from pepper.brain.utils.helper_functions import casefold_text
-from pepper.brain.infrastructure import RdfBuilder, Triple, Perspective
-
-from pepper import logger, config
-from nltk import pos_tag
-
-from nltk import CFG, RecursiveDescentParser, edit_distance
-
-from collections import Counter
-
-from random import getrandbits
-from datetime import datetime
-import enum
 import json
+import logging
 import os
+from collections import Counter
+from datetime import datetime
+from random import getrandbits
 
+import enum
+from nltk import CFG, RecursiveDescentParser, edit_distance
+from nltk import pos_tag
 from typing import List, Optional
+
+from pepper.brain.infrastructure import RdfBuilder, Triple, Perspective
+from pepper.brain.utils.helper_functions import casefold_text
+from pepper.language.analyzer import Analyzer
+from pepper.language.ner import NER
+from pepper.language.pos import POS
+from pepper.language.utils.atoms import UtteranceType
+
+logger = logging.getLogger(__name__)
 
 
 class Time(enum.Enum):

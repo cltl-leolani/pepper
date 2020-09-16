@@ -1,3 +1,4 @@
+import logging
 import os
 import socket
 import subprocess
@@ -5,9 +6,10 @@ from time import sleep
 
 import numpy as np
 
-from pepper import logger
 from pepper.framework.util import Bounds
 from .api import FaceDetector
+
+logger = logging.getLogger(__name__)
 
 
 class OpenFace(FaceDetector):

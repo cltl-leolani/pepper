@@ -1,18 +1,18 @@
-from pepper.framework.util import Mailbox, Scheduler, Bounds, spherical2cartesian
-from pepper.framework.event.api import Event
-from pepper import CameraResolution
-from pepper import logger
-
-from PIL import Image
-import numpy as np
-
+import json
+import logging
+import os
 from collections import deque
 from time import time, strftime, localtime
 
-import json
-import os
+import numpy as np
+from PIL import Image
+from typing import Tuple, List, Optional
 
-from typing import Tuple, List, Optional, Callable
+from pepper import CameraResolution
+from pepper.framework.event.api import Event
+from pepper.framework.util import Mailbox, Scheduler, Bounds, spherical2cartesian
+
+logger = logging.getLogger(__name__)
 
 
 TOPIC = "pepper.framework.abstract.microphone.camera"

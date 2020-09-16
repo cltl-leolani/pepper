@@ -1,11 +1,11 @@
-from pepper.framework.abstract.tablet import AbstractTablet
-from pepper import logger
+import logging
+import re
 
 import qi
 
-import re
+from pepper.framework.abstract.tablet import AbstractTablet
 
-from time import sleep
+logger = logging.getLogger(__name__)
 
 
 class NAOqiTablet(AbstractTablet):

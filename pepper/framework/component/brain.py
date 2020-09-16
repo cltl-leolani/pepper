@@ -1,7 +1,5 @@
-from pepper.framework.abstract.component import AbstractComponent
 from pepper.brain import LongTermMemory
-
-from pepper import logger
+from pepper.framework.abstract.component import AbstractComponent
 
 
 class BrainComponent(AbstractComponent):

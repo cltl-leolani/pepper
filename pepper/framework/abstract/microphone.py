@@ -1,13 +1,16 @@
+import logging
 from Queue import Queue
 from collections import deque
 from time import time
 
 import numpy as np
 
-from pepper import logger
 from pepper.framework.event.api import Event
 from pepper.framework.resource.api import ResourceManager
 from pepper.framework.util import Scheduler
+
+logger = logging.getLogger(__name__)
+
 
 TOPIC = "pepper.framework.abstract.microphone.audio"
 

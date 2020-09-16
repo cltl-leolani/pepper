@@ -5,7 +5,6 @@ from typing import *
 
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.sensor.api import UtteranceHypothesis
-from pepper import logger
 
 class SpeechRecognitionComponent(AbstractComponent):
     """

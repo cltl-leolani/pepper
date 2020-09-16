@@ -1,13 +1,16 @@
+import logging
+from logging import Logger
+
+from typing import ClassVar
+
 from pepper.framework.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.config.api import ConfigurationContainer
-from pepper.framework.resource.api import ResourceContainer
 from pepper.framework.event.api import EventBusContainer
+from pepper.framework.resource.api import ResourceContainer
 from pepper.framework.sensor.api import SensorContainer
-from pepper import logger
 
-from logging import Logger
-from typing import ClassVar
+logger = logging.getLogger(__name__)
 
 
 class ComponentDependencyError(Exception):

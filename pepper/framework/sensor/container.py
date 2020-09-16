@@ -1,13 +1,16 @@
+import logging
+
+from pepper.framework.backend.container import BackendContainer
+from pepper.framework.config.api import ConfigurationContainer
+from pepper.framework.di_container import singleton
+from pepper.framework.event.api import EventBusContainer
 from .api import SensorContainer
 from .asr import StreamedGoogleASR, GoogleTranslator
 from .face_detect import OpenFace
 from .obj import ObjectDetectionClient
 from .vad import WebRtcVAD
-from pepper.framework.di_container import singleton
-from pepper.framework.backend.container import BackendContainer
-from pepper.framework.event.api import EventBusContainer
-from pepper import logger
-from ..config.api import ConfigurationContainer
+
+logger = logging.getLogger(__name__)
 
 
 class DefaultSensorContainer(BackendContainer, SensorContainer, EventBusContainer, ConfigurationContainer):

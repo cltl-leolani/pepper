@@ -1,12 +1,14 @@
+import logging
 from Queue import Queue, Empty
 from time import sleep
 
 from typing import Optional, Union
 
-from pepper import logger
 from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
-from pepper.framework.resource.api import ResourceManager, acquire
+from pepper.framework.resource.api import ResourceManager
 from pepper.framework.util import Scheduler
+
+logger = logging.getLogger(__name__)
 
 
 class AbstractTextToSpeech(object):

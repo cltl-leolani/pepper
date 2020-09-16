@@ -1,10 +1,12 @@
+import logging
 import threading
 from collections import defaultdict
 from contextlib import contextmanager
 
-from pepper import logger
 from pepper.framework.di_container import singleton
 from .api import ReadLock, WriteLock, ResourceManager, ResourceContainer
+
+logger = logging.getLogger(__name__)
 
 
 class ThreadedResourceContainer(ResourceContainer):

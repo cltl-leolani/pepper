@@ -1,6 +1,8 @@
+import logging
+
 from typing import Callable
 
-from pepper import logger, CameraResolution
+from pepper import CameraResolution
 from pepper.framework.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech, \
@@ -11,6 +13,8 @@ from pepper.framework.event.api import EventBusContainer, EventBus
 from pepper.framework.resource.api import ResourceContainer, ResourceManager
 from pepper.framework.sensor.api import SensorContainer
 from pepper.framework.sensor.asr import AbstractTranslator
+
+logger = logging.getLogger(__name__)
 
 
 class SystemBackendContainer(BackendContainer, SensorContainer, EventBusContainer, ResourceContainer, ConfigurationContainer):

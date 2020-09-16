@@ -1,12 +1,13 @@
-from threading import Thread, Lock
-from Queue import Empty
-from time import sleep
 import json
-import numpy as np
+import logging
+from Queue import Empty
+from threading import Thread, Lock
+from time import sleep
 
+import numpy as np
 from typing import Optional, List, Dict
 
-from pepper import logger
+logger = logging.getLogger(__name__)
 
 
 class Scheduler(Thread):

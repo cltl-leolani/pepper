@@ -1,12 +1,15 @@
 from __future__ import unicode_literals
 
+import logging
+
 import numpy as np
 from google.cloud import speech, translate_v2
 from typing import List, Tuple, Iterable, Union
 
-from pepper import logger
 # TODO extract interfaces to .api
 from pepper.framework.config.api import ConfigurationManager
+
+logger = logging.getLogger(__name__)
 
 
 class UtteranceHypothesis(object):

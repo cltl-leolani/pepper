@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import json
+import logging
 import os
 import urllib
 
@@ -9,9 +10,8 @@ from nltk import tree as ntree
 from nltk.stem import WordNetLemmatizer
 
 import wordnet_utils as wu
-from pepper import logger
 
-LOG = logger.getChild(__name__)
+LOG = logging.getChild(__name__)
 
 wnl = WordNetLemmatizer()
 
