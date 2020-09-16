@@ -1,10 +1,9 @@
 import random
+
+from pepper.brain.basic_brain import BasicBrain
 from pepper.brain.infrastructure import CardinalityConflict, NegationConflict, StatementNovelty, EntityNovelty, \
     Gap, Gaps, Overlap, Overlaps
 from pepper.brain.utils.helper_functions import read_query
-from pepper.brain.basic_brain import BasicBrain
-
-from pepper import config
 
 
 class ThoughtGenerator(BasicBrain):

@@ -1,7 +1,5 @@
-from pepper.brain.utils.helper_functions import read_query, casefold_text
 from pepper.brain.basic_brain import BasicBrain
-
-from pepper import config
+from pepper.brain.utils.helper_functions import read_query, casefold_text
 
 
 class LocationReasoner(BasicBrain):

@@ -1,13 +1,12 @@
 from __future__ import print_function
 
-from pepper.framework.sensor.face_detect import OpenFace
-from pepper import config
-
-from scipy.ndimage import imread
-from scipy.misc import imresize
-import numpy as np
-
 import os
+
+import numpy as np
+from scipy.misc import imresize
+from scipy.ndimage import imread
+
+from pepper.framework.sensor.face_detect import OpenFace
 
 
 def add_friend_from_directory(directory, name, max_size=1024):

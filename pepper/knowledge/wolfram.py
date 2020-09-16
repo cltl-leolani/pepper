@@ -2,8 +2,6 @@
 Query the Wolfram Alpha API using Natural Language.
 """
 
-from pepper import config
-
 import requests
 
 

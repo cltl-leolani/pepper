@@ -1,7 +1,6 @@
 from typing import List
 
 from pepper import config
-from pepper.framework.abstract import AbstractImage
 from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.sensor.face import FaceClassifier, Face

@@ -1,12 +1,9 @@
-from pepper.brain.utils.helper_functions import read_query, casefold_text
-from pepper.brain.reasoners import LocationReasoner, ThoughtGenerator, TypeReasoner
-from pepper.brain.infrastructure import Thoughts
-from pepper.brain.basic_brain import BasicBrain
-
 from pepper.brain.LTM_question_processing import create_query
 from pepper.brain.LTM_statement_processing import model_graphs
-
-from pepper import config
+from pepper.brain.basic_brain import BasicBrain
+from pepper.brain.infrastructure import Thoughts
+from pepper.brain.reasoners import LocationReasoner, ThoughtGenerator, TypeReasoner
+from pepper.brain.utils.helper_functions import read_query, casefold_text
 
 
 class LongTermMemory(BasicBrain):

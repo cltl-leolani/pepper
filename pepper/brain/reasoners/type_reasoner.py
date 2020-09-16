@@ -1,10 +1,8 @@
-from pepper.brain.utils.helper_functions import read_query, casefold_text
-from pepper.brain.basic_brain import BasicBrain
-
-from pepper import config
-
-from fuzzywuzzy import process
 import requests
+from fuzzywuzzy import process
+
+from pepper.brain.basic_brain import BasicBrain
+from pepper.brain.utils.helper_functions import read_query, casefold_text
 
 
 class TypeReasoner(BasicBrain):

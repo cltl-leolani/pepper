@@ -2,7 +2,6 @@ from random import choice
 from threading import Thread
 from time import time, sleep
 
-from pepper import config
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.intention import AbstractIntention

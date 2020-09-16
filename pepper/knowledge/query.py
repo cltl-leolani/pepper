@@ -2,15 +2,13 @@
 Answers to Simple Questions using Fuzzy Matching!
 """
 
-from pepper.knowledge.sentences import *
-from pepper import config
+import datetime
+from random import choice
+from time import strftime
 
 from fuzzywuzzy import fuzz
 
-from random import choice
-from time import strftime
-import datetime
-import os
+from pepper.knowledge.sentences import *
 
 
 class QnA:

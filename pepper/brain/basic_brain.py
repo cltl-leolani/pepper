@@ -1,10 +1,9 @@
 import os
-
-from pepper.brain.utils.helper_functions import read_query
-from pepper.brain.infrastructure import StoreConnector, RdfBuilder
-from pepper import config, logger
-
 from datetime import datetime
+
+from pepper import logger
+from pepper.brain.infrastructure import StoreConnector, RdfBuilder
+from pepper.brain.utils.helper_functions import read_query
 
 
 class BasicBrain(object):

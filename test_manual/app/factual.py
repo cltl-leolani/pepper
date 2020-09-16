@@ -1,6 +1,6 @@
 from random import choice
 
-from pepper import config
+from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.component import StatisticsComponent, ContextComponent, ObjectDetectionComponent, \
@@ -13,8 +13,8 @@ RESPONDERS = [
 ]
 
 
-class FactCheckingApp(AbstractApplication, StatisticsComponent,
-                      ContextComponent,
+class FactCheckingApp(AbstractApplication, ApplicationContainer,
+                      StatisticsComponent, ContextComponent,
                       ObjectDetectionComponent, FaceRecognitionComponent,
                       SpeechRecognitionComponent, TextToSpeechComponent):
 
@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
     while True:
         # Initialize Application
-        application = FactCheckingApp(config.get_backend())
+        application = FactCheckingApp()
 
         # Initialize Intention
         DefaultIntention(application)

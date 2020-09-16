@@ -2,13 +2,11 @@ from __future__ import unicode_literals
 
 import os
 import tempfile
-from random import getrandbits
 
 from google.cloud import texttospeech
 from playsound import playsound
 from typing import Union, Optional
 
-from pepper import config
 from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
 
 

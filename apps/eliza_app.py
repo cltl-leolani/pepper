@@ -1,7 +1,6 @@
 """Example Application that answers questions posed in natural language using Wikipedia"""
 from time import sleep
 
-from pepper import config  # Global Configuration File
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.intention import AbstractIntention
