@@ -54,9 +54,9 @@ class NAOqiBackend(AbstractBackend):
         microphone_rate = config.get_int("microphone_sample_rate")
         microphone_channels = config.get_int("microphone_channels")
         speech_speed = config.get_int("speech_speed")
-        use_system_camera = config.get_bool("use_system_camera")
-        use_system_microphone = config.get_bool("use_system_microphone")
-        use_system_text_to_speech = config.get_bool("use_system_text_to_speech")
+        use_system_camera = config.get_boolean("use_system_camera")
+        use_system_microphone = config.get_boolean("use_system_microphone")
+        use_system_text_to_speech = config.get_boolean("use_system_text_to_speech")
 
         self._url = config.get("url")
 
