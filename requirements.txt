@@ -28,3 +28,4 @@ pyaudio
 
 configparser
 mock
+importlib_resources

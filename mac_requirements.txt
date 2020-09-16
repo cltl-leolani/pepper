@@ -30,3 +30,4 @@ reverse-geocoder
 
 configparser
 mock
+importlib-resources

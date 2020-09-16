@@ -4,6 +4,7 @@ from enum import Enum
 
 from pepper.framework.config.local import LocalConfigurationContainer
 
+import importlib_resources
 
 class TestEnum(Enum):
     VALUE = 1
@@ -12,9 +13,9 @@ class TestEnum(Enum):
 
 class SynchronousEventBusTestCase(unittest.TestCase):
     def setUp(self):
-        container = LocalConfigurationContainer()
-        container.load_configuration("./test.config")
-        self.configuration_manager = container.config_manager
+        with importlib_resources.path(__package__, "test.config") as test_config:
+            LocalConfigurationContainer.load_configuration(str(test_config), [])
+        self.configuration_manager = LocalConfigurationContainer().config_manager
 
     def test_defaults(self):
         default_config = self.configuration_manager.get_config("DEFAULT")

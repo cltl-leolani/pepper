@@ -1,28 +1,27 @@
 import unittest
-import mock
-
 from time import sleep
+
+import importlib_resources
+import mock
 import numpy as np
 
-from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
+from pepper import CameraResolution
+from pepper.framework.abstract import AbstractMicrophone, AbstractCamera, AbstractTextToSpeech, AbstractMotion, \
+    AbstractLed, AbstractTablet, AbstractImage
+from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.backend import AbstractBackend
 from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
-from pepper.framework.sensor.api import FaceDetector, ObjectDetector, AbstractTranslator, AbstractASR, Object, \
-    UtteranceHypothesis, SensorContainer, VAD
-from pepper.framework.util import Bounds
-
-from pepper.framework.component import ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent
-
+from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
 from pepper.framework.backend.container import BackendContainer
+from pepper.framework.component import ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent
+from pepper.framework.config.local import LocalConfigurationContainer
+from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer
 from pepper.framework.event.memory import SynchronousEventBusContainer
 from pepper.framework.resource.threaded import ThreadedResourceContainer
-from pepper.framework.di_container import singleton
-from pepper.framework.abstract import AbstractMicrophone, AbstractCamera, AbstractTextToSpeech, AbstractMotion, AbstractLed, AbstractTablet, AbstractImage
-from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.backend import AbstractBackend
-
-from pepper import CameraResolution
-
+from pepper.framework.sensor.api import FaceDetector, ObjectDetector, AbstractTranslator, AbstractASR, Object, \
+    UtteranceHypothesis, SensorContainer, VAD
+from pepper.framework.util import Bounds
 
 TEST_IMG = np.zeros((128,))
 TEST_BOUNDS = Bounds(0.0, 0.0, 1.0, 1.0)
@@ -88,7 +87,8 @@ class TestSensorContainer(SensorContainer):
 class ApplicationContainer(TestBackendContainer,
                            TestSensorContainer,
                            SynchronousEventBusContainer,
-                           ThreadedResourceContainer):
+                           ThreadedResourceContainer,
+                           LocalConfigurationContainer):
     pass
 
 
@@ -130,6 +130,8 @@ class TestApplication(ApplicationContainer, AbstractApplication,
 
 class ApplicationITest(unittest.TestCase):
     def setUp(self):
+        with importlib_resources.path(__package__, "test.config") as test_config:
+            LocalConfigurationContainer.load_configuration(str(test_config), [])
         self.application = TestApplication()
 
     def tearDown(self):

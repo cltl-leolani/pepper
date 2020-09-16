@@ -4,6 +4,7 @@ import threading
 import unittest
 from time import sleep
 
+import importlib_resources
 import mock
 import numpy as np
 
@@ -12,6 +13,8 @@ from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.component import SpeechRecognitionComponent, TextToSpeechComponent
+from pepper.framework.config.api import ConfigurationContainer, ConfigurationManager, Configuration
+from pepper.framework.config.local import LocalConfigurationContainer
 from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer
 from pepper.framework.event.memory import SynchronousEventBusContainer
@@ -19,7 +22,6 @@ from pepper.framework.resource.api import ResourceContainer
 from pepper.framework.resource.threaded import ThreadedResourceContainer
 from pepper.framework.sensor.api import AbstractTranslator, AbstractASR, UtteranceHypothesis, SensorContainer
 from pepper.framework.sensor.vad import WebRtcVAD
-
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler(stream=sys.stdout))
@@ -33,12 +35,14 @@ def setupTestComponents():
     """Workaround to overwrite static state in DIContainers across tests"""
     global TestApplication
 
+    with importlib_resources.path(__package__, "test.config") as test_config:
+        LocalConfigurationContainer.load_configuration(str(test_config), [])
+
     class TestBackendContainer(BackendContainer, EventBusContainer, ResourceContainer):
         @property
         @singleton
         def backend(self):
             return TestBackend(self.event_bus, self.resource_manager)
-
 
     class TestTextToSpeech(AbstractTextToSpeech):
         def __init__(self, resource_manager):
@@ -60,19 +64,19 @@ def setupTestComponents():
 
 
     class TestVAD(WebRtcVAD):
-        def __init__(self, microphone, event_bus, resource_manager):
-            super(TestVAD, self).__init__(microphone, event_bus, resource_manager)
+        def __init__(self, microphone, event_bus, resource_manager, configuration_manager):
+            super(TestVAD, self).__init__(microphone, event_bus, resource_manager, configuration_manager)
             self.speech_flag = ThreadsafeBoolean()
 
         def _is_speech(self, frame):
             return self.speech_flag.val
 
 
-    class TestSensorContainer(BackendContainer, SensorContainer, EventBusContainer):
+    class TestSensorContainer(BackendContainer, SensorContainer, EventBusContainer, ConfigurationContainer):
         @property
         @singleton
         def vad(self):
-            return TestVAD(self.microphone, self.event_bus, self.resource_manager)
+            return TestVAD(self.microphone, self.event_bus, self.resource_manager, self.config_manager)
 
         def asr(self, language="nl"):
             mock_asr = mock.create_autospec(AbstractASR)
@@ -97,7 +101,8 @@ def setupTestComponents():
     class ApplicationContainer(TestBackendContainer,
                                TestSensorContainer,
                                SynchronousEventBusContainer,
-                               ThreadedResourceContainer):
+                               ThreadedResourceContainer,
+                               LocalConfigurationContainer):
         pass
 
 
@@ -118,8 +123,9 @@ def setupTestComponents():
 
 
 class ListeningThread(threading.Thread):
-    def __init__(self, speech_flag, microphone, name="Listening"):
+    def __init__(self, speech_flag, microphone, webrtc_buffer_size, name="Listening"):
         super(ListeningThread, self).__init__(name=name)
+        self._webrtc_buffer_size = webrtc_buffer_size
         self._speech_flag = speech_flag
         self._microphone = microphone
         self.running = True
@@ -157,7 +163,8 @@ class ListeningThread(threading.Thread):
             for i in range(self.listen_to_frames):
                 self._speech_flag.val = True
                 # Fill speech buffer
-                for j in range(2*WebRtcVAD.BUFFER_SIZE + 10):
+                buffer_size = self._webrtc_buffer_size
+                for j in range(2 * buffer_size + 10):
                     self._microphone.on_audio(AUDIO_FRAME)
                     logger.debug("Listened %s-%s", i, j)
                     sleep(0.001)
@@ -167,7 +174,7 @@ class ListeningThread(threading.Thread):
 
                 self._speech_flag.val = False
                 # Empty speech buffer
-                for j in range(WebRtcVAD.BUFFER_SIZE + 10):
+                for j in range(buffer_size + 10):
                     self._microphone.on_audio(AUDIO_FRAME)
                     logger.debug("Void %s-%s", i, j)
                     sleep(0.001)
@@ -223,7 +230,11 @@ class ResourceITest(unittest.TestCase):
         setupTestComponents()
         self.application = TestApplication()
         self.application.start()
-        self.threads = [ListeningThread(self.application.vad.speech_flag, self.application.microphone),
+
+        webrtc_buffer_size = self.application.config_manager\
+            .get_config("pepper.framework.sensors.vad.webrtc")\
+            .get_int("buffer_size")
+        self.threads = [ListeningThread(self.application.vad.speech_flag, self.application.microphone, webrtc_buffer_size),
                         TalkingThread(self.application.text_to_speech)]
         for thread in self.threads:
             thread.start()

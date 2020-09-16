@@ -27,7 +27,7 @@ class WebRtcVAD(VAD):
 
     def __init__(self, microphone, event_bus, resource_manager, configuration_manager):
         # type: (AbstractMicrophone, EventBus, ResourceManager, ConfigurationManager) -> None
-        config = configuration_manager("pepper.framework.sensors.vad.webrtc")
+        config = configuration_manager.get_config("pepper.framework.sensors.vad.webrtc")
         self._mic_rate = config.get_int("microphone_sample_rate")
         self._threshold = config.get_float("threshold")
         self._buffer_size = config.get_int("buffer_size")

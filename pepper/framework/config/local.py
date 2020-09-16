@@ -6,16 +6,24 @@ import pepper
 from pepper.framework.di_container import singleton
 from .api import Configuration, ConfigurationManager, ConfigurationContainer
 
+_CONFIG = "config/default.config"
+_ADDITIONAL_CONFIGS = ["config/pepper.config", "config/credentials.config"]
+_SECTION_ENVIRONMENT = "environment"
+
 
 class LocalConfigurationContainer(ConfigurationContainer):
-    # TODO
-    __config = ConfigParser({"root_dir": os.path.abspath(os.path.dirname(pepper.__file__))})
+    # TODO Get rid of the need for the root_dir
+    __config = ConfigParser({"root_dir": os.path.abspath(os.path.dirname(os.path.dirname(pepper.__file__)))}, strict=False)
 
     @staticmethod
-    def load_configuration(config_files=["config/default.config", "config/pepper.config", "config/credentials.config"]):
-        LocalConfigurationContainer.__config.read(config_files)
-        for key, value in LocalConfigurationContainer.__config.items("environment"):
-            os.environ[key] = value
+    def load_configuration(config_file=_CONFIG, additional_config_files=_ADDITIONAL_CONFIGS):
+        with open(config_file) as cfg:
+            LocalConfigurationContainer.__config.read_file(cfg)
+        LocalConfigurationContainer.__config.read(additional_config_files)
+
+        if LocalConfigurationContainer.__config.has_section(_SECTION_ENVIRONMENT):
+            for key, value in LocalConfigurationContainer.__config.items(_SECTION_ENVIRONMENT):
+                os.environ[key] = value
 
     @staticmethod
     def get_config(name, key):
