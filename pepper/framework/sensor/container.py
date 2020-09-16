@@ -14,7 +14,7 @@ class DefaultSensorContainer(BackendContainer, SensorContainer, EventBusContaine
     logger.info("Initialized DefaultSensorContainer")
 
     def asr(self, language=None):
-        return StreamedGoogleASR(config=self.config_manager) if language is None else StreamedGoogleASR(language, config=self.config_manager)
+        return StreamedGoogleASR(self.config_manager) if language is None else StreamedGoogleASR(self.config_manager, language)
 
     @property
     @singleton

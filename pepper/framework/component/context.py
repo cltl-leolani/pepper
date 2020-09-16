@@ -50,7 +50,7 @@ class ContextComponent(AbstractComponent):
         #TODO rename
         configuration = self.config_manager.get_config("pepper.framework.component.context")
         name = configuration.get_str("name")
-        object_recognition_targets = configuration.get("object_recognition_targets")
+        object_recognition_targets = configuration.get_enum("object_recognition_targets", ObjectDetectionTarget, multi=True)
         friends_dir = configuration.get_str("friends_dir")
 
         # The ContextComponent requires the following Components:

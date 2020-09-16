@@ -37,8 +37,8 @@ class SystemBackend(AbstractBackend):
         configuration_manager : ConfigurationManager
         """
         config = configuration_manager.get_config("pepper.framework.backend.system")
-        application_language = config.get_str("application_language")
-        internal_language = config.get_str("internal_language")
+        application_language = config.get("application_language")
+        internal_language = config.get("internal_language")
         camera_resolution = config.get_enum("camera_resolution", CameraResolution)
         camera_rate = config.get_int("camera_frame_rate")
         microphone_rate = config.get_int("microphone_sample_rate")

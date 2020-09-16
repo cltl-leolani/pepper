@@ -1,10 +1,11 @@
+import os
 import unittest
 
+import importlib_resources
 from enum import Enum
 
 from pepper.framework.config.local import LocalConfigurationContainer
 
-import importlib_resources
 
 class TestEnum(Enum):
     VALUE = 1
@@ -40,6 +41,7 @@ class SynchronousEventBusTestCase(unittest.TestCase):
 
         self.assertIsNotNone(default_config)
         self.assertEqual("test section", default_config.get("name"))
+        self.assertEqual(["val_1", "val_2"], default_config.get("values", multi=True))
         self.assertEqual(3, default_config.get_int("int"))
         self.assertEqual(2.5, default_config.get_float("float"))
         self.assertEqual(True, default_config.get_boolean("bool"))
@@ -52,4 +54,8 @@ class SynchronousEventBusTestCase(unittest.TestCase):
         self.assertEqual(False, default_config.get_boolean("bool_no"))
         self.assertEqual(False, default_config.get_boolean("bool_off"))
         self.assertEqual(TestEnum.VALUE, default_config.get_enum("enum", TestEnum))
+        self.assertEqual([TestEnum.VALUE, TestEnum.OTHER_VALUE], default_config.get_enum("enums", TestEnum, multi=True))
         self.assertEqual("default/test section/True", default_config.get("interpolated"))
+
+    def test_environment(self):
+        self.assertEqual("test environment variable", os.environ['UNIT_TEST_VAR'])

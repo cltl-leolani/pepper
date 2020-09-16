@@ -45,50 +45,27 @@ class ConfigurationManager(object):
 
 
 class Configuration(object):
-    def get(self, key):
+    def get(self, key, multi=False):
         # type: (str) -> object
         """
-        Get a configuration value for the specified key.
+        Get a configuration value as String for the specified key.
 
         Parameters
         ----------
         key : str
             The key for the configuration value to be retrieved.
+        multi : bool
+            Retrieve a list of values if True, else a single value
 
         Returns
         -------
-        object
-            The configuration value
+        str or Iterable[str]
+            The configuration value, or a list of value if multi is True
 
         Raises
         ------
         :class:`KeyError`
             If there is no value configured for the specified key.
-        """
-        raise NotImplementedError()
-
-    def get_str(self, key):
-        # type: (str) -> str
-        """
-        A convenience method which coerces the configuration value for the
-        specified key to a String.
-
-        Parameters
-        ----------
-        key : str
-            The key for the configuration value to be retrieved.
-
-        Returns
-        -------
-        str
-            The configuration value as String
-
-        Raises
-        ------
-        :class:`ValueError`
-            If the requested value cannot be coerced into a string value.
-        :class:`KeyError`
-            If there is no value configured for the provided key.
         """
         raise NotImplementedError()
 
@@ -173,7 +150,7 @@ class Configuration(object):
         """
         raise NotImplementedError()
 
-    def get_enum(self, key, type):
+    def get_enum(self, key, type, multi=False):
         # type: (str, Type[enum.Enum]) -> enum.Enum
         """
         A convenience method which coerces the configuration value for the
@@ -186,11 +163,14 @@ class Configuration(object):
         type :
             The type of :class:`enum.Enum` to be resolved from the
             configuration value.
+        multi : bool
+            Retrieve a list of values if True
 
         Returns
         -------
-        str
-            The configuration value as :class:`enum.Enum` instance
+        Enum or Iterable[Enum]
+            The configuration value as :class:`enum.Enum` instance, or a list
+            of values if multi is True
 
         Raises
         ------

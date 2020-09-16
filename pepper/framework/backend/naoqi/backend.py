@@ -42,8 +42,8 @@ class NAOqiBackend(AbstractBackend):
         http://doc.aldebaran.com/2-5/index_dev_guide.html
         """
         config = configuration_manager.get_config("pepper.framework.backend.naoqi")
-        application_language = config.get_str("application_language")
-        internal_language = config.get_str("internal_language")
+        application_language = config.get("application_language")
+        internal_language = config.get("internal_language")
         camera_resolution = config.get_enum("camera_resolution", CameraResolution)
         camera_frame_rate = config.get_int("camera_frame_rate")
         microphone_index = config.get_enum("microphone_index", NAOqiMicrophoneIndex)
@@ -54,7 +54,7 @@ class NAOqiBackend(AbstractBackend):
         use_system_microphone = config.get_bool("use_system_microphone")
         use_system_text_to_speech = config.get_bool("use_system_text_to_speech")
 
-        self._url = config.get_str("url")
+        self._url = config.get("url")
 
         # Create Session with NAOqi Robot
         self._session = self.create_session(self._url)

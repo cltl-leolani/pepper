@@ -230,8 +230,8 @@ class BaseGoogleASR(AbstractASR, GoogleTranslator):
     def __init__(self, configuration_manager, language=None, hints=()):
         # type: (ConfigurationManager, str, Iterable[str]) -> None
         config = configuration_manager.get_config("pepper.framework.sensors.asr")
-        application_language = language if language else config.get_str("application_language")
-        internal_language = config.get_str("internal_language")
+        application_language = language if language else config.get("application_language")
+        internal_language = config.get("internal_language")
         sample_rate = config.get_int("microphone_sample_rate")
 
         AbstractASR.__init__(self, application_language)
@@ -354,7 +354,7 @@ class StreamedGoogleASR(BaseGoogleASR):
             try:
                 return self._transcribe(audio)
             except:
-                self._log.error("ASR Transcription Error (try {})".format(i + 1))
+                self._log.error("ASR Transcription Error (try {})".format(i + 1), exc_info=True)
 
         return []  # Return an empty list if ASR transcription fails
 

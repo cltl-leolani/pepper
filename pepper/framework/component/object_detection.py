@@ -2,6 +2,7 @@ from threading import Lock
 
 from typing import List, Dict
 
+from pepper import ObjectDetectionTarget
 from pepper.framework.abstract import AbstractImage
 from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.abstract.component import AbstractComponent
@@ -21,7 +22,7 @@ class ObjectDetectionComponent(AbstractComponent):
 
         config = self.config_manager.get_config("pepper.framework.component.object")
         threshold = config.get_float("threshold")
-        targets = config.get("targets")
+        targets = config.get_enum("targets", ObjectDetectionTarget, multi=True)
 
         # Public List of On Object Callbacks:
         # Allowing other Components to Subscribe to it
