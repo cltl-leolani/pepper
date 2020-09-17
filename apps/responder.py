@@ -14,6 +14,7 @@ from pepper.framework.component import StatisticsComponent, ExploreComponent, Co
     ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
 # TODO move constants from Openface into a configuration
 from pepper.framework.sensor.api import FaceDetector
+from pepper.framework.sensor.face import Face, FaceClassifier
 from pepper.knowledge import sentences
 from pepper.responder import *
 
@@ -219,7 +220,7 @@ class MeetIntention(AbstractIntention, ResponderApp):
     def _save(self):
         name, features = self._current_name, np.concatenate(self.face_vectors).reshape(-1, FaceDetector.FEATURE_DIM)
 
-        if name != "NEW":  # Prevent Overwrite of NEW.bin
+        if name != FaceClassifier.NEW:  # Prevent Overwrite of NEW.bin
             self.face_classifier.add(name, features)
             features.tofile(os.path.join(self._new_dir, "{}.bin".format(name)))
 

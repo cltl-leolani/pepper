@@ -40,7 +40,8 @@ class Face(Object):
 
     def __init__(self, name, confidence, representation, bounds, image):
         # type: (str, float, np.ndarray, Bounds, AbstractImage) -> None
-        super(Face, self).__init__(name, confidence, bounds, image)
+        super(Face, self).__init__(Face.UNKNOWN if name == FaceClassifier.NEW else name,
+                                   confidence, bounds, image)
 
         self._representation = representation
 
@@ -135,6 +136,7 @@ class FaceClassifier(object):
         Known People as <name, representations> dictionary
     n_neighbors: int
     """
+    NEW = "NEW"
     EXTENSION = ".bin"
 
     def __init__(self, people, n_neighbors=20):
@@ -210,7 +212,7 @@ class FaceClassifier(object):
         """
 
         if not self.people:
-            return Face(Face.UNKNOWN, 0.0, representation, bounds, image)
+            return Face(self.NEW, 0.0, representation, bounds, image)
 
         # Get distances to nearest Neighbours
         distances, indices = self._classifier.kneighbors(representation.reshape(-1, FaceDetector.FEATURE_DIM))
