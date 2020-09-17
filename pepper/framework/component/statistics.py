@@ -20,7 +20,7 @@ class StatisticsComponent(AbstractComponent):
         super(StatisticsComponent, self).__init__()
         self._log.info("Initializing StatisticsComponent")
 
-        config = self.config_manager("pepper.framework.component.statistics")
+        config = self.config_manager.get_config("pepper.framework.component.statistics")
         cam_rate = config.get_int("camera_frame_rate")
         mic_rate = config.get_int("microphone_sample_rate")
         performance_error_threshold = config.get_float("performance_error_threshold")
