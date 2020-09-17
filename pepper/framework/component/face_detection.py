@@ -21,8 +21,8 @@ class FaceRecognitionComponent(AbstractComponent):
 
         configuration = self.config_manager.get_config("pepper.framework.component.face")
         self._threshold = configuration.get_float("threshold")
-        friends_dir = configuration.get_str("friends_dir")
-        new_dir = configuration.get_str("new_dir")
+        friends_dir = configuration.get("friends_dir")
+        new_dir = configuration.get("new_dir")
 
         # Public Lists of Callbacks:
         # Allowing other Components to Subscribe to them

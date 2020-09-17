@@ -8,7 +8,7 @@ from pepper.brain.utils.helper_functions import read_query, casefold_text
 class TypeReasoner(BasicBrain):
 
     def __init__(self, address, log_dir, clear_all=False):
-        # type: (str, str, bool) -> TypeReasoner
+        # type: (str, str, bool) -> None
         """
         Interact with Triple store
 

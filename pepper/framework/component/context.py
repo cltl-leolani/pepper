@@ -7,14 +7,14 @@ import numpy as np
 from typing import Deque, List
 
 from pepper import config, ObjectDetectionTarget
+from pepper.framework.abstract.backend import AbstractBackend
+from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
+from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.context import Context
+from pepper.framework.sensor.api import UtteranceHypothesis, Object
+from pepper.framework.sensor.face import Face
 from pepper.language import Utterance
 from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent
-from ..abstract.backend import AbstractBackend
-from ..abstract.camera import TOPIC as CAM_TOPIC
-from ..abstract.component import AbstractComponent
-from ..context import Context
-from ..sensor.api import UtteranceHypothesis, Object
-from ..sensor.face import Face
 
 
 class ContextComponent(AbstractComponent):
@@ -49,9 +49,9 @@ class ContextComponent(AbstractComponent):
 
         #TODO rename
         configuration = self.config_manager.get_config("pepper.framework.component.context")
-        name = configuration.get_str("name")
+        name = configuration.get("name")
         object_recognition_targets = configuration.get_enum("object_recognition_targets", ObjectDetectionTarget, multi=True)
-        friends_dir = configuration.get_str("friends_dir")
+        friends_dir = configuration.get("friends_dir")
 
         # The ContextComponent requires the following Components:
         speech_comp = self.require(ContextComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
@@ -61,9 +61,9 @@ class ContextComponent(AbstractComponent):
 
         # Raise Warning if COCO is not used, due to reliance on 'person' object
         if ObjectDetectionTarget.COCO not in object_recognition_targets:
-            self.log.warning("{0} relies on the {1} 'person' object, but {1} is not included in {2}. "
+            self.log.warning("{0} relies on the {1} 'person' object, but {1} is not included in the configured targets. "
                              "Face Recognition and the on_chat_enter event might not work as expected.".format(
-                self.__class__.__name__, ObjectDetectionTarget.COCO, "config.OBJECT_RECOGNITION_TARGETS"))
+                self.__class__.__name__, ObjectDetectionTarget.COCO))
 
         # Initialize the Context for this Application
         friends = [os.path.splitext(path)[0] for path in os.listdir(friends_dir) if path.endswith(".bin")]

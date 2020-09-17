@@ -1,3 +1,4 @@
+from pepper.framework.event.api import EventBus
 from pepper.framework.abstract.microphone import AbstractMicrophone
 from pepper import NAOqiMicrophoneIndex
 import numpy as np
@@ -8,20 +9,24 @@ from typing import List, Callable, Tuple
 
 
 class NAOqiMicrophone(AbstractMicrophone):
-    """
-    NAOqi Microphone
-
-    Parameters
-    ----------
-    session: qi.Session
-        Qi Application Session
-    index: NAOqiMicrophoneIndex or int
-        Which Microphone to Use
-    """
     SERVICE = "ALAudioDevice"
 
     def __init__(self, session, rate, index, event_bus):
         # type: (qi.Session, NAOqiMicrophoneIndex, EventBus) -> None
+        """
+        Initialize NAOqi Microphone
+
+        Parameters
+        ----------
+        session: qi.Session
+            Qi Application Session
+        rate: int
+            Microphone rate
+        index: NAOqiMicrophoneIndex or int
+            Which Microphone to Use
+        event_bus : EventBus
+            EventBus for publishing events
+        """
         # TODO Is there a reason only to use rear or front mic?
         super(NAOqiMicrophone, self).__init__(
             rate, 4 if index == NAOqiMicrophoneIndex.ALL else 1, event_bus)

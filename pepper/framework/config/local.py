@@ -66,9 +66,6 @@ class LocalConfig(Configuration):
 
         return val if not multi else [v.strip() for v in val.split(_DELIMITER)]
 
-    def get_str(self, key):
-        return str(self.get(key))
-
     def get_int(self, key):
         return self._parser.getint(self._section, key)
 

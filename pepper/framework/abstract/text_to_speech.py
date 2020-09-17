@@ -109,4 +109,4 @@ class AbstractTextToSpeech(object):
                     # _worker is scheduled anyways, just let the next scheduled worker handle check again
                     pass
         except:
-            logger.error("Failed to convert text to speech", exc_info=True)
+            logger.exception("Failed to convert text to speech")

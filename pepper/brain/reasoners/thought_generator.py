@@ -9,7 +9,7 @@ from pepper.brain.utils.helper_functions import read_query
 class ThoughtGenerator(BasicBrain):
 
     def __init__(self, address, log_dir, clear_all=False):
-        # type: (str, str, bool) -> ThoughtGenerator
+        # type: (str, str, bool) -> None
         """
         Interact with Triple store
 

@@ -32,7 +32,6 @@ class StatisticsComponent(AbstractComponent):
         # Require Speech Recognition Component and Get Information from it
         speech_recognition = self.require(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
         vad, asr = speech_recognition.vad, speech_recognition.asr()
-        mic_lock = self.resource_manager.get_read_lock(MIC_TOPIC)
 
         def worker():
             # Create Voice Activation Bar
@@ -41,11 +40,8 @@ class StatisticsComponent(AbstractComponent):
             voice_print = ("<{:10s}>" if vad._voice else "[{:10s}]").format(activation_print)
             empty_voice_print = "[          ]"
 
-            # Get Microphone Related Information
-            if mic_lock.interrupted():
-                mic_lock.release()
-            else:
-                mic_running = mic_lock.locked or mic_lock.acquire(blocking=False)
+            # TODO
+            mic_running = True
             mic_rate_true = self.backend.microphone.true_rate
 
             # Get Camera Related Information

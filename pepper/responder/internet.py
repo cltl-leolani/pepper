@@ -84,7 +84,7 @@ class WolframResponder(Responder):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
         if not self._app_id:
             config = app.config_manager.get_config("credentials")
-            self._app_id = config.get_str("wolfram")
+            self._app_id = config.get("wolfram")
 
         wolfram = Wolfram(self._app_id)
 

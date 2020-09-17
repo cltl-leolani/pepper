@@ -19,8 +19,8 @@ class SubtitlesComponent(AbstractComponent):
         self._log.info("Initializing SubtitlesComponent")
 
         config = self.config_manager.get_config("pepper.framework.component.subtitles")
-        self._name = config.get_str("name")
-        self._url = config.get_str("url")
+        self._name = config.get("name")
+        self._url = config.get("url")
         self._timeout = config.get_float("timeout")
 
         self._subtitles_timeout_timer = None  # type: Optional[Timer]

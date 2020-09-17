@@ -251,7 +251,7 @@ class BaseGoogleASR(AbstractASR, GoogleTranslator):
 
             # The Language & Region
             # Tip: use en-GB for better understanding of 'academic English'
-            language_code=language,
+            language_code=application_language,
 
             # The maximum number of hypotheses to generate per speech recognition
             max_alternatives=self.MAX_ALTERNATIVES,

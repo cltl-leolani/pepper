@@ -1,4 +1,3 @@
-from pepper.framework.di_container import DIContainer
 from . import AbstractCamera, AbstractMicrophone, AbstractTextToSpeech, AbstractMotion, AbstractLed, AbstractTablet
 
 class AbstractBackend(object):

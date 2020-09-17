@@ -4,7 +4,7 @@ from pepper.brain.utils.helper_functions import read_query, casefold_text
 
 class LocationReasoner(BasicBrain):
     def __init__(self, address, log_dir, clear_all=False):
-        # type: (str, str, bool) -> LocationReasoner
+        # type: (str, str, bool) -> None
         """
         Interact with Triple store
 

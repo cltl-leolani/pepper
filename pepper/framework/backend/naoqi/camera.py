@@ -20,23 +20,6 @@ class NAOqiImage(AbstractImage):
 
 
 class NAOqiCamera(AbstractCamera):
-    """
-    NAOqi Camera
-
-    Parameters
-    ----------
-    session: qi.Session
-        NAOqi Application Session
-    resolution: CameraResolution
-        NAOqi Camera Resolution
-    rate: int
-        NAOqi Camera Rate
-    event_bus: EventBus
-        Event bus of the application
-    index: int
-        Which NAOqi Camera to use
-    """
-
     RESOLUTION_CODE = {
         CameraResolution.NATIVE:    2,
         CameraResolution.QQQQVGA:   8,
@@ -72,6 +55,22 @@ class NAOqiCamera(AbstractCamera):
 
     def __init__(self, session, resolution, rate, event_bus, index=NAOqiCameraIndex.TOP):
         # type: (qi.Session, CameraResolution, int, EventBus, NAOqiCameraIndex) -> None
+        """
+        Initialize NAOqi Camera
+
+        Parameters
+        ----------
+        session: qi.Session
+            NAOqi Application Session
+        resolution: CameraResolution
+            NAOqi Camera Resolution
+        rate: int
+            NAOqi Camera Rate
+        event_bus: EventBus
+            Event bus of the application
+        index: int
+            Which NAOqi Camera to use
+        """
         super(NAOqiCamera, self).__init__(resolution, rate, event_bus)
 
         # Get random camera id, to prevent name collision
@@ -88,6 +87,8 @@ class NAOqiCamera(AbstractCamera):
         self._index = index
 
     def start(self):
+        super(NAOqiCamera, self).start()
+
         # Connect to Camera Service and Subscribe with Settings
         self._service = self._session.service(NAOqiCamera.SERVICE_VIDEO)
 
@@ -121,8 +122,6 @@ class NAOqiCamera(AbstractCamera):
         # self._thread_high_rate = Thread(target=self._run_high_rate, name="NAOqiHighRateCameraThread")
         # self._thread_high_rate.setDaemon(True)
         # self._thread_high_rate.start()
-
-        super(NAOqiCamera, self).start()
 
         self._log.debug("NAOqiCamera started")
 

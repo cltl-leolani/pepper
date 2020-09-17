@@ -53,14 +53,16 @@ class SystemTextToSpeech(AbstractTextToSpeech):
                 self._play_sound(response.audio_content)
                 return
             except:
-                self._log.error("Couldn't Synthesize Speech ({})".format(i+1))
+                self._log.exception("Couldn't Synthesize Speech ({})".format(i+1))
 
     def _play_sound(self, mp3):
         try:
-            fd, path = tempfile.mkstemp()
-            with open(fd, 'wb') as out:
+            _, path = tempfile.mkstemp()
+            with open(path, 'wb') as out:
                 out.write(mp3)
             playsound(path)
+        except:
+            self._log.exception("Failed to write temporary file")
         finally:
             if os.path.exists(path):
                 # TODO: Sometimes we need to save all data from an experiment. Comment the line below and pass

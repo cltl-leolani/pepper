@@ -16,21 +16,22 @@ TOPIC = "pepper.framework.abstract.microphone.audio"
 
 
 class AbstractMicrophone(object):
-    """
-    Abstract Microphone
-
-    Parameters
-    ----------
-    rate: int
-        Samples per Second
-    channels: int
-        Number of Channels
-    event_bus: EventBus
-        EventBus to send events when audio is captured
-    """
-
     def __init__(self, rate, channels, event_bus, resource_manager):
         # type: (int, int, EventBus, ResourceManager) -> None
+        """
+        Initialize AbstractMicrophone
+
+        Parameters
+        ----------
+        rate: int
+            Samples per Second
+        channels: int
+            Number of Channels
+        event_bus: EventBus
+            EventBus to send events when audio is captured
+        resource_manager : ResourceManager
+            Resource manager to manage access to the microphone resource
+        """
         self._rate = rate
         self._channels = channels
         self._event_bus = event_bus

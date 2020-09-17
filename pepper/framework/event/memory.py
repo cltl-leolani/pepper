@@ -28,12 +28,16 @@ class SynchronousEventBus(EventBus):
         with self._topic_lock:
             self.__get_handlers(topic).append(handler)
 
+        logger.info("Subscribed %s to topic %s", self.__format_name(handler), topic)
+
     def unsubscribe(self, topic, handler):
         with self._topic_lock:
             if handler:
                 self.__get_handlers(topic).remove(handler)
+                logger.info("Unsubscribed %s from topic %s", self.__format_name(handler), topic)
             else:
                 self.__get_handlers(topic).clear()
+                logger.info("Unsubscribed handlers from topic %s", topic)
 
     @property
     def topics(self):
@@ -46,3 +50,7 @@ class SynchronousEventBus(EventBus):
                 self._handlers[topic] = []
 
             return self._handlers[topic]
+
+    def __format_name(self, handler):
+        return (handler.im_class.__name__ + "." if hasattr(handler, "im_class") else "") + handler.__name__
+

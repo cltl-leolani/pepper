@@ -53,11 +53,13 @@ class SystemCamera(AbstractCamera):
         if not self._camera.isOpened():
             raise RuntimeError("{} could not be opened".format(self.__class__.__name__))
 
+    def start(self):
+        super(SystemCamera, self).start()
+
         # Run Image acquisition in Thread
         self._scheduler = Scheduler(self._run, name="SystemCameraThread")
         self._scheduler.start()
 
-        super(SystemCamera, self).start()
 
         self._log.debug("Started SystemCamera")
 
