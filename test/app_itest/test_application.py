@@ -73,13 +73,14 @@ class TestSensorContainer(SensorContainer):
     @property
     def face_detector(self):
         mock_face_detector = mock.create_autospec(FaceDetector)
-        mock_face_detector.represent.side_effect = lambda image: [(TEST_IMG, TEST_BOUNDS)]
+        mock_face_detector.represent.return_value = [(TEST_IMG, TEST_BOUNDS)]
 
         return mock_face_detector
 
     def object_detector(self, target):
         mock_object_detector = mock.create_autospec(ObjectDetector)
         mock_object_detector.classify.side_effect = lambda image: [Object("test_object", 1.0, TEST_BOUNDS, image)]
+        mock_object_detector.target = "test_target"
 
         return mock_object_detector
 

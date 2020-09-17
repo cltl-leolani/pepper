@@ -67,7 +67,7 @@ class ObjectDetectionComponent(AbstractComponent):
                     self.on_object(objects)
 
         # Initialize & Start Object Workers
-        schedule = [Scheduler(worker, args=(client,), name="{}Thread".format(type(client))) for client in clients]
+        schedule = [Scheduler(worker, args=(client,), name="{}".format(client.target)) for client in clients]
         for s in schedule:
             s.start()
 

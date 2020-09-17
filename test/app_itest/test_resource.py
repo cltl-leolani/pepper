@@ -80,7 +80,7 @@ def setupTestComponents():
 
         def asr(self, language="nl"):
             mock_asr = mock.create_autospec(AbstractASR)
-            mock_asr.transcribe.side_effect = lambda audio: [UtteranceHypothesis("Test one two", 1.0)]
+            mock_asr.transcribe.return_value = [UtteranceHypothesis("Test one two", 1.0)]
 
             return mock_asr
 
