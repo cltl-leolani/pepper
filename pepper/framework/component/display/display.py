@@ -1,17 +1,18 @@
-from pepper.framework.abstract import AbstractImage
-from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
-from pepper.framework.abstract.component import AbstractComponent
-from pepper.framework.component import *
-from .server import DisplayServer
-
+import base64
+import json
+from io import BytesIO
 from threading import Thread, Lock
 
 from PIL import Image
-from io import BytesIO
-import base64
-import json
-
 from typing import List
+
+from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
+from pepper.framework.component import FaceRecognitionComponent, ObjectDetectionComponent, ContextComponent, \
+    SceneComponent
+from pepper.framework.event.api import Event
+from pepper.framework.sensor.obj import Object
+from .server import DisplayServer
 
 
 class DisplayComponent(AbstractComponent):
@@ -24,8 +25,8 @@ class DisplayComponent(AbstractComponent):
         Application Backend
     """
 
-    def __init__(self, backend):
-        super(DisplayComponent, self).__init__(backend)
+    def __init__(self):
+        super(DisplayComponent, self).__init__()
 
         self._log.info("Initializing DisplayComponent")
 

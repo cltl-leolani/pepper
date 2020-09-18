@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 import qi
 from typing import Union, Optional
 
-from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
+from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
 from pepper.framework.resource.api import ResourceManager
 
 

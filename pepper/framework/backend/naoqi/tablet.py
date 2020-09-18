@@ -3,7 +3,7 @@ import re
 
 import qi
 
-from pepper.framework.abstract.tablet import AbstractTablet
+from pepper.framework.backend.abstract.tablet import AbstractTablet
 
 logger = logging.getLogger(__name__)
 

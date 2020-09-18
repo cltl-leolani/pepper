@@ -6,10 +6,7 @@ Abstract
 
 The framework.abstract package contains specifications for:
 
-
-- Sensors: :class:`~pepper.framework.abstract.camera.AbstractCamera` :class:`~pepper.framework.abstract.microphone.AbstractMicrophone`
-- Actuators: :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech` :class:`~pepper.framework.abstract.motion.AbstractMotion` :class:`~pepper.framework.abstract.led.AbstractLed`
-- Backends & Applications: :class:`~pepper.framework.abstract.backend.AbstractBackend` :class:`~pepper.framework.abstract.application.AbstractApplication`
+- Applications: :class:`~pepper.framework.abstract.application.AbstractApplication`
 - Components & Intentions: :class:`~pepper.framework.abstract.component.AbstractComponent` :class:`~pepper.framework.abstract.intention.AbstractIntention`
 
 Backend

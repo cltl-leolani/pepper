@@ -4,7 +4,7 @@ import qi
 from naoqi import ALProxy
 
 from pepper import CameraResolution, NAOqiMicrophoneIndex
-from pepper.framework.abstract.backend import AbstractBackend
+from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech, \
     NAOqiMotion, NAOqiLed, NAOqiTablet

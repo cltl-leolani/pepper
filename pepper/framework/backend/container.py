@@ -1,4 +1,4 @@
-from pepper.framework.abstract.backend import AbstractBackend
+from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.di_container import DIContainer
 
 class BackendContainer(DIContainer):
@@ -8,6 +8,6 @@ class BackendContainer(DIContainer):
         """
         Returns
         -------
-        backend: AbstractBackend :class:`~pepper.framework.abstract.backend.AbstractBackend`
+        backend: AbstractBackend :class:`~pepper.framework.backend.abstract.AbstractBackend`
         """
         raise ValueError("No backend configured")

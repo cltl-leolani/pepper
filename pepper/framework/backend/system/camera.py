@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 from pepper import CameraResolution
-from pepper.framework.abstract import AbstractCamera, AbstractImage
+from pepper.framework.backend.abstract.camera import AbstractCamera, AbstractImage
 from pepper.framework.event.api import EventBus
 from pepper.framework.util import Scheduler, Bounds
 

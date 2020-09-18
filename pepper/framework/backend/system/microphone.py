@@ -1,4 +1,4 @@
-from pepper.framework.abstract.microphone import AbstractMicrophone
+from pepper.framework.backend.abstract.microphone import AbstractMicrophone
 from pepper.framework.event.api import EventBus
 from pepper.framework.resource.api import ResourceManager
 

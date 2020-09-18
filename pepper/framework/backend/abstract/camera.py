@@ -15,7 +15,7 @@ from pepper.framework.util import Mailbox, Scheduler, Bounds, spherical2cartesia
 logger = logging.getLogger(__name__)
 
 
-TOPIC = "pepper.framework.abstract.microphone.camera"
+TOPIC = "pepper.framework.backend.abstract.microphone.camera"
 
 
 # TODO this should not be abstract, all implementations are the same

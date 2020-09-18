@@ -3,7 +3,7 @@ Context
 =======
 
 """
-from pepper.framework.abstract import AbstractImage
+from pepper.framework.backend.abstract.camera import AbstractImage
 from pepper.language import Chat
 from pepper.framework.sensor.api import Location, Object
 from pepper.framework.sensor.face import Face

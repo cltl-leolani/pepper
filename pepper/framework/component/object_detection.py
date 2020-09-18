@@ -3,9 +3,11 @@ from threading import Lock
 from typing import List, Dict
 
 from pepper import ObjectDetectionTarget
-from pepper.framework.abstract import AbstractImage
-from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
+from pepper.framework.event.api import Event
+from pepper.framework.sensor.api import ObjectDetector
+from pepper.framework.sensor.obj import Object, ObjectDetectionClient
 from pepper.framework.util import Scheduler, Mailbox
 
 

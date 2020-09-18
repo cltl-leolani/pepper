@@ -2,18 +2,25 @@ import logging
 from logging import Logger
 from time import sleep
 
-from pepper.framework.abstract import *
 from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.backend.abstract.camera import AbstractCamera
+from pepper.framework.backend.abstract.led import AbstractLed
+from pepper.framework.backend.abstract.microphone import AbstractMicrophone
+from pepper.framework.backend.abstract.motion import AbstractMotion
+from pepper.framework.backend.abstract.tablet import AbstractTablet
+from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
 
 logger = logging.getLogger(__name__)
 
+
+# TODO replace components by events
 
 class AbstractApplication(AbstractComponent):
     """
     The Application class is at the base of every robot application.
     It keeps track of events from different instances of :class:`~pepper.framework.abstract.component.AbstractComponent`,
     allows extension by instances of :class:`~pepper.framework.abstract.intention.AbstractIntention` and
-    exposes :class:`~pepper.framework.abstract.backend.AbstractBackend` devices to the Application Layer.
+    exposes :class:`~pepper.framework.backend.abstract.AbstractBackend` devices to the Application Layer.
     """
 
     _EVENT_TAG = 'on_'
@@ -44,7 +51,7 @@ class AbstractApplication(AbstractComponent):
     def camera(self):
         # type: () -> AbstractCamera
         """
-        Returns :class:`~pepper.framework.abstract.camera.AbstractCamera` associated with current Backend
+        Returns :class:`~pepper.framework.backend.abstract.camera.AbstractCamera` associated with current Backend
 
         Returns
         -------
@@ -56,7 +63,7 @@ class AbstractApplication(AbstractComponent):
     def microphone(self):
         # type: () -> AbstractMicrophone
         """
-        Returns :class:`~pepper.framework.abstract.microphone.AbstractMicrophone` associated with current Backend
+        Returns :class:`~pepper.framework.backend.abstract.microphone.AbstractMicrophone` associated with current Backend
 
         Returns
         -------
@@ -68,7 +75,7 @@ class AbstractApplication(AbstractComponent):
     def text_to_speech(self):
         # type: () -> AbstractTextToSpeech
         """
-        Returns :class:`~pepper.framework.abstract.text_to_speech.AbstractTextToSpeech` associated with current Backend
+        Returns :class:`~pepper.framework.backend.abstract.text_to_speech.AbstractTextToSpeech` associated with current Backend
 
         Returns
         -------
@@ -80,7 +87,7 @@ class AbstractApplication(AbstractComponent):
     def motion(self):
         # type: () -> AbstractMotion
         """
-        Returns :class:`~pepper.framework.abstract.motion.AbstractMotion` associated with current Backend
+        Returns :class:`~pepper.framework.backend.abstract.motion.AbstractMotion` associated with current Backend
 
         Returns
         -------
@@ -92,7 +99,7 @@ class AbstractApplication(AbstractComponent):
     def led(self):
         # type: () -> AbstractLed
         """
-        Returns :class:`~pepper.framework.abstract.led.AbstractLed` associated with current Backend
+        Returns :class:`~pepper.framework.backend.abstract.led.AbstractLed` associated with current Backend
 
         Returns
         -------
@@ -104,7 +111,7 @@ class AbstractApplication(AbstractComponent):
     def tablet(self):
         # type: () -> AbstractTablet
         """
-        Returns :class:`~pepper.framework.abstract.tablet.AbstractTablet` associated with current Backend
+        Returns :class:`~pepper.framework.backend.abstract.tablet.AbstractTablet` associated with current Backend
 
         Returns
         -------

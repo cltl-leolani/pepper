@@ -4,8 +4,8 @@ import numpy as np
 import webrtcvad
 from typing import Iterable
 
-from pepper.framework.abstract import AbstractMicrophone
-from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
+from pepper.framework.backend.abstract.microphone import AbstractMicrophone
+from pepper.framework.backend.abstract.microphone import TOPIC as MIC_TOPIC
 from pepper.framework.config.api import ConfigurationManager
 from pepper.framework.event.api import EventBus, Event
 from pepper.framework.resource.api import ResourceManager

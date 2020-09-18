@@ -3,7 +3,7 @@ import logging
 from typing import Callable
 
 from pepper import CameraResolution
-from pepper.framework.abstract.backend import AbstractBackend
+from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech, \
     SystemMotion, SystemLed, SystemTablet

@@ -6,7 +6,6 @@ from time import time
 
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.component import SpeechRecognitionComponent
-from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
 from pepper.framework.util import Scheduler
 
 

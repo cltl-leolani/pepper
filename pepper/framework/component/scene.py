@@ -2,9 +2,9 @@ import numpy as np
 from cv2 import resize
 from typing import Tuple
 
-from pepper.framework.abstract import AbstractImage
-from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
+from pepper.framework.event.api import Event
 from pepper.framework.util import spherical2cartesian
 
 
@@ -116,6 +116,7 @@ class SceneComponent(AbstractComponent):
             theta = self._theta_map[valid]
 
             # Convert Spherical Coordinates to Cartesian Coordinates
+            # TODO type warning
             x, y, z = spherical2cartesian(phi, theta, depth)
 
             # Return Cartesian Coordinates and Color

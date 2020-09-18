@@ -4,7 +4,7 @@ from time import sleep
 
 from typing import Optional, Union
 
-from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
+from pepper.framework.backend.abstract.microphone import TOPIC as MIC_TOPIC
 from pepper.framework.resource.api import ResourceManager
 from pepper.framework.util import Scheduler
 

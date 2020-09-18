@@ -1,4 +1,4 @@
-from pepper.framework.abstract.tablet import AbstractTablet
+from pepper.framework.backend.abstract.tablet import AbstractTablet
 
 
 class SystemTablet(AbstractTablet):

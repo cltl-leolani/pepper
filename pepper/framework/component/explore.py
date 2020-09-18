@@ -4,7 +4,7 @@ from time import time
 
 import numpy as np
 
-from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
+from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.component import ContextComponent
 

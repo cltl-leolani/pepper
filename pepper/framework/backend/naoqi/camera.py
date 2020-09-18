@@ -1,4 +1,4 @@
-from pepper.framework.abstract.camera import AbstractCamera, AbstractImage
+from pepper.framework.backend.abstract.camera import AbstractCamera, AbstractImage
 from pepper.framework.event.api import EventBus
 from pepper.framework.util import Bounds
 from pepper import NAOqiCameraIndex, CameraResolution

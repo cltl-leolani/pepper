@@ -1,4 +1,4 @@
-from pepper.framework.abstract.motion import AbstractMotion
+from pepper.framework.backend.abstract.motion import AbstractMotion
 from typing import Tuple
 
 

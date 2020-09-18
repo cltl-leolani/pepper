@@ -1,7 +1,7 @@
 from typing import List
 
 from pepper import config
-from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
+from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.sensor.face import FaceClassifier, Face
 from pepper.framework.util import Scheduler, Mailbox
@@ -10,7 +10,7 @@ from pepper.framework.util import Scheduler, Mailbox
 class FaceRecognitionComponent(AbstractComponent):
     """
     Perform Face Detection using :class:`~pepper.sensor.face.OpenFace` and :class:`~pepper.sensor.face.FaceClassifier`
-    on every :class:`~pepper.framework.abstract.camera.AbstractCamera` on_image event.
+    on every :class:`~pepper.framework.backend.abstract.camera.AbstractCamera` on_image event.
     """
 
     def __init__(self):

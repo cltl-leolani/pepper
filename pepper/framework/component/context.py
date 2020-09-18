@@ -7,8 +7,8 @@ import numpy as np
 from typing import Deque, List
 
 from pepper import config, ObjectDetectionTarget
-from pepper.framework.abstract.backend import AbstractBackend
-from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
+from pepper.framework.backend.abstract.backend import AbstractBackend
+from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.context import Context
 from pepper.framework.sensor.api import UtteranceHypothesis, Object

@@ -6,12 +6,16 @@ import mock
 import numpy as np
 
 from pepper import CameraResolution
-from pepper.framework.abstract import AbstractMicrophone, AbstractCamera, AbstractTextToSpeech, AbstractMotion, \
-    AbstractLed, AbstractTablet, AbstractImage
+from pepper.framework.backend.abstract.camera import AbstractCamera, AbstractImage
+from pepper.framework.backend.abstract.microphone import AbstractMicrophone
+from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
+from pepper.framework.backend.abstract.motion import AbstractMotion
+from pepper.framework.backend.abstract.led import AbstractLed
+from pepper.framework.backend.abstract.tablet import AbstractTablet
 from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.backend import AbstractBackend
-from pepper.framework.abstract.camera import TOPIC as CAM_TOPIC
-from pepper.framework.abstract.microphone import TOPIC as MIC_TOPIC
+from pepper.framework.backend.abstract.backend import AbstractBackend
+from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
+from pepper.framework.backend.abstract.microphone import TOPIC as MIC_TOPIC
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.component import ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent
 from pepper.framework.config.local import LocalConfigurationContainer

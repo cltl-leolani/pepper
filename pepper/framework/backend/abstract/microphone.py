@@ -12,7 +12,7 @@ from pepper.framework.util import Scheduler
 logger = logging.getLogger(__name__)
 
 
-TOPIC = "pepper.framework.abstract.microphone.audio"
+TOPIC = "pepper.framework.backend.abstract.microphone.audio"
 
 
 class AbstractMicrophone(object):

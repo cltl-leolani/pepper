@@ -7,7 +7,7 @@ from google.cloud import texttospeech
 from playsound import playsound
 from typing import Union, Optional
 
-from pepper.framework.abstract.text_to_speech import AbstractTextToSpeech
+from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
 
 
 class SystemTextToSpeech(AbstractTextToSpeech):

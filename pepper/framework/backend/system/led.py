@@ -1,4 +1,4 @@
-from pepper.framework.abstract.led import AbstractLed, Led
+from pepper.framework.backend.abstract.led import AbstractLed, Led
 from typing import List, Tuple
 
 

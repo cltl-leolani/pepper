@@ -151,7 +151,7 @@ class Configuration(object):
         raise NotImplementedError()
 
     def get_enum(self, key, type, multi=False):
-        # type: (str, Type[enum.Enum]) -> enum.Enum
+        # type: (str, Type[enum.Enum]) -> Union[object, list[object]]
         """
         A convenience method which coerces the configuration value for the
         specified key to an :class:`enum.Enum` instance.

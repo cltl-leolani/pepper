@@ -7,7 +7,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from typing import Dict
 
 from pepper import config
-from pepper.framework.abstract import AbstractImage
+from pepper.framework.backend.abstract.camera import AbstractImage
 from pepper.framework.util import Bounds
 from .api import FaceDetector
 from .obj import Object

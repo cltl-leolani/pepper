@@ -4,7 +4,7 @@ import numpy as np
 import json
 import os
 
-from pepper.framework.abstract import AbstractImage
+from pepper.framework.backend.abstract.camera import AbstractImage
 from pepper.framework.sensor.api import Object
 from pepper.framework.util import Bounds
 

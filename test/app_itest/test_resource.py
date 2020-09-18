@@ -8,12 +8,13 @@ import importlib_resources
 import mock
 import numpy as np
 
-from pepper.framework.abstract import AbstractMicrophone, AbstractTextToSpeech
+from pepper.framework.backend.abstract.microphone import AbstractMicrophone
+from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
 from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.backend import AbstractBackend
+from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.component import SpeechRecognitionComponent, TextToSpeechComponent
-from pepper.framework.config.api import ConfigurationContainer, ConfigurationManager, Configuration
+from pepper.framework.config.api import ConfigurationContainer
 from pepper.framework.config.local import LocalConfigurationContainer
 from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer

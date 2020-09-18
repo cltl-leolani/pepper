@@ -3,7 +3,7 @@ from logging import Logger
 
 from typing import ClassVar
 
-from pepper.framework.abstract.backend import AbstractBackend
+from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.config.api import ConfigurationContainer
 from pepper.framework.event.api import EventBusContainer
@@ -26,7 +26,7 @@ class AbstractComponent(BackendContainer, SensorContainer, EventBusContainer,
     Parameters
     ----------
     backend: AbstractBackend
-        Application :class:`~pepper.framework.abstract.backend.AbstractBackend`
+        Application :class:`~pepper.framework.backend.abstract.backend.AbstractBackend`
     """
 
     def __init__(self):
