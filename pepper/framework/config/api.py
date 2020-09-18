@@ -46,7 +46,7 @@ class ConfigurationManager(object):
 
 class Configuration(object):
     def get(self, key, multi=False):
-        # type: (str) -> object
+        # type: (str) -> str
         """
         Get a configuration value as String for the specified key.
 

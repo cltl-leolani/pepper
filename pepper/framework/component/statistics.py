@@ -5,7 +5,6 @@ from sys import stdout, stderr
 from time import time
 
 from pepper.framework.abstract.component import AbstractComponent
-from pepper.framework.component import SpeechRecognitionComponent
 from pepper.framework.util import Scheduler
 
 
@@ -28,9 +27,7 @@ class StatisticsComponent(AbstractComponent):
         self.live_speech = ""
         self.live_speech_time = 0
 
-        # Require Speech Recognition Component and Get Information from it
-        speech_recognition = self.require(StatisticsComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
-        vad, asr = speech_recognition.vad, speech_recognition.asr()
+        vad, asr = self.vad, self.asr()
 
         def worker():
             # Create Voice Activation Bar

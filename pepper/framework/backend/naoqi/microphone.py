@@ -7,12 +7,14 @@ import qi
 
 from typing import List, Callable, Tuple
 
+from pepper.framework.resource.api import ResourceManager
+
 
 class NAOqiMicrophone(AbstractMicrophone):
     SERVICE = "ALAudioDevice"
 
-    def __init__(self, session, rate, index, event_bus):
-        # type: (qi.Session, NAOqiMicrophoneIndex, EventBus) -> None
+    def __init__(self, session, rate, index, event_bus, resource_manager):
+        # type: (qi.Session, NAOqiMicrophoneIndex, EventBus, ResourceManager) -> None
         """
         Initialize NAOqi Microphone
 
@@ -26,10 +28,12 @@ class NAOqiMicrophone(AbstractMicrophone):
             Which Microphone to Use
         event_bus : EventBus
             EventBus for publishing events
+        resource_manager : ResourceManager
+            Resource manager to manage access to the microphone resource
         """
         # TODO Is there a reason only to use rear or front mic?
         super(NAOqiMicrophone, self).__init__(
-            rate, 4 if index == NAOqiMicrophoneIndex.ALL else 1, event_bus)
+            rate, 4 if index == NAOqiMicrophoneIndex.ALL else 1, event_bus, resource_manager)
 
         # Register Service and Subscribe this class as callback
         self._service = session.service(NAOqiMicrophone.SERVICE)

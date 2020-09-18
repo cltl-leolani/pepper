@@ -2,6 +2,7 @@ import logging
 
 import qi
 from naoqi import ALProxy
+from typing import Callable
 
 from pepper import CameraResolution, NAOqiMicrophoneIndex
 from pepper.framework.backend.abstract.backend import AbstractBackend
@@ -14,6 +15,7 @@ from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer, EventBus
 from pepper.framework.resource.api import ResourceContainer, ResourceManager
 from pepper.framework.sensor.api import SensorContainer
+from pepper.framework.sensor.asr import AbstractTranslator
 
 logger = logging.getLogger(__name__)
 
