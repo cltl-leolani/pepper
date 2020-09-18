@@ -48,6 +48,8 @@ class NAOqiBackend(AbstractBackend):
         http://doc.aldebaran.com/2-5/index_dev_guide.html
         """
         config = configuration_manager.get_config("pepper.framework.backend.naoqi")
+        ip = config.get("ip")
+        port = config.get_int("port")
         application_language = config.get("application_language")
         internal_language = config.get("internal_language")
         camera_resolution = config.get_enum("camera_resolution", CameraResolution)
@@ -85,7 +87,7 @@ class NAOqiBackend(AbstractBackend):
             text_to_speech = NAOqiTextToSpeech(self.session, application_language, speech_speed, resource_manager)
 
         # Set Default Awareness Behaviour
-        self._awareness = ALProxy("ALBasicAwareness", config.NAOQI_IP, config.NAOQI_PORT)
+        self._awareness = ALProxy("ALBasicAwareness", ip, port)
         self._awareness.setEngagementMode("SemiEngaged")
         self._awareness.setStimulusDetectionEnabled("People", True)
         self._awareness.setStimulusDetectionEnabled("Movement", True)
