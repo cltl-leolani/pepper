@@ -4,7 +4,7 @@ from time import sleep
 
 from typing import Optional, Union
 
-from pepper.framework.backend.abstract.microphone import TOPIC as MIC_TOPIC
+from pepper.framework.backend.abstract.microphone import AUDIO_RESOURCE_NAME as AUDIO_RESOURCE
 from pepper.framework.resource.api import ResourceManager
 from pepper.framework.util import Scheduler
 
@@ -101,7 +101,7 @@ class AbstractTextToSpeech(object):
             return
 
         try:
-            with self._resource_manager.get_write_lock(MIC_TOPIC):
+            with self._resource_manager.get_write_lock(AUDIO_RESOURCE):
                 try:
                     self.on_text_to_speech(*self._queue.get(block=False))
                     self._talking_jobs -= 1

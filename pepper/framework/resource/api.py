@@ -259,7 +259,14 @@ class WriteLock(Lock):
     standard exclusive lock and :class:`ReadLock` for the read-side of a
     shared lock.
     """
-    pass
+
+    def interrupt_readers(self, interrupt=True):
+        # type: () -> None
+        """
+        Set the interrupted flag on the lock to signal the current owner that
+        the lock should be released.
+        """
+        raise NotImplementedError()
 
 
 class ReadLock(Lock):
@@ -280,7 +287,14 @@ class ReadLock(Lock):
     standard exclusive lock and :class:`WriteLock` for the write-side of a
     shared lock.
     """
-    pass
+
+    def interrupt_writers(self, interrupt=True):
+        # type: () -> None
+        """
+        Set the interrupted flag on the lock to signal the current owner that
+        the lock should be released.
+        """
+        raise NotImplementedError()
 
 
 @contextmanager

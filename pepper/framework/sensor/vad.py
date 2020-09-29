@@ -6,6 +6,7 @@ from typing import Iterable
 
 from pepper.framework.backend.abstract.microphone import AbstractMicrophone
 from pepper.framework.backend.abstract.microphone import TOPIC as MIC_TOPIC
+from pepper.framework.backend.abstract.microphone import MIC_RESOURCE_NAME as MIC_RESOURCE
 from pepper.framework.config.api import ConfigurationManager
 from pepper.framework.event.api import EventBus, Event
 from pepper.framework.resource.api import ResourceManager
@@ -97,7 +98,7 @@ class WebRtcVAD(VAD):
         """
         if not self._mic_lock:
             # As there are audio events, the mic lock should be available
-            self._mic_lock = self._resource_manager.get_read_lock(MIC_TOPIC)
+            self._mic_lock = self._resource_manager.get_read_lock(MIC_RESOURCE)
 
         # Work through Microphone Stream Frame by Frame
         audio = event.payload

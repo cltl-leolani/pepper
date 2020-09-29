@@ -29,6 +29,7 @@ logger.addHandler(logging.StreamHandler(stream=sys.stdout))
 logger.setLevel(logging.ERROR)
 
 
+
 AUDIO_FRAME = np.zeros(80).astype(np.int16)
 
 
@@ -167,7 +168,7 @@ class ListeningThread(threading.Thread):
                 buffer_size = self._webrtc_buffer_size
                 for j in range(2 * buffer_size + 10):
                     self._microphone.on_audio(AUDIO_FRAME)
-                    logger.debug("Listened %s-%s", i, j)
+                    logger.debug("Listened to frame %s-%s", i, j)
                     sleep(0.001)
 
                 self.in_speech_latch.set()

@@ -1,7 +1,7 @@
 import logging
 from Queue import Queue
 from collections import deque
-from time import time
+from time import time, sleep
 
 import numpy as np
 
@@ -12,7 +12,9 @@ from pepper.framework.util import Scheduler
 logger = logging.getLogger(__name__)
 
 
-TOPIC = "pepper.framework.backend.abstract.microphone.audio"
+TOPIC = "pepper.framework.backend.abstract.microphone"
+AUDIO_RESOURCE_NAME = "pepper.framework.backend.abstract.audio"
+MIC_RESOURCE_NAME = "pepper.framework.backend.abstract.microphone"
 
 
 class AbstractMicrophone(object):
@@ -49,18 +51,33 @@ class AbstractMicrophone(object):
         self._queue = Queue()
         self._processor_scheduler = None
 
+        self._muted = True
+        self._audio_lock = None
+        self._mic_lock = None
+
         self._log = logger.getChild(self.__class__.__name__)
 
     def start(self):
         """Start Microphone Stream"""
-        self._resource_manager.provide_resource(TOPIC)
+        self._resource_manager.provide_resource(AUDIO_RESOURCE_NAME)
+        self._resource_manager.provide_resource(MIC_RESOURCE_NAME)
+        self._audio_lock = self._resource_manager.get_read_lock(AUDIO_RESOURCE_NAME)
+        self._mic_lock = self._resource_manager.get_write_lock(MIC_RESOURCE_NAME)
+
         self._processor_scheduler = Scheduler(self._processor, 0, name="MicrophoneThread")
         self._processor_scheduler.start()
 
     def stop(self):
         """Stop Microphone Stream"""
+        if self._audio_lock.locked:
+            self._audio_lock.release()
+        if self._mic_lock.locked:
+            self._mic_lock.release()
+
         self._processor_scheduler.stop()
-        self._resource_manager.retract_resource(TOPIC)
+        self._resource_manager.retract_resource(AUDIO_RESOURCE_NAME)
+        self._resource_manager.retract_resource(MIC_RESOURCE_NAME)
+
 
     @property
     def true_rate(self):
@@ -96,12 +113,57 @@ class AbstractMicrophone(object):
         Audio Processor
 
         Publishes audio events for each audio frame, threaded, for higher audio throughput
+
+        To avoid interference with text to speech we use the following strategy:
+
+        * Mute the microphone whenever speakers are active
+        * Delay speakers until listening stops
+
+        For this we define two resources: AUDIO and MIC
+        * Mic and speaker share a Reader-Writer Lock for AUDIO
+        * Listeners and mic share a Reader-Writer lock MIC
+
+        and use the following locking strategy:
+
+        * Speaker acquires the AUDIO Writer-lock, signaling interrupt to the AUDIO Reader-lock of the mic
+        * Mic acquires the AUDIO Reader-lock, checking for interruption when speakers are not active,
+            * if interrupted, mic tries to obtain the MIC write lock (wait for listening to end)
+            * when MIC Writer-lock is obtained the mic releases the AUDIO Reader-lock and acquires it again
+              (speaker is active, mic is waiting to listen again)
+            * when the AUDIO Reader-lock is acquired, it releases the MIC Writer-lock
+              (speaker ends, listening starts again)
         """
-        audio = self._queue.get()
-        self._event_bus.publish(TOPIC, Event(audio, None))
+        timeout_interval = 1/self._rate
+
+        if self._queue.empty():
+            sleep(timeout_interval/10)
+            return
+
+        if self._muted:
+            self._try_unmute()
+        elif self._audio_lock.interrupted:
+            self._try_mute()
+
+        # Don't wait forever for the queue, otherwise we can't terminate the worker
+        audio = self._queue.get(timeout=2*timeout_interval)
+        if not self._muted:
+            self._event_bus.publish(TOPIC, Event(audio, None))
 
         # Update Statistics
         self._update_dt(len(audio))
+
+    def _try_unmute(self):
+        self._audio_lock.interrupt_writers()
+        if self._audio_lock.acquire(blocking=False):
+            self._muted = False
+            if self._mic_lock.locked:
+                self._mic_lock.release()
+
+    def _try_mute(self):
+        self._mic_lock.interrupt_readers()
+        if self._mic_lock.acquire(blocking=False):
+            self._muted = True
+            self._audio_lock.release()
 
     def _update_dt(self, n_bytes):
         t1 = time()

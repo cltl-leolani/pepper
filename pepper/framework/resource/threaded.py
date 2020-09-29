@@ -127,11 +127,15 @@ class ThreadedReadLock(ReadLock):
     def release(self):
         self._lock.release()
         self._rw_lock.reader_release()
+        self._interrupted = False
         logger.debug("Released read-lock for resource %s from thread %s", self._resource_name, threading.current_thread().name)
 
     @property
     def interrupted(self):
         return self._rw_lock.reader_interrupted() and self._lock.locked()
+
+    def interrupt_writers(self, interrupt=True):
+        self._rw_lock.interrupt_writers(interrupt)
 
 
 class ThreadedWriteLock(WriteLock):
@@ -157,11 +161,15 @@ class ThreadedWriteLock(WriteLock):
     def release(self):
         self._lock.release()
         self._rw_lock.writer_release()
+        self._interrupted = False
         logger.debug("Released write-lock for resource %s from thread %s", self._resource_name, threading.current_thread().name)
 
     @property
     def interrupted(self):
         return self._rw_lock.writer_interrupted(writer_interrupts=self._writer_interrupts) and self._lock.locked()
+
+    def interrupt_readers(self, interrupt=True):
+        self._rw_lock.interrupt_readers(interrupt)
 
 
 # Modified version of:
@@ -196,6 +204,8 @@ class _RWLock(object):
         self.__block_readers = threading.Lock()
         self.__block_resource = threading.Lock()
         self.__readers_queue = threading.Lock()
+        self.__readers_interrupted = False
+        self.__writers_interrupted = False
         """A lock giving an even higher priority to the writer in certain
         cases (see [2] for a discussion)"""
 
@@ -210,6 +220,8 @@ class _RWLock(object):
 
     def reader_release(self):
         self.__read_switch.release(self.__block_resource)
+        if not self.__read_switch.is_on:
+            self.__readers_interrupted = False
 
     def writer_acquire(self, blocking=True, timeout=-1):
         switch_acquired = self.__write_switch.acquire(self.__block_readers, blocking=blocking, timeout=timeout)
@@ -226,17 +238,31 @@ class _RWLock(object):
     def writer_release(self):
         self.__block_resource.release()
         self.__write_switch.release(self.__block_readers)
+        if not self.__write_switch.is_on:
+            self.__writers_interrupted = False
+
+    def interrupt_readers(self, interrupt):
+        self.__readers_interrupted = interrupt
+
+    def interrupt_writers(self, interrupt):
+        self.__writers_interrupted = interrupt
 
     def reader_interrupted(self):
+        if self.__readers_interrupted:
+            return True
+
         return self.__read_switch.is_on and self.__write_switch.is_acquired
 
     def writer_interrupted(self, writer_interrupts=False):
-        readers_interrupted = self.__write_switch.is_on and self.__readers_queue.locked()
+        if self.__writers_interrupted:
+            return True
+
+        writers_interrupted = self.__write_switch.is_on and self.__readers_queue.locked()
 
         if writer_interrupts:
-            return readers_interrupted or self.__write_switch.interrupted
+            return writers_interrupted or self.__write_switch.interrupted
 
-        return readers_interrupted
+        return writers_interrupted
 
 
 class _LightSwitch:
