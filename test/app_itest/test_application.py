@@ -42,8 +42,8 @@ class TestBackend(AbstractBackend):
     def __init__(self, event_bus, resource_manager):
         super(TestBackend, self).__init__(camera=AbstractCamera(CameraResolution.VGA, 1, event_bus),
                                           microphone=AbstractMicrophone(8000, 1, event_bus, resource_manager),
-                                          text_to_speech=AbstractTextToSpeech("nl", resource_manager),
-                                          motion=AbstractMotion(),
+                                          text_to_speech=AbstractTextToSpeech("nl", event_bus, resource_manager),
+                                          motion=AbstractMotion(event_bus),
                                           led=AbstractLed(),
                                           tablet=AbstractTablet())
 
@@ -110,12 +110,12 @@ class TestApplication(ApplicationContainer, AbstractApplication,
         self.hypotheses = []
 
     def start(self):
-        self.microphone.start()
-        self.camera.start()
+        self.backend.microphone.start()
+        self.backend.camera.start()
 
     def stop(self):
-        self.microphone.stop()
-        self.camera.stop()
+        self.backend.microphone.stop()
+        self.backend.camera.stop()
 
     def on_object(self, objects):
         self.objects.extend(objects)
@@ -151,7 +151,7 @@ class ApplicationITest(unittest.TestCase):
         self.application.event_bus.subscribe(MIC_TOPIC, handle_audio_event)
         self.application.start()
 
-        mic = self.application.microphone
+        mic = self.application.backend.microphone
         audio_frame = np.random.rand(80).astype(np.int16)
         mic.on_audio(audio_frame)
 
@@ -178,7 +178,7 @@ class ApplicationITest(unittest.TestCase):
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
         image = AbstractImage(np.zeros((2, 2, 3)), bounds)
 
-        cam = self.application.camera
+        cam = self.application.backend.camera
         cam.on_image(image)
 
         self.await(lambda: len(image_events) > 0, msg="images")

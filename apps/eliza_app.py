@@ -4,7 +4,8 @@ from time import sleep
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.intention import AbstractIntention
-from pepper.framework.component import StatisticsComponent, SpeechRecognitionComponent, TextToSpeechComponent
+from pepper.framework.component import StatisticsComponent, SpeechRecognitionComponent
+from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.knowledge import animations
 # TODO Unresolved import
 from pepper.responder import eliza

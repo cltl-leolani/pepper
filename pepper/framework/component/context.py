@@ -14,7 +14,8 @@ from pepper.framework.context import Context
 from pepper.framework.sensor.api import UtteranceHypothesis, Object
 from pepper.framework.sensor.face import Face
 from pepper.language import Utterance
-from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent, TextToSpeechComponent
+from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent
+from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 
 
 class ContextComponent(AbstractComponent):
@@ -379,6 +380,7 @@ class ContextComponent(AbstractComponent):
         """
         return self._face_vectors
 
+    # TODO
     def say(self, text, animation=None, block=False):
         # type: (str, str, bool) -> None
         """

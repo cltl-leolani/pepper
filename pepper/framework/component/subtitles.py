@@ -7,7 +7,8 @@ from threading import Timer
 from typing import Optional
 
 from pepper.framework.abstract.component import AbstractComponent
-from pepper.framework.component import ContextComponent, TextToSpeechComponent, SpeechRecognitionComponent
+from pepper.framework.component import ContextComponent, SpeechRecognitionComponent
+from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 
 
 class SubtitlesComponent(AbstractComponent):

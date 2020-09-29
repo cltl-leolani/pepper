@@ -5,10 +5,14 @@ from time import sleep
 from typing import Optional, Union
 
 from pepper.framework.backend.abstract.microphone import AUDIO_RESOURCE_NAME as AUDIO_RESOURCE
+from pepper.framework.event.api import EventBus, Event
 from pepper.framework.resource.api import ResourceManager
 from pepper.framework.util import Scheduler
 
 logger = logging.getLogger(__name__)
+
+
+TOPIC = "pepper.framework.backend.abstract.text_to_speech"
 
 
 class AbstractTextToSpeech(object):
@@ -21,8 +25,8 @@ class AbstractTextToSpeech(object):
         `Language Code <https://cloud.google.com/speech/docs/languages>`_
     """
 
-    def __init__(self, language, resource_manager):
-        # type: (str, ResourceManager) -> None
+    def __init__(self, language, event_bus, resource_manager):
+        # type: (str, EventBus, ResourceManager) -> None
         self._language = language
         self._resource_manager = resource_manager
 
@@ -31,6 +35,8 @@ class AbstractTextToSpeech(object):
 
         self._scheduler = Scheduler(self._worker, name="TextToSpeechThread")
         self._scheduler.start()
+
+        event_bus.subscribe(TOPIC, self._say)
 
         self._log = logger.getChild(self.__class__.__name__)
 
@@ -60,21 +66,21 @@ class AbstractTextToSpeech(object):
         """
         return self._talking_jobs >= 1
 
-    def say(self, text, animation=None, block=False):
-        # type: (Union[str, unicode], Optional[str], bool) -> None
+    def _say(self, event):
+        # type: (Event) -> None
         """
         Say Text (with optional Animation) through Text-to-Speech
 
         Parameters
         ----------
-        text: str
-            Text to say through Text-to-Speech
-        animation: str or None
-            (Naoqi) Animation to play
-        block: bool
-            Whether this function should block or immediately return after calling
+        event: Event
+            Event containing what to say through Text-to-Speech
         """
-        # self._log.info(text.replace('\n', ' '))
+        payload = event.payload
+        text = payload['text']
+        animation = payload['animation']
+        block = payload['block']
+
         self._talking_jobs += 1
         self._queue.put((text, animation))
 

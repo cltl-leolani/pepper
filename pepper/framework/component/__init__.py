@@ -22,7 +22,6 @@ Some Components are more complex and require other components to work. They will
 from .face_detection import FaceRecognitionComponent
 from .object_detection import ObjectDetectionComponent
 from .speech_recognition import SpeechRecognitionComponent
-from .text_to_speech import TextToSpeechComponent
 
 from .brain import BrainComponent
 

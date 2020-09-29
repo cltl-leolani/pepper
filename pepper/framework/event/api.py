@@ -4,6 +4,7 @@ from pepper.framework.di_container import DIContainer
 class EventBusContainer(DIContainer):
     @property
     def event_bus(self):
+        # type: () -> EventBus
         raise ValueError("No EventBus configured")
 
 

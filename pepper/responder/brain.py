@@ -4,7 +4,8 @@ from random import choice
 
 from typing import Optional, Union, Tuple, Callable
 
-from pepper.framework.component import TextToSpeechComponent, BrainComponent
+from pepper.framework.component import BrainComponent
+from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.knowledge import sentences, animations
 from pepper.language import Utterance
 from pepper.language import UtteranceType

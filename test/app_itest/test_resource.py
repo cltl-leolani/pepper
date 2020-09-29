@@ -13,7 +13,8 @@ from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeec
 from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
-from pepper.framework.component import SpeechRecognitionComponent, TextToSpeechComponent
+from pepper.framework.component import SpeechRecognitionComponent
+from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.framework.config.api import ConfigurationContainer
 from pepper.framework.config.local import LocalConfigurationContainer
 from pepper.framework.di_container import singleton
@@ -47,8 +48,8 @@ def setupTestComponents():
             return TestBackend(self.event_bus, self.resource_manager)
 
     class TestTextToSpeech(AbstractTextToSpeech):
-        def __init__(self, resource_manager):
-            super(TestTextToSpeech, self).__init__("nl", resource_manager)
+        def __init__(self, event_bus, resource_manager):
+            super(TestTextToSpeech, self).__init__("nl", event_bus, resource_manager)
             self.latch = threading.Event()
             self.utterances = []
 
@@ -61,13 +62,19 @@ def setupTestComponents():
     class TestBackend(AbstractBackend):
         def __init__(self, event_bus, resource_manager):
             super(TestBackend, self).__init__(camera=None, microphone=AbstractMicrophone(8000, 1, event_bus, resource_manager),
-                                              text_to_speech=TestTextToSpeech(resource_manager),
+                                              text_to_speech=TestTextToSpeech(event_bus, resource_manager),
                                               motion=None, led=None, tablet=None)
+
+        def start(self):
+            self.microphone.start()
+
+        def stop(self):
+            self.microphone.stop()
 
 
     class TestVAD(WebRtcVAD):
-        def __init__(self, microphone, event_bus, resource_manager, configuration_manager):
-            super(TestVAD, self).__init__(microphone, event_bus, resource_manager, configuration_manager)
+        def __init__(self, event_bus, resource_manager, configuration_manager):
+            super(TestVAD, self).__init__(event_bus, resource_manager, configuration_manager)
             self.speech_flag = ThreadsafeBoolean()
 
         def _is_speech(self, frame):
@@ -78,7 +85,7 @@ def setupTestComponents():
         @property
         @singleton
         def vad(self):
-            return TestVAD(self.microphone, self.event_bus, self.resource_manager, self.config_manager)
+            return TestVAD(self.event_bus, self.resource_manager, self.config_manager)
 
         def asr(self, language="nl"):
             mock_asr = mock.create_autospec(AbstractASR)
@@ -115,10 +122,10 @@ def setupTestComponents():
             self.hypotheses = []
 
         def start(self):
-            self.microphone.start()
+            self.backend.start()
 
         def stop(self):
-            self.microphone.stop()
+            self.backend.stop()
 
         def on_transcript(self, hypotheses, audio):
             self.hypotheses.extend(hypotheses)
@@ -189,9 +196,9 @@ class ListeningThread(threading.Thread):
         logger.debug("Thread %s stopped", self.name)
 
 class TalkingThread(threading.Thread):
-    def __init__(self, text_to_speech, name="Talking"):
+    def __init__(self, application, name="Talking"):
         super(TalkingThread, self).__init__(name=name)
-        self._text_to_speech = text_to_speech
+        self._application = application
         self.running = True
         self.talking = False
         self.talking_latch = threading.Event()
@@ -215,7 +222,7 @@ class TalkingThread(threading.Thread):
         while self.running:
             logger.debug("Started talking")
             for utterance in self.utterances:
-                self._text_to_speech.say(utterance, block=True)
+                self._application.say(utterance, block=True)
                 logger.debug("Said utterance")
                 sleep(0.001)
 
@@ -236,8 +243,8 @@ class ResourceITest(unittest.TestCase):
         webrtc_buffer_size = self.application.config_manager\
             .get_config("pepper.framework.sensors.vad.webrtc")\
             .get_int("buffer_size")
-        self.threads = [ListeningThread(self.application.vad.speech_flag, self.application.microphone, webrtc_buffer_size),
-                        TalkingThread(self.application.text_to_speech)]
+        self.threads = [ListeningThread(self.application.vad.speech_flag, self.application.backend.microphone, webrtc_buffer_size),
+                        TalkingThread(self.application)]
         for thread in self.threads:
             thread.start()
 
@@ -263,7 +270,7 @@ class ResourceITest(unittest.TestCase):
         self.assertEqual(1.0, self.application.hypotheses[1].confidence)
 
     def test_talk(self):
-        self.application.text_to_speech.latch.set()
+        self.application.backend.text_to_speech.latch.set()
 
         _, talking_thread = self.threads
 
@@ -273,11 +280,11 @@ class ResourceITest(unittest.TestCase):
 
         sleep(0.1)
 
-        self.assertEqual(1, len(self.application.text_to_speech.utterances))
-        self.assertEqual("Test", self.application.text_to_speech.utterances[0])
+        self.assertEqual(1, len(self.application.backend.text_to_speech.utterances))
+        self.assertEqual("Test", self.application.backend.text_to_speech.utterances[0])
 
     def test_talk_after_vad_stops(self):
-        self.application.text_to_speech.latch.set()
+        self.application.backend.text_to_speech.latch.set()
         listening_thread, talking_thread = self.threads
 
         in_speech_latch, exit_speech_latch, continue_speech_latch = listening_thread.listen(1, continue_latch=True)
@@ -293,8 +300,8 @@ class ResourceITest(unittest.TestCase):
 
         sleep(0.1)
 
-        self.assertEqual(1, len(self.application.text_to_speech.utterances))
-        self.assertEqual("Test", self.application.text_to_speech.utterances[0])
+        self.assertEqual(1, len(self.application.backend.text_to_speech.utterances))
+        self.assertEqual("Test", self.application.backend.text_to_speech.utterances[0])
 
     def test_listen_after_talk_stops(self):
         listening_thread, talking_thread = self.threads
@@ -324,7 +331,7 @@ class ResourceITest(unittest.TestCase):
         _, exit_speech_latch, continue_speech_latch = listening_thread.listen(1, continue_latch=True)
 
         continue_speech_latch.set()
-        self.application.text_to_speech.latch.set()
+        self.application.backend.text_to_speech.latch.set()
         exit_talk_latch.wait()
         exit_speech_latch.wait()
 

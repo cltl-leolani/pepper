@@ -48,42 +48,6 @@ class AbstractApplication(AbstractComponent):
         return self._log
 
     @property
-    def camera(self):
-        # type: () -> AbstractCamera
-        """
-        Returns :class:`~pepper.framework.backend.abstract.camera.AbstractCamera` associated with current Backend
-
-        Returns
-        -------
-        camera: AbstractCamera
-        """
-        return self.backend.camera
-
-    @property
-    def microphone(self):
-        # type: () -> AbstractMicrophone
-        """
-        Returns :class:`~pepper.framework.backend.abstract.microphone.AbstractMicrophone` associated with current Backend
-
-        Returns
-        -------
-        microphone: AbstractMicrophone
-        """
-        return self.backend.microphone
-
-    @property
-    def text_to_speech(self):
-        # type: () -> AbstractTextToSpeech
-        """
-        Returns :class:`~pepper.framework.backend.abstract.text_to_speech.AbstractTextToSpeech` associated with current Backend
-
-        Returns
-        -------
-        text_to_speech: AbstractTextToSpeech
-        """
-        return self.backend.text_to_speech
-
-    @property
     def motion(self):
         # type: () -> AbstractMotion
         """
