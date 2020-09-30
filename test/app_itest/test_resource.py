@@ -61,9 +61,9 @@ def setupTestComponents():
 
     class TestBackend(AbstractBackend):
         def __init__(self, event_bus, resource_manager):
-            super(TestBackend, self).__init__(camera=None, microphone=AbstractMicrophone(8000, 1, event_bus, resource_manager),
+            super(TestBackend, self).__init__(microphone=AbstractMicrophone(8000, 1, event_bus, resource_manager),
                                               text_to_speech=TestTextToSpeech(event_bus, resource_manager),
-                                              motion=None, led=None, tablet=None)
+                                              camera=None, motion=None, led=None, tablet=None)
 
         def start(self):
             self.microphone.start()

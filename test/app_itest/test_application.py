@@ -46,7 +46,7 @@ class TestBackend(AbstractBackend):
                                           text_to_speech=AbstractTextToSpeech("nl", event_bus, resource_manager),
                                           motion=AbstractMotion(event_bus),
                                           led=AbstractLed(event_bus),
-                                          tablet=AbstractTablet())
+                                          tablet=AbstractTablet(event_bus))
 
 
 class TestSensorContainer(SensorContainer):

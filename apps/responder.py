@@ -9,6 +9,7 @@ from typing import List, Callable
 
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.display import DisplayComponent
 from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.abstract.motion import MotionComponent
 from pepper.framework.component import StatisticsComponent, ExploreComponent, ContextComponent, BrainComponent, \
@@ -40,11 +41,11 @@ class ResponderApp(ApplicationContainer,
                    ContextComponent, BrainComponent,
                    ObjectDetectionComponent, FaceRecognitionComponent,
                    SpeechRecognitionComponent, TextToSpeechComponent,
-                   MotionComponent):
+                   MotionComponent, DisplayComponent):
 
     def __init__(self):
         super(ResponderApp, self).__init__()
-        self.backend.tablet.show(IMAGE_VU)
+        self.backend.show_on_display(IMAGE_VU)
 
 
 class DefaultIntention(AbstractIntention, ResponderApp):

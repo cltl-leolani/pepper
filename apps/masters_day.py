@@ -4,10 +4,12 @@ from time import time, sleep
 
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.display import DisplayComponent
 from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.abstract.motion import MotionComponent
+from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.framework.component import StatisticsComponent, SubtitlesComponent, BrainComponent, ContextComponent, \
-    ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
+    ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent
 from pepper.framework.sensor.api import UtteranceHypothesis
 from pepper.knowledge import sentences, animations
 from pepper.language.generation.reply import reply_to_question
@@ -52,20 +54,20 @@ class PresentTeamApp(ApplicationContainer,
                      BrainComponent, ContextComponent,
                      ObjectDetectionComponent, FaceRecognitionComponent,
                      SpeechRecognitionComponent, TextToSpeechComponent,
-                     MotionComponent):
+                     MotionComponent, DisplayComponent):
     SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
 
     def __init__(self):
         super(PresentTeamApp, self).__init__()
 
-        self.tablet.show(IMAGE_VU)
+        self.show_on_display(IMAGE_VU)
 
     def say(self, text, animation=None, block=True):
         super(PresentTeamApp, self).say(text, animation, block)
         sleep(1.5)
 
     def show_text(self, text):
-        self.backend.tablet.show(self.SUBTITLES_URL.format(text))
+        self.backend.show_on_display(self.SUBTITLES_URL.format(text))
 
 
 class WaitForStartCueIntention(AbstractIntention, PresentTeamApp):
@@ -181,25 +183,25 @@ class IntroductionIntention(AbstractIntention, PresentTeamApp):
         self.say(r"I am lio-lawhni... My name means \\vct=50\\ Voice of an Angel \\vct=100\\. in Hawaiian.",
                  animations.I)
         self.say("I am built by students from the VU that come from all over the world. ", animations.ONCE_UPON_A_TIME)
-        self.tablet.show(IMAGE_SELENE)
+        self.show_on_display(IMAGE_SELENE)
         sleep(1.0)
         self.say("Selene, from Mexico, designed my brain and thoughts!", animations.TABLET)
-        self.tablet.show(IMAGE_LENKA)
+        self.show_on_display(IMAGE_LENKA)
         sleep(1.0)
         self.say("Lenka, from Serbia, taught me to understand language", animations.TABLET)
-        self.tablet.show(IMAGE_BRAM)
+        self.show_on_display(IMAGE_BRAM)
         sleep(1.0)
         self.say("Bram, from the Netherlands, programmed me to perceive the world around me.", animations.TABLET)
-        self.tablet.show(IMAGE_LEA)
+        self.show_on_display(IMAGE_LEA)
         sleep(1.0)
         self.say("Lea, from Germany, has recently joined the team and will help me improve my language understanding.",
                  animations.TABLET)
-        self.tablet.show(IMAGE_PIEK)
+        self.show_on_display(IMAGE_PIEK)
         sleep(1.0)
         self.say(
             "Peek, from the Netherlands, and I, from France and Japan, work on identity, reference and perspective in language!",
             animations.TABLET)
-        self.tablet.show(IMAGE_VU)
+        self.show_on_display(IMAGE_VU)
 
         sleep(2.5)
 
@@ -218,7 +220,7 @@ class IntroductionIntention(AbstractIntention, PresentTeamApp):
         # 2.2.1 - Topic in the News
         self.say("{}".format(choice(sentences.USED_WWW)))
         self.say(choice(sentences.FUN_NLP_FACTS))
-        self.tablet.show(IMAGE_NLP)
+        self.show_on_display(IMAGE_NLP)
         sleep(5.0)
         self.say("Impressive, right?".format(choice(sentences.HAPPY)), animations.EXCITED)
 
@@ -281,7 +283,7 @@ class TopicQuestionIntention(AbstractIntention, PresentTeamApp):
         else:  # If a decent response can be formed
             # -> Thank Speaker and Move on to TopicAnswerIntention
             self.say("That sounds interesting! I wish you the best of luck", animations.HAPPY)
-            self.tablet.show(IMAGE_VU)
+            self.show_on_display(IMAGE_VU)
             TopicAnswerIntention(self.application)
 
 
@@ -316,7 +318,7 @@ class TopicAnswerIntention(AbstractIntention, PresentTeamApp):
         else:  # If a decent response can be formed
             # -> Thank Speaker and Move on to OutroIntention
             self.say("Thank you!", animations.HAPPY)
-            self.tablet.show(IMAGE_VU)
+            self.show_on_display(IMAGE_VU)
             OutroIntention(self.application)
 
 

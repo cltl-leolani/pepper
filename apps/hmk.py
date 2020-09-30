@@ -6,10 +6,12 @@ from time import time, sleep
 
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.display import DisplayComponent
 from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.abstract.motion import MotionComponent
+from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.framework.component import StatisticsComponent, ObjectDetectionComponent, ContextComponent, BrainComponent, \
-    FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
+    FaceRecognitionComponent, SpeechRecognitionComponent
 from pepper.framework.sensor.api import UtteranceHypothesis
 from pepper.knowledge import sentences, animations
 from pepper.language.generation.reply import reply_to_question
@@ -47,13 +49,13 @@ class HMKApp(ApplicationContainer,
              BrainComponent, ContextComponent,
              ObjectDetectionComponent, FaceRecognitionComponent,
              SpeechRecognitionComponent, TextToSpeechComponent,
-             MotionComponent):
+             MotionComponent, DisplayComponent):
     SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
 
     def __init__(self):
         super(HMKApp, self).__init__()
 
-        self.tablet.show(IMAGE_VU)
+        self.show_on_display(IMAGE_VU)
 
     def say(self, text, animation=None, block=True):
         super(HMKApp, self).say(text, animation, block)
@@ -61,7 +63,7 @@ class HMKApp(ApplicationContainer,
 
     def show_text(self, text):
         text_websafe = urllib.quote(''.join([i for i in re.sub(r'\\\\\S+\\\\', "", text) if ord(i) < 128]))
-        self.backend.tablet.show(self.SUBTITLES_URL.format(text_websafe))
+        self.backend.show_on_display(self.SUBTITLES_URL.format(text_websafe))
 
 
 class WaitForStartCueIntention(AbstractIntention, HMKApp):
@@ -119,17 +121,17 @@ class IntroductionIntention(AbstractIntention, HMKApp):
         # 1.2 - Introduction
         self.say(r"I am Leolani... My name means \\vct=50\\ Voice of an Angel \\vct=100\\. in Hawaiian.", animations.I)
         self.say("I am built by students from the VU that come from all over the world. ", animations.ONCE_UPON_A_TIME)
-        self.tablet.show(IMAGE_SELENE)
+        self.show_on_display(IMAGE_SELENE)
         self.say("Selene, from Mexico, designed my brain and thoughts!", animations.TABLET)
-        self.tablet.show(IMAGE_LENKA)
+        self.show_on_display(IMAGE_LENKA)
         self.say("Lenka, from Serbia, taught me to understand language", animations.TABLET)
-        self.tablet.show(IMAGE_BRAM)
+        self.show_on_display(IMAGE_BRAM)
         self.say("Bram, from the Netherlands, programmed me to perceive the world around me.", animations.TABLET)
-        self.tablet.show(IMAGE_PIEK)
+        self.show_on_display(IMAGE_PIEK)
         self.say(
             "Peek, from the Netherlands, and I, from France and Japan, work on identity, reference and perspective in language!",
             animations.TABLET)
-        self.tablet.show(IMAGE_VU)
+        self.show_on_display(IMAGE_VU)
 
         sleep(2.5)
 
@@ -211,7 +213,7 @@ class BrexitQuestionIntention(AbstractIntention, HMKApp):
         else:  # If a decent response can be formed
             # -> Thank Speaker and Move on to BrexitAnswerIntention
             self.say("Thank you for your answer!", animations.HAPPY)
-            self.tablet.show(IMAGE_VU)
+            self.show_on_display(IMAGE_VU)
             BrexitAnswerIntention(self.application)
 
 
@@ -246,7 +248,7 @@ class BrexitAnswerIntention(AbstractIntention, HMKApp):
         else:  # If a decent response can be formed
             # -> Thank Speaker and Move on to OutroIntention
             self.say("Thank you!", animations.HAPPY)
-            self.tablet.show(IMAGE_VU)
+            self.show_on_display(IMAGE_VU)
             OutroIntention(self.application)
 
 

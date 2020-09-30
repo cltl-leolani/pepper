@@ -3,6 +3,7 @@ from time import sleep
 
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.display import DisplayComponent
 from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.component import StatisticsComponent, SpeechRecognitionComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
@@ -23,7 +24,8 @@ class ElizaApplication(ApplicationContainer,
                        AbstractApplication,         # Every Application Inherits from AbstractApplication
                        StatisticsComponent,         # Displays Performance Statistics in Terminal
                        SpeechRecognitionComponent,  # Enables Speech Recognition and the self.on_transcript event
-                       TextToSpeechComponent):      # Enables Text to Speech and the self.say method
+                       TextToSpeechComponent,       # Enables Text to Speech and the self.say method
+                       DisplayComponent):           # Enables showing content on the display
 
     SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
 
@@ -41,7 +43,7 @@ class ElizaApplication(ApplicationContainer,
     def show_text(self, text):
         text_websafe = text
         # text_websafe = urllib.quote(''.join([i for i in re.sub(r'\\\\\S+\\\\', "", text) if ord(i) < 128]))
-        self.backend.tablet.show(self.SUBTITLES_URL.format(text_websafe))
+        self.show_on_display(self.SUBTITLES_URL.format(text_websafe))
 
     def on_transcript(self, hypotheses, audio):
         """

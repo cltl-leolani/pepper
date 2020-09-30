@@ -7,6 +7,7 @@ from threading import Timer
 from typing import Optional
 
 from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.abstract.display import DisplayComponent
 from pepper.framework.component import ContextComponent, SpeechRecognitionComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 
@@ -26,6 +27,7 @@ class SubtitlesComponent(AbstractComponent):
 
         self._subtitles_timeout_timer = None  # type: Optional[Timer]
 
+        self.require(SubtitlesComponent, DisplayComponent)
         self.require(SubtitlesComponent, TextToSpeechComponent)
         self.require(SubtitlesComponent, SpeechRecognitionComponent)
 
@@ -52,7 +54,7 @@ class SubtitlesComponent(AbstractComponent):
 
         # Show Subtitles
         text_websafe = urllib.quote(''.join([i for i in re.sub(r'\\\\\S+\\\\', "", text) if ord(i) < 128]))
-        self.backend.tablet.show(self._url.format(text_websafe))
+        self.show_on_display(self._url.format(text_websafe))
 
         # Start Timeout Timer
         self._subtitles_timeout_timer = Timer(self._timeout, self.backend.tablet.hide)
