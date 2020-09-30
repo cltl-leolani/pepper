@@ -5,6 +5,7 @@ from time import time, sleep
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.intention import AbstractIntention
+from pepper.framework.abstract.motion import MotionComponent
 from pepper.framework.component import StatisticsComponent, SubtitlesComponent, BrainComponent, ContextComponent, \
     ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
 from pepper.framework.sensor.api import UtteranceHypothesis
@@ -50,7 +51,8 @@ class PresentTeamApp(ApplicationContainer,
                      SubtitlesComponent,
                      BrainComponent, ContextComponent,
                      ObjectDetectionComponent, FaceRecognitionComponent,
-                     SpeechRecognitionComponent, TextToSpeechComponent):
+                     SpeechRecognitionComponent, TextToSpeechComponent,
+                     MotionComponent):
     SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
 
     def __init__(self):

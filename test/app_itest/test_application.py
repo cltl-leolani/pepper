@@ -1,9 +1,10 @@
 import unittest
-from time import sleep
 
 import importlib_resources
 import mock
 import numpy as np
+
+from test import util
 
 from pepper import CameraResolution
 from pepper.framework.backend.abstract.camera import AbstractCamera, AbstractImage
@@ -109,14 +110,6 @@ class TestApplication(ApplicationContainer, AbstractApplication,
         self.new_persons = []
         self.hypotheses = []
 
-    def start(self):
-        self.backend.microphone.start()
-        self.backend.camera.start()
-
-    def stop(self):
-        self.backend.microphone.stop()
-        self.backend.camera.stop()
-
     def on_object(self, objects):
         self.objects.extend(objects)
 
@@ -155,13 +148,13 @@ class ApplicationITest(unittest.TestCase):
         audio_frame = np.random.rand(80).astype(np.int16)
         mic.on_audio(audio_frame)
 
-        self.await(lambda: len(mic_events) > 0, msg="mic event")
+        util.await(lambda: len(mic_events) > 0, msg="mic event")
 
         self.assertEqual(len(mic_events), 1)
         np.testing.assert_array_equal(mic_events[0].payload, audio_frame)
 
         try:
-            self.await(lambda: len(mic_events) > 1, max=5)
+            util.await(lambda: len(mic_events) > 1, max=5)
         except unittest.TestCase.failureException:
             # Expect no more audio events
             pass
@@ -181,25 +174,16 @@ class ApplicationITest(unittest.TestCase):
         cam = self.application.backend.camera
         cam.on_image(image)
 
-        self.await(lambda: len(image_events) > 0, msg="images")
+        util.await(lambda: len(image_events) > 0, msg="images")
 
         self.assertEqual(len(image_events), 1)
         np.testing.assert_array_equal(image_events[0].payload, image)
 
         try:
-            self.await(lambda: len(image_events) > 1, max=5)
+            util.await(lambda: len(image_events) > 1, max=5)
         except unittest.TestCase.failureException:
             # Expect no more audio events
             pass
-
-    def await(self, predicate, max=100, msg="predicate"):
-        cnt = 0
-        while not predicate() and cnt < max:
-            sleep(0.01)
-            cnt += 1
-
-        if cnt == max:
-            self.fail("Test timed out waiting for " + msg)
 
 
 if __name__ == '__main__':

@@ -109,10 +109,9 @@ class VisionResponder(Responder):
 
     def _point_to_objects(self, app, obj):
         app.say("I can see {}".format(self._insert_a_an(obj.name)))
-        app.motion.point(obj.direction, speed=0.2)
-        app.motion.look(obj.direction, speed=0.1)
+        app.point(obj.direction, speed=0.2)
+        app.look(obj.direction, speed=0.1)
         app.say("There it is!!")
-
 
     @staticmethod
     def _insert_a_an(word):

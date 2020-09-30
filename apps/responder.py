@@ -10,6 +10,7 @@ from typing import List, Callable
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.intention import AbstractIntention
+from pepper.framework.abstract.motion import MotionComponent
 from pepper.framework.component import StatisticsComponent, ExploreComponent, ContextComponent, BrainComponent, \
     ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
 # TODO move constants from Openface into a configuration
@@ -38,7 +39,8 @@ class ResponderApp(ApplicationContainer,
                    ExploreComponent, # TODO: (un)comment to turn exploration On/Off
                    ContextComponent, BrainComponent,
                    ObjectDetectionComponent, FaceRecognitionComponent,
-                   SpeechRecognitionComponent, TextToSpeechComponent):
+                   SpeechRecognitionComponent, TextToSpeechComponent,
+                   MotionComponent):
 
     def __init__(self):
         super(ResponderApp, self).__init__()

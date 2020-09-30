@@ -95,7 +95,8 @@ class NAOqiBackend(AbstractBackend):
         self._awareness.setEnabled(True)
 
         super(NAOqiBackend, self).__init__(camera, microphone, text_to_speech,
-                                           NAOqiMotion(self.session), NAOqiLed(self.session), NAOqiTablet(self.session))
+                                           NAOqiMotion(self.session, event_bus),
+                                           NAOqiLed(self.session), NAOqiTablet(self.session))
 
     @property
     def session(self):

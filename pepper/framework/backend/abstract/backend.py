@@ -39,6 +39,18 @@ class AbstractBackend(object):
         self._led = led
         self._tablet = tablet
 
+    def start(self):
+        if self._camera:
+            self._camera.start()
+        if self._microphone:
+            self._microphone.start()
+
+    def stop(self):
+        if self._camera:
+            self._camera.stop()
+        if self._microphone:
+            self._microphone.stop()
+
     @property
     def camera(self):
         # type: () -> AbstractCamera

@@ -3,12 +3,9 @@ from logging import Logger
 from time import sleep
 
 from pepper.framework.abstract.component import AbstractComponent
-from pepper.framework.backend.abstract.camera import AbstractCamera
 from pepper.framework.backend.abstract.led import AbstractLed
-from pepper.framework.backend.abstract.microphone import AbstractMicrophone
 from pepper.framework.backend.abstract.motion import AbstractMotion
 from pepper.framework.backend.abstract.tablet import AbstractTablet
-from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
 
 logger = logging.getLogger(__name__)
 
@@ -28,12 +25,19 @@ class AbstractApplication(AbstractComponent):
     def __init__(self):
         super(AbstractApplication, self).__init__()
 
+        # Instantiate Logger for this Application
+        self._log = logger.getChild(self.__class__.__name__)
+
         # Find Events associated with Application (inherited from Components)
         self._events = {k: v for k, v in self.__dict__.items() if k.startswith(self._EVENT_TAG) and callable(v)}
 
-        # Instantiate Logger for this Application
-        self._log = logger.getChild(self.__class__.__name__)
         self.log.info("Booted Application")
+
+    def start(self):
+        self.backend.start()
+
+    def stop(self):
+        self.backend.stop()
 
     @property
     def log(self):
@@ -89,8 +93,7 @@ class AbstractApplication(AbstractComponent):
 
         Starts Camera & Microphone and Blocks Current Thread until KeyboardInterrupt
         """
-        self.backend.camera.start()
-        self.backend.microphone.start()
+        self.backend.start()
 
         try:
             while True:
@@ -98,8 +101,7 @@ class AbstractApplication(AbstractComponent):
         except KeyboardInterrupt:
             pass
 
-        self.backend.microphone.stop()
-        self.backend.camera.stop()
+        self.backend.stop()
 
         exit(0)
 
