@@ -45,7 +45,7 @@ class TestBackend(AbstractBackend):
                                           microphone=AbstractMicrophone(8000, 1, event_bus, resource_manager),
                                           text_to_speech=AbstractTextToSpeech("nl", event_bus, resource_manager),
                                           motion=AbstractMotion(event_bus),
-                                          led=AbstractLed(),
+                                          led=AbstractLed(event_bus),
                                           tablet=AbstractTablet())
 
 

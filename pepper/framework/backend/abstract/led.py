@@ -2,6 +2,9 @@ from enum import Enum
 from typing import List, Tuple
 
 
+TOPIC = "pepper.framework.backend.abstract.led"
+
+
 class Led(Enum):
     """NAOqi LED ids"""
 
@@ -49,6 +52,21 @@ class Led(Enum):
 
 class AbstractLed(object):
     """Control Robot LEDs"""
+
+    def __init__(self, event_bus):
+        # type: (EventBus) -> None
+        event_bus.subscribe(TOPIC, self._event_handler)
+
+    def _event_handler(self, event):
+        payload = event.payload
+        leds = payload['leds']
+
+        if payload['activate']:
+            rgb = payload['rgb']
+            duration = payload['duration']
+            self.set(leds, rgb, duration)
+        else:
+            self.off(leds)
 
     def set(self, leds, rgb, duration):
         # type: (List[Led], Tuple[float, float, float], float) -> None

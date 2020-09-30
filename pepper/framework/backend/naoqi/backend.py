@@ -96,7 +96,8 @@ class NAOqiBackend(AbstractBackend):
 
         super(NAOqiBackend, self).__init__(camera, microphone, text_to_speech,
                                            NAOqiMotion(self.session, event_bus),
-                                           NAOqiLed(self.session), NAOqiTablet(self.session))
+                                           NAOqiLed(self.session, event_bus),
+                                           NAOqiTablet(self.session))
 
     @property
     def session(self):

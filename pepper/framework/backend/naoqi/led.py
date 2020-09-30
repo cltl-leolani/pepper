@@ -1,4 +1,5 @@
 from pepper.framework.backend.abstract.led import AbstractLed, Led
+from pepper.framework.event.api import EventBus
 from pepper.framework.util import Mailbox
 
 import qi
@@ -16,8 +17,10 @@ class NAOqiLed(AbstractLed):
     session: qi.Session
     """
 
-    def __init__(self, session):
-        # type: (qi.Session) -> None
+    def __init__(self, session, event_bus):
+        # type: (qi.Session, EventBus) -> None
+        super(NAOqiLed, self).__init__(event_bus)
+
         self._led = session.service("ALLeds")
 
     def set(self, leds, rgb, duration):

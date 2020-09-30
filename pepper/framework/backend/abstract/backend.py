@@ -32,6 +32,7 @@ class AbstractBackend(object):
     """
 
     def __init__(self, camera, microphone, text_to_speech, motion, led, tablet):
+        # type: (AbstractCamera, AbstractMicrophone, AbstractTextToSpeech, AbstractMotion, AbstractLed, AbstractTablet) -> None
         self._camera = camera
         self._microphone = microphone
         self._text_to_speech = text_to_speech
