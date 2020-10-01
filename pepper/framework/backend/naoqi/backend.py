@@ -69,7 +69,7 @@ class NAOqiBackend(AbstractBackend):
 
         # System Camera Override
         if use_system_camera:
-            camera = SystemCamera(camera_resolution, camera_frame_rate, event_bus)
+            camera = SystemCamera(camera_resolution, camera_frame_rate, event_bus, resource_manager)
         else:
             camera = NAOqiCamera(self.session, camera_resolution, camera_frame_rate, event_bus)
 

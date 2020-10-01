@@ -18,6 +18,7 @@ class ResourceContainer(DIContainer):
     """
     @property
     def resource_manager(self):
+        # type: () -> ResourceManager
         raise NotImplementedError()
 
 

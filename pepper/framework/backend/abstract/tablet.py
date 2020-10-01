@@ -1,7 +1,7 @@
 from typing import Union
 
 
-TOPIC = "pepper.framework.backend.abstract.tablet"
+TOPIC = "pepper.framework.backend.abstract.tablet.topic"
 
 
 class AbstractTablet(object):

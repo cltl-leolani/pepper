@@ -12,7 +12,7 @@ from pepper.framework.util import Scheduler
 logger = logging.getLogger(__name__)
 
 
-TOPIC = "pepper.framework.backend.abstract.microphone"
+TOPIC = "pepper.framework.backend.abstract.microphone.topic"
 AUDIO_RESOURCE_NAME = "pepper.framework.backend.abstract.audio"
 MIC_RESOURCE_NAME = "pepper.framework.backend.abstract.microphone"
 
@@ -61,6 +61,7 @@ class AbstractMicrophone(object):
         """Start Microphone Stream"""
         self._resource_manager.provide_resource(AUDIO_RESOURCE_NAME)
         self._resource_manager.provide_resource(MIC_RESOURCE_NAME)
+        self._resource_manager.provide_resource(TOPIC)
         self._audio_lock = self._resource_manager.get_read_lock(AUDIO_RESOURCE_NAME)
         self._mic_lock = self._resource_manager.get_write_lock(MIC_RESOURCE_NAME)
 
@@ -75,6 +76,7 @@ class AbstractMicrophone(object):
             self._mic_lock.release()
 
         self._processor_scheduler.stop()
+        self._resource_manager.retract_resource(TOPIC)
         self._resource_manager.retract_resource(AUDIO_RESOURCE_NAME)
         self._resource_manager.retract_resource(MIC_RESOURCE_NAME)
 

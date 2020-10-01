@@ -10,12 +10,13 @@ from typing import Tuple, List, Optional
 
 from pepper import CameraResolution
 from pepper.framework.event.api import Event, EventBus
+from pepper.framework.resource.api import ResourceManager
 from pepper.framework.util import Mailbox, Scheduler, Bounds, spherical2cartesian
 
 logger = logging.getLogger(__name__)
 
 
-TOPIC = "pepper.framework.backend.abstract.microphone.camera"
+TOPIC = "pepper.framework.backend.abstract.microphone.camera.topic"
 
 
 # TODO this should not be abstract, all implementations are the same
@@ -215,8 +216,8 @@ class AbstractImage(object):
 
 
 class AbstractCamera(object):
-    def __init__(self, resolution, rate, event_bus):
-        # type: (CameraResolution, int, EventBus) -> None
+    def __init__(self, resolution, rate, event_bus, resource_manager):
+        # type: (CameraResolution, int, EventBus, ResourceManager) -> None
         """
         Abstract Camera
 
@@ -234,6 +235,7 @@ class AbstractCamera(object):
         self._width = self._resolution.value[1]
         self._height = self._resolution.value[0]
         self._event_bus = event_bus
+        self._resource_manager = resource_manager
 
         self._rate = rate
         # Variables to do some performance statistics
@@ -299,10 +301,12 @@ class AbstractCamera(object):
         self._processor_scheduler = Scheduler(self._processor, name="CameraThread")
         self._processor_scheduler.start()
         self._running = True
+        self._resource_manager.provide_resource(TOPIC)
 
     def stop(self):
         """Stop Streaming Images from Camera"""
         self._running = False
+        self._resource_manager.retract_resource(TOPIC)
         self._processor_scheduler.stop()
 
     def _processor(self):

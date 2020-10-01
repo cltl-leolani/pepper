@@ -35,9 +35,13 @@ class AbstractApplication(AbstractComponent):
 
     def start(self):
         self.backend.start()
+        super(AbstractApplication, self).start()
 
     def stop(self):
+        super(AbstractApplication, self).stop()
         self.backend.stop()
+        for worker in self.sensor_workers:
+            worker.stop()
 
     @property
     def log(self):
@@ -74,7 +78,7 @@ class AbstractApplication(AbstractComponent):
         motion: AbstractMotion
         """
         return self.backend.led
-    
+
     @property
     def tablet(self):
         # type: () -> AbstractTablet
@@ -93,7 +97,7 @@ class AbstractApplication(AbstractComponent):
 
         Starts Camera & Microphone and Blocks Current Thread until KeyboardInterrupt
         """
-        self.backend.start()
+        self.start()
 
         try:
             while True:
@@ -101,7 +105,7 @@ class AbstractApplication(AbstractComponent):
         except KeyboardInterrupt:
             pass
 
-        self.backend.stop()
+        self.stop()
 
         exit(0)
 

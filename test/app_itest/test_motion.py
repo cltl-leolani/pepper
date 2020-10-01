@@ -11,7 +11,6 @@ from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer
 from pepper.framework.event.memory import SynchronousEventBusContainer
 from pepper.framework.resource.threaded import ThreadedResourceContainer
-from pepper.framework.util import Bounds
 from test import util
 
 

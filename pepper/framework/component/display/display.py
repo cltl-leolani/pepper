@@ -8,7 +8,8 @@ from typing import List
 
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
-from pepper.framework.component import FaceRecognitionComponent, ObjectDetectionComponent, ContextComponent, \
+from pepper.framework.abstract.object_detection import ObjectDetectionComponent
+from pepper.framework.component import FaceRecognitionComponent, ContextComponent, \
     SceneComponent
 from pepper.framework.event.api import Event
 from pepper.framework.sensor.obj import Object

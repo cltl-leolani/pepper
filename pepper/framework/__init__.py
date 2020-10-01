@@ -35,7 +35,7 @@ Applications are made out of several instances of :class:`~pepper.framework.abst
 which expose various methods and events to applications. They are summarized below:
 
 - :class:`~pepper.framework.component.speech_recognition.SpeechRecognitionComponent` exposes the :meth:`~pepper.framework.component.speech_recognition.SpeechRecognitionComponent.on_transcript` event.
-- :class:`~pepper.framework.component.object_detection.ObjectDetectionComponent` exposes the :meth:`~pepper.framework.component.object_detection.ObjectDetectionComponent.on_object` event.
+- :class:`~from pepper.framework.abstract.object_detection.ObjectDetectionComponent` exposes the :meth:`~pepper.framework.component.object_detection.ObjectDetectionComponent.on_object` event.
 - :class:`~pepper.framework.component.face_detection.FaceRecognitionComponent` exposes the :meth:`~pepper.framework.component.face_detection.FaceRecognitionComponent.on_face`, :meth:`~pepper.framework.component.face_detection.FaceRecognitionComponentComponent.on_face_known` & :meth:`~pepper.framework.component.face_detection.FaceRecognitionComponent.on_face_new` events.
 - :class:`~pepper.framework.component.text_to_speech.TextToSpeechComponent` exposes the :meth:`~pepper.framework.component.text_to_speech.TextToSpeechComponent.say` method.
 - :class:`~pepper.framework.component.brain.BrainComponent` exposes :class:`pepper.brain.long_term_memory.LongTermMemory` to the application.

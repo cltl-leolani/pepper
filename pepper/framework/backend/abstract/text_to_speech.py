@@ -12,7 +12,7 @@ from pepper.framework.util import Scheduler
 logger = logging.getLogger(__name__)
 
 
-TOPIC = "pepper.framework.backend.abstract.text_to_speech"
+TOPIC = "pepper.framework.backend.abstract.text_to_speech.topic"
 
 
 class AbstractTextToSpeech(object):

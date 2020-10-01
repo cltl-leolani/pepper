@@ -14,7 +14,7 @@ from pepper.framework.context import Context
 from pepper.framework.sensor.api import UtteranceHypothesis, Object
 from pepper.framework.sensor.face import Face
 from pepper.language import Utterance
-from . import SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent
+from . import SpeechRecognitionComponent, FaceRecognitionComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 
 
@@ -56,7 +56,8 @@ class ContextComponent(AbstractComponent):
 
         # The ContextComponent requires the following Components:
         speech_comp = self.require(ContextComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
-        object_comp = self.require(ContextComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
+        # TODO
+        # object_comp = self.require(ContextComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
         face_comp = self.require(ContextComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
         self.require(ContextComponent, TextToSpeechComponent)  # type: TextToSpeechComponent
 

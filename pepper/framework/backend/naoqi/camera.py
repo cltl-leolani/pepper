@@ -1,5 +1,6 @@
 from pepper.framework.backend.abstract.camera import AbstractCamera, AbstractImage
 from pepper.framework.event.api import EventBus
+from pepper.framework.resource.api import ResourceManager
 from pepper.framework.util import Bounds
 from pepper import NAOqiCameraIndex, CameraResolution
 
@@ -53,8 +54,8 @@ class NAOqiCamera(AbstractCamera):
     # Only take non-blurry pictures
     HEAD_DELTA_THRESHOLD = 0.1
 
-    def __init__(self, session, resolution, rate, event_bus, index=NAOqiCameraIndex.TOP):
-        # type: (qi.Session, CameraResolution, int, EventBus, NAOqiCameraIndex) -> None
+    def __init__(self, session, resolution, rate, event_bus, resource_manager, index=NAOqiCameraIndex.TOP):
+        # type: (qi.Session, CameraResolution, int, EventBus, ResourceManager, NAOqiCameraIndex) -> None
         """
         Initialize NAOqi Camera
 
@@ -68,6 +69,8 @@ class NAOqiCamera(AbstractCamera):
             NAOqi Camera Rate
         event_bus: EventBus
             Event bus of the application
+        resource_manager: ResourceManager
+            Resource manager of the application
         index: int
             Which NAOqi Camera to use
         """

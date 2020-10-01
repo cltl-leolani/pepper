@@ -12,8 +12,10 @@ from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.display import DisplayComponent
 from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.abstract.motion import MotionComponent
+from pepper.framework.abstract.object_detection import ObjectDetectionComponent
+from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.framework.component import StatisticsComponent, ExploreComponent, ContextComponent, BrainComponent, \
-    ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent, TextToSpeechComponent
+    FaceRecognitionComponent, SpeechRecognitionComponent
 # TODO move constants from Openface into a configuration
 from pepper.framework.sensor.api import FaceDetector
 from pepper.framework.sensor.face import Face, FaceClassifier

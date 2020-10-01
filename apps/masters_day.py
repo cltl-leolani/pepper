@@ -8,8 +8,9 @@ from pepper.framework.abstract.display import DisplayComponent
 from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.abstract.motion import MotionComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
+from pepper.framework.abstract.object_detection import ObjectDetectionComponent
 from pepper.framework.component import StatisticsComponent, SubtitlesComponent, BrainComponent, ContextComponent, \
-    ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent
+    FaceRecognitionComponent, SpeechRecognitionComponent
 from pepper.framework.sensor.api import UtteranceHypothesis
 from pepper.knowledge import sentences, animations
 from pepper.language.generation.reply import reply_to_question

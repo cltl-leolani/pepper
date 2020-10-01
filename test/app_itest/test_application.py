@@ -1,24 +1,25 @@
+import logging
+import sys
 import unittest
 
 import importlib_resources
 import mock
 import numpy as np
 
-from test import util
-
 from pepper import CameraResolution
-from pepper.framework.backend.abstract.camera import AbstractCamera, AbstractImage
-from pepper.framework.backend.abstract.microphone import AbstractMicrophone
-from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
-from pepper.framework.backend.abstract.motion import AbstractMotion
-from pepper.framework.backend.abstract.led import AbstractLed
-from pepper.framework.backend.abstract.tablet import AbstractTablet
 from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.object_detection import ObjectDetectionComponent
 from pepper.framework.backend.abstract.backend import AbstractBackend
+from pepper.framework.backend.abstract.camera import AbstractCamera, AbstractImage
 from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
+from pepper.framework.backend.abstract.led import AbstractLed
+from pepper.framework.backend.abstract.microphone import AbstractMicrophone
 from pepper.framework.backend.abstract.microphone import TOPIC as MIC_TOPIC
+from pepper.framework.backend.abstract.motion import AbstractMotion
+from pepper.framework.backend.abstract.tablet import AbstractTablet
+from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
 from pepper.framework.backend.container import BackendContainer
-from pepper.framework.component import ObjectDetectionComponent, FaceRecognitionComponent, SpeechRecognitionComponent
+from pepper.framework.component import FaceRecognitionComponent, SpeechRecognitionComponent
 from pepper.framework.config.local import LocalConfigurationContainer
 from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer
@@ -26,7 +27,13 @@ from pepper.framework.event.memory import SynchronousEventBusContainer
 from pepper.framework.resource.threaded import ThreadedResourceContainer
 from pepper.framework.sensor.api import FaceDetector, ObjectDetector, AbstractTranslator, AbstractASR, Object, \
     UtteranceHypothesis, SensorContainer, VAD
+from pepper.framework.sensor.container import DefaultSensorWorkerContainer
 from pepper.framework.util import Bounds
+from test import util
+
+logger = logging.getLogger("pepper")
+logger.addHandler(logging.StreamHandler(stream=sys.stdout))
+logger.setLevel(logging.INFO)
 
 TEST_IMG = np.zeros((128,))
 TEST_BOUNDS = Bounds(0.0, 0.0, 1.0, 1.0)
@@ -41,7 +48,7 @@ class TestBackendContainer(BackendContainer, EventBusContainer):
 
 class TestBackend(AbstractBackend):
     def __init__(self, event_bus, resource_manager):
-        super(TestBackend, self).__init__(camera=AbstractCamera(CameraResolution.VGA, 1, event_bus),
+        super(TestBackend, self).__init__(camera=AbstractCamera(CameraResolution.VGA, 1, event_bus, resource_manager),
                                           microphone=AbstractMicrophone(8000, 1, event_bus, resource_manager),
                                           text_to_speech=AbstractTextToSpeech("nl", event_bus, resource_manager),
                                           motion=AbstractMotion(event_bus),
@@ -60,8 +67,6 @@ class TestSensorContainer(SensorContainer):
 
     def asr(self, language="nl"):
         def asr_fct(voice):
-            for _ in voice:
-                print("Xxx")
             return [UtteranceHypothesis("Test one two", 1.0)]
 
         mock_asr = mock.create_autospec(AbstractASR)
@@ -85,12 +90,13 @@ class TestSensorContainer(SensorContainer):
     def object_detector(self, target):
         mock_object_detector = mock.create_autospec(ObjectDetector)
         mock_object_detector.classify.side_effect = lambda image: [Object("test_object", 1.0, TEST_BOUNDS, image)]
-        mock_object_detector.target = "test_target"
+        mock_object_detector.target = target
 
         return mock_object_detector
 
 
 class ApplicationContainer(TestBackendContainer,
+                           DefaultSensorWorkerContainer,
                            TestSensorContainer,
                            SynchronousEventBusContainer,
                            ThreadedResourceContainer,
@@ -184,6 +190,20 @@ class ApplicationITest(unittest.TestCase):
         except unittest.TestCase.failureException:
             # Expect no more audio events
             pass
+
+    def test_object_events(self):
+        self.application.start()
+
+        bounds = Bounds(0.0, 0.0, 1.0, 1.0)
+        image = AbstractImage(np.zeros((2, 2, 3)), bounds)
+
+        cam = self.application.backend.camera
+        cam.on_image(image)
+
+        util.await(lambda: len(self.application.objects) > 1, msg="objects")
+
+        self.assertEqual(2, len(self.application.objects))
+        self.assertListEqual(2*["test_object"], [obj.name for obj in self.application.objects])
 
 
 if __name__ == '__main__':

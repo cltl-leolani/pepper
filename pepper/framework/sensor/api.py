@@ -1,13 +1,17 @@
 from Queue import Queue
-from typing import Iterable
 
 import numpy as np
+from typing import Iterable
 
+from pepper.framework.di_container import DIContainer
+from pepper.framework.multiprocessing import TopicWorker
+from pepper.framework.util import Bounds
+
+
+# Include from submodules
 from .asr import AbstractASR, AbstractTranslator, UtteranceHypothesis
 from .location import Location
 from .obj import Object
-from pepper.framework.di_container import DIContainer
-from pepper.framework.util import Bounds
 
 
 class SensorContainer(DIContainer):
@@ -28,6 +32,32 @@ class SensorContainer(DIContainer):
 
     def object_detector(self, target):
         raise ValueError("ObjectDetector not configured")
+
+
+class SensorWorkerContainer(DIContainer):
+    def start_object_detector(self, target):
+        # type: (str) -> None
+        """
+        Start object detection worker.
+
+        Parameters
+        ----------
+        target : str
+            The type of object recognition to use.
+        """
+        raise ValueError("ObjectDetectorWorker not configured")
+
+    @property
+    def sensor_workers(self):
+        # type: () -> Iterable[TopicWorker]
+        """
+        Workers started in the application.
+
+        Returns
+        -------
+        Iterable[TopicWorker]
+        """
+        return ()
 
 
 class FaceDetector(object):
@@ -53,6 +83,9 @@ class FaceDetector(object):
 
 
 class ObjectDetector(object):
+
+    TOPIC = "pepper.framework.component.object_detection.topic"
+
     def classify(self, image):
         # type: (AbstractImage) -> List[Object]
         """

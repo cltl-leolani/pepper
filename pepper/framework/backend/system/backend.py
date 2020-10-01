@@ -50,7 +50,7 @@ class SystemBackend(AbstractBackend):
 
         translator = translator_factory(internal_language[:2], application_language[:2])
 
-        super(SystemBackend, self).__init__(SystemCamera(camera_resolution, camera_rate, event_bus),
+        super(SystemBackend, self).__init__(SystemCamera(camera_resolution, camera_rate, event_bus, resource_manager),
                                             SystemMicrophone(microphone_rate, microphone_channels, event_bus, resource_manager),
                                             SystemTextToSpeech(translator, application_language, resource_manager),
                                             SystemMotion(event_bus), SystemLed(event_bus), SystemTablet(event_bus))

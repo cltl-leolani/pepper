@@ -6,6 +6,7 @@ import numpy as np
 from pepper import CameraResolution
 from pepper.framework.backend.abstract.camera import AbstractCamera, AbstractImage
 from pepper.framework.event.api import EventBus
+from pepper.framework.resource.api import ResourceManager
 from pepper.framework.util import Scheduler, Bounds
 
 
@@ -29,18 +30,24 @@ class SystemImage(AbstractImage):
 
 class SystemCamera(AbstractCamera):
     """
-    System Camera
+    Initialize System Camera.
 
     Parameters
     ----------
-    resolution: pepper.framework.CameraResolution
+    resolution: CameraResolution
+        NAOqi Camera Resolution
     rate: int
+        NAOqi Camera Rate
     event_bus: EventBus
+        Event bus of the application
+    resource_manager: ResourceManager
+        Resource manager of the application
     index: int
+        Which System Camera to use
     """
-    def __init__(self, resolution, rate, event_bus, index=0):
-        # type: (CameraResolution, int, EventBus, int) -> None
-        super(SystemCamera, self).__init__(resolution, rate, event_bus)
+    def __init__(self, resolution, rate, event_bus, resource_manager, index=0):
+        # type: (CameraResolution, int, EventBus, ResourceManager, int) -> None
+        super(SystemCamera, self).__init__(resolution, rate, event_bus, resource_manager)
 
         # Get Camera and request resolution
         self._camera = cv2.VideoCapture(index)

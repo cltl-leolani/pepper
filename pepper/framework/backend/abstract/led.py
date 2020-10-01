@@ -2,7 +2,7 @@ from enum import Enum
 from typing import List, Tuple
 
 
-TOPIC = "pepper.framework.backend.abstract.led"
+TOPIC = "pepper.framework.backend.abstract.led.topic"
 
 
 class Led(Enum):

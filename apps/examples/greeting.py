@@ -4,8 +4,8 @@ from time import time
 
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.component import FaceRecognitionComponent, StatisticsComponent, SpeechRecognitionComponent, \
-    TextToSpeechComponent
+from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
+from pepper.framework.component import FaceRecognitionComponent, StatisticsComponent, SpeechRecognitionComponent
 
 
 class GreetingApplication(ApplicationContainer,

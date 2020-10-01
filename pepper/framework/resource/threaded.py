@@ -4,7 +4,7 @@ from collections import defaultdict
 from contextlib import contextmanager
 
 from pepper.framework.di_container import singleton
-from .api import ReadLock, WriteLock, ResourceManager, ResourceContainer
+from .api import ReadLock, WriteLock, ResourceManager, ResourceContainer, LockTimeoutError
 
 logger = logging.getLogger(__name__)
 
@@ -23,10 +23,10 @@ class ThreadedResourceManager(ResourceManager):
         self._resources = {}
         self._resource_events = defaultdict(list)
 
-    def get_lock(self, name, blocking=True, timeout=-1):
+    def get_lock(self, name, blocking=True, timeout=None):
         return self.get_write_lock(name, blocking, timeout, writer_interrupts=True)
 
-    def get_read_lock(self, name, blocking=True, timeout=-1):
+    def get_read_lock(self, name, blocking=True, timeout=None):
         if blocking:
             self._await_resource(name, timeout)
 
@@ -37,7 +37,7 @@ class ThreadedResourceManager(ResourceManager):
 
         return ThreadedReadLock(self._locks[name], name)
 
-    def get_write_lock(self, name, blocking=True, timeout=-1, writer_interrupts=False):
+    def get_write_lock(self, name, blocking=True, timeout=None, writer_interrupts=False):
         if blocking:
             self._await_resource(name, timeout)
 
@@ -60,7 +60,7 @@ class ThreadedResourceManager(ResourceManager):
                 [event.set() for event in self._resource_events[name]]
                 del self._resource_events[name]
 
-    def retract_resource(self, name, force=True, timeout=-1):
+    def retract_resource(self, name, force=True, timeout=None):
         with self._registry_lock:
             lock = self._acquire_lock(force, name, timeout)
             try:
@@ -91,7 +91,7 @@ class ThreadedResourceManager(ResourceManager):
             if name not in self._locks:
                 self._locks[name]= factory()
 
-    def _await_resource(self, name, timeout=-1):
+    def _await_resource(self, name, timeout=None):
         if self.has_resource(name):
             return
 
@@ -101,8 +101,8 @@ class ThreadedResourceManager(ResourceManager):
                 event = threading.Event()
                 self._resource_events[name].append(event)
 
-        if event:
-            event.wait()
+        if event and not event.wait(timeout=timeout):
+            raise LockTimeoutError(name)
 
 
 class ThreadedReadLock(ReadLock):
@@ -112,7 +112,7 @@ class ThreadedReadLock(ReadLock):
         self._rw_lock = rw_lock
         self._lock = threading.Lock()
 
-    def acquire(self, blocking=True, timeout=-1):
+    def acquire(self, blocking=True, timeout=None):
         if self._rw_lock.reader_acquire(blocking=blocking, timeout=timeout):
             self._lock.acquire()
             logger.debug("Acquired read-lock for resource %s from thread %s", self._resource_name, threading.current_thread().name)
@@ -146,7 +146,7 @@ class ThreadedWriteLock(WriteLock):
         self._rw_lock = lock
         self._lock = threading.Lock()
 
-    def acquire(self, blocking=True, timeout=-1):
+    def acquire(self, blocking=True, timeout=None):
         if self._rw_lock.writer_acquire(blocking=blocking, timeout=timeout):
             self._lock.acquire()
             logger.debug("Acquired write-lock for resource %s from thread %s", self._resource_name, threading.current_thread().name)
@@ -209,7 +209,7 @@ class _RWLock(object):
         """A lock giving an even higher priority to the writer in certain
         cases (see [2] for a discussion)"""
 
-    def reader_acquire(self, blocking=True, timeout=-1):
+    def reader_acquire(self, blocking=True, timeout=None):
         # TODO 3.6: timeout=timeout
         with _acquire(self.__readers_queue, blocking) as acquired_queue, \
                 _acquire(self.__block_readers, blocking) as acquired_block:
@@ -223,7 +223,7 @@ class _RWLock(object):
         if not self.__read_switch.is_on:
             self.__readers_interrupted = False
 
-    def writer_acquire(self, blocking=True, timeout=-1):
+    def writer_acquire(self, blocking=True, timeout=None):
         switch_acquired = self.__write_switch.acquire(self.__block_readers, blocking=blocking, timeout=timeout)
         if switch_acquired:
             if self.__block_resource.acquire(blocking):
@@ -275,7 +275,7 @@ class _LightSwitch:
         self.__is_on = False
         self.__mutex = threading.Lock()
 
-    def acquire(self, lock, blocking=True, timeout=-1):
+    def acquire(self, lock, blocking=True, timeout=None):
         # TODO 3.6: timeout=timeout
         with _acquire(self.__mutex, blocking) as acquired_mutex:
             if acquired_mutex:
