@@ -62,6 +62,10 @@ class SensorWorkerContainer(DIContainer):
 
 class FaceDetector(object):
 
+    TOPIC = "pepper.framework.component.face_detector.topic"
+    TOPIC_NEW = "pepper.framework.component.face_detector.topic.new"
+    TOPIC_KNOWN = "pepper.framework.component.face_detector.topic.known"
+
     FEATURE_DIM = 128
 
     def represent(self, image):
@@ -84,7 +88,7 @@ class FaceDetector(object):
 
 class ObjectDetector(object):
 
-    TOPIC = "pepper.framework.component.object_detection.topic"
+    TOPIC = "pepper.framework.component.object_detector.topic"
 
     def classify(self, image):
         # type: (AbstractImage) -> List[Object]

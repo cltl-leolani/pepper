@@ -11,6 +11,7 @@ from .asr import StreamedGoogleASR, GoogleTranslator
 from .face_detect import OpenFace
 from .obj import ObjectDetectionClient
 from .vad import WebRtcVAD
+from .worker.face_detection import FaceDetectionWorker
 from .worker.object_detection import ObjectDetectionWorker
 
 logger = logging.getLogger(__name__)
@@ -23,6 +24,12 @@ class DefaultSensorWorkerContainer(SensorWorkerContainer, EventBusContainer, Res
     def start_object_detector(self, target):
         worker = ObjectDetectionWorker(self.object_detector(target), "ObjectDetector [{}]".format(target),
                                        self.event_bus, self.resource_manager, self.config_manager)
+        DefaultSensorWorkerContainer.__workers.put(worker)
+        worker.start()
+
+    def start_face_detector(self):
+        worker = FaceDetectionWorker(self.face_detector, "FaceDetector",
+                                     self.event_bus, self.resource_manager, self.config_manager)
         DefaultSensorWorkerContainer.__workers.put(worker)
         worker.start()
 

@@ -3,8 +3,9 @@ from pepper.framework.backend.abstract.microphone import TOPIC as MIC_TOPIC
 from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.object_detection import ObjectDetectionComponent
+from pepper.framework.abstract.face_detection import FaceRecognitionComponent
 from pepper.framework.component import DisplayComponent, StatisticsComponent, \
-    SpeechRecognitionComponent, FaceRecognitionComponent
+    SpeechRecognitionComponent
 
 
 class VerboseApp(ApplicationContainer,

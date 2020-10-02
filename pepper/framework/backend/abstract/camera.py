@@ -298,6 +298,9 @@ class AbstractCamera(object):
 
     def start(self):
         """Start Streaming Images from Camera"""
+        if self._running:
+            raise RuntimeError()
+
         self._processor_scheduler = Scheduler(self._processor, name="CameraThread")
         self._processor_scheduler.start()
         self._running = True

@@ -9,7 +9,7 @@ from typing import List
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.abstract.object_detection import ObjectDetectionComponent
-from pepper.framework.component import FaceRecognitionComponent, ContextComponent, \
+from pepper.framework.component import ContextComponent, \
     SceneComponent
 from pepper.framework.event.api import Event
 from pepper.framework.sensor.obj import Object
@@ -32,8 +32,9 @@ class DisplayComponent(AbstractComponent):
         self._log.info("Initializing DisplayComponent")
 
         # Get Required Components
-        face_recognition = self.require(DisplayComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
-        object_recognition = self.require(DisplayComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
+        # TODO !!
+        # face_recognition = self.require(DisplayComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
+        # object_recognition = self.require(DisplayComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
         context = self.require(DisplayComponent, ContextComponent)  # type: ContextComponent
         scene = self.require(DisplayComponent, SceneComponent) # type: SceneComponent
 

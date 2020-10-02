@@ -14,7 +14,7 @@ from pepper.framework.context import Context
 from pepper.framework.sensor.api import UtteranceHypothesis, Object
 from pepper.framework.sensor.face import Face
 from pepper.language import Utterance
-from . import SpeechRecognitionComponent, FaceRecognitionComponent
+from . import SpeechRecognitionComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 
 
@@ -58,7 +58,7 @@ class ContextComponent(AbstractComponent):
         speech_comp = self.require(ContextComponent, SpeechRecognitionComponent)  # type: SpeechRecognitionComponent
         # TODO
         # object_comp = self.require(ContextComponent, ObjectDetectionComponent)  # type: ObjectDetectionComponent
-        face_comp = self.require(ContextComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
+        # face_comp = self.require(ContextComponent, FaceRecognitionComponent)  # type: FaceRecognitionComponent
         self.require(ContextComponent, TextToSpeechComponent)  # type: TextToSpeechComponent
 
         # Raise Warning if COCO is not used, due to reliance on 'person' object

@@ -6,9 +6,10 @@ import importlib_resources
 import mock
 import numpy as np
 
-from pepper import CameraResolution
+from pepper import CameraResolution, config
 from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.object_detection import ObjectDetectionComponent
+from pepper.framework.abstract.face_detection import FaceRecognitionComponent
 from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.abstract.camera import AbstractCamera, AbstractImage
 from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
@@ -19,7 +20,7 @@ from pepper.framework.backend.abstract.motion import AbstractMotion
 from pepper.framework.backend.abstract.tablet import AbstractTablet
 from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
 from pepper.framework.backend.container import BackendContainer
-from pepper.framework.component import FaceRecognitionComponent, SpeechRecognitionComponent
+from pepper.framework.component import SpeechRecognitionComponent
 from pepper.framework.config.local import LocalConfigurationContainer
 from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer
@@ -112,8 +113,8 @@ class TestApplication(ApplicationContainer, AbstractApplication,
         super(TestApplication, self).__init__()
         self.objects = []
         self.faces = []
-        self.persons = []
-        self.new_persons = []
+        self.faces_new = []
+        self.faces_known = []
         self.hypotheses = []
 
     def on_object(self, objects):
@@ -122,11 +123,13 @@ class TestApplication(ApplicationContainer, AbstractApplication,
     def on_face(self, faces):
         self.faces.extend(faces)
 
-    def on_person(self, persons):
-        self.persons.extend(persons)
+    def on_face_new(self, faces):
+        # type: (List[Face]) -> None
+        self.faces_new.extend(faces)
 
-    def on_new_person(self, persons):
-        self.new_persons.extend(persons)
+    def on_face_known(self, faces):
+        # type: (List[Face]) -> None
+        self.faces_known.extend(faces)
 
     def on_transcript(self, hypotheses, audio):
         self.hypotheses.extend(hypotheses)
@@ -204,6 +207,49 @@ class ApplicationITest(unittest.TestCase):
 
         self.assertEqual(2, len(self.application.objects))
         self.assertListEqual(2*["test_object"], [obj.name for obj in self.application.objects])
+
+    def test_face_events(self):
+        self.application.start()
+
+        bounds = Bounds(0.0, 0.0, 1.0, 1.0)
+        image = AbstractImage(np.zeros((2, 2, 3)), bounds)
+
+        cam = self.application.backend.camera
+        cam.on_image(image)
+
+        util.await(lambda: len(self.application.faces) > 0, msg="faces")
+
+        self.assertEqual(1, len(self.application.faces))
+        self.assertEqual(config.HUMAN_UNKNOWN, self.application.faces[0].name)
+
+    def test_face_new_events(self):
+        self.application.start()
+
+        bounds = Bounds(0.0, 0.0, 1.0, 1.0)
+        image = AbstractImage(np.zeros((2, 2, 3)), bounds)
+
+        cam = self.application.backend.camera
+        cam.on_image(image)
+
+        util.await(lambda: len(self.application.faces_new) > 0, msg="faces")
+
+        self.assertEqual(1, len(self.application.faces_new))
+        self.assertEqual(config.HUMAN_UNKNOWN, self.application.faces_new[0].name)
+
+    def test_face_known_events(self):
+        self.application.start()
+
+        bounds = Bounds(0.0, 0.0, 1.0, 1.0)
+        image = AbstractImage(np.zeros((2, 2, 3)), bounds)
+
+        cam = self.application.backend.camera
+        cam.on_image(image)
+
+        try:
+            util.await(lambda: len(self.application.faces_known) > 0, max=5, msg="faces")
+            raise unittest.TestCase.failureException("Unexpected faces: " + str(self.application.faces_known))
+        except:
+            pass
 
 
 if __name__ == '__main__':
