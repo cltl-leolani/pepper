@@ -13,7 +13,8 @@ from pepper.framework.abstract.object_detection import ObjectDetectionComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.framework.abstract.face_detection import FaceRecognitionComponent
 from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.component import StatisticsComponent, ContextComponent, BrainComponent
+from pepper.framework.abstract.brain import BrainComponent
+from pepper.framework.component import StatisticsComponent, ContextComponent
 from pepper.framework.sensor.api import UtteranceHypothesis
 from pepper.knowledge import sentences, animations
 from pepper.language.generation.reply import reply_to_question
