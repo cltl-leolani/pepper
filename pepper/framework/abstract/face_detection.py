@@ -1,15 +1,9 @@
 from typing import List
 
+from pepper.framework.abstract._util import event_payload_handler
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.sensor.api import FaceDetector
 from pepper.framework.sensor.face import Face
-
-
-def event_payload_handler(handler):
-    def wrapped(self, event):
-        handler(self, event.payload)
-
-    return wrapped
 
 
 class FaceRecognitionComponent(AbstractComponent):

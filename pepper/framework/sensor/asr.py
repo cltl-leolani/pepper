@@ -11,7 +11,6 @@ from pepper.framework.config.api import ConfigurationManager
 
 logger = logging.getLogger(__name__)
 
-
 class UtteranceHypothesis(object):
     """
     Automatic Speech Recognition (ASR) Hypothesis
@@ -176,6 +175,8 @@ class AbstractASR(object):
     language: str
         Language Code <LC> & Region Code <RC> -> "LC-RC"
     """
+
+    TOPIC = "pepper.framework.sensor.api.asr.topic"
 
     MAX_ALTERNATIVES = 10
 

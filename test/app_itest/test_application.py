@@ -8,8 +8,9 @@ import numpy as np
 
 from pepper import CameraResolution, config
 from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.object_detection import ObjectDetectionComponent
 from pepper.framework.abstract.face_detection import FaceRecognitionComponent
+from pepper.framework.abstract.object_detection import ObjectDetectionComponent
+from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
 from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.abstract.camera import AbstractCamera, AbstractImage
 from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
@@ -20,14 +21,13 @@ from pepper.framework.backend.abstract.motion import AbstractMotion
 from pepper.framework.backend.abstract.tablet import AbstractTablet
 from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
 from pepper.framework.backend.container import BackendContainer
-from pepper.framework.component import SpeechRecognitionComponent
 from pepper.framework.config.local import LocalConfigurationContainer
 from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer
 from pepper.framework.event.memory import SynchronousEventBusContainer
 from pepper.framework.resource.threaded import ThreadedResourceContainer
 from pepper.framework.sensor.api import FaceDetector, ObjectDetector, AbstractTranslator, AbstractASR, Object, \
-    UtteranceHypothesis, SensorContainer, VAD
+    UtteranceHypothesis, SensorContainer, VAD, Voice
 from pepper.framework.sensor.container import DefaultSensorWorkerContainer
 from pepper.framework.util import Bounds
 from test import util
@@ -62,7 +62,7 @@ class TestSensorContainer(SensorContainer):
     @singleton
     def vad(self):
         mock_vad = mock.create_autospec(VAD)
-        mock_vad.voices.return_value = lambda _: []
+        mock_vad.on_audio.side_effect = lambda audio, callback: callback(Voice(np.zeros((80,1), dtype=np.int16)))
 
         return mock_vad
 
@@ -250,6 +250,18 @@ class ApplicationITest(unittest.TestCase):
             raise unittest.TestCase.failureException("Unexpected faces: " + str(self.application.faces_known))
         except:
             pass
+
+    def test_speech_events(self):
+        self.application.start()
+
+        mic = self.application.backend.microphone
+        audio_frame = np.random.rand(80).astype(np.int16)
+        mic.on_audio(audio_frame)
+
+        util.await(lambda: len(self.application.hypotheses) > 0, msg="mic event")
+
+        self.assertEqual(1, len(self.application.hypotheses))
+        self.assertEqual("Test one two", self.application.hypotheses[0].transcript)
 
 
 if __name__ == '__main__':

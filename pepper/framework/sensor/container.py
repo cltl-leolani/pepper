@@ -13,11 +13,13 @@ from .obj import ObjectDetectionClient
 from .vad import WebRtcVAD
 from .worker.face_detection import FaceDetectionWorker
 from .worker.object_detection import ObjectDetectionWorker
+from .worker.speech_recognition_asr import SpeechRecognitionASRWorker
+from .worker.speech_recognition_vad import SpeechRecognitionVADWorker
 
 logger = logging.getLogger(__name__)
 
 
-class DefaultSensorWorkerContainer(SensorWorkerContainer, EventBusContainer, ResourceContainer, ConfigurationContainer):
+class DefaultSensorWorkerContainer(SensorWorkerContainer, SensorContainer, EventBusContainer, ResourceContainer, ConfigurationContainer):
 
     __workers = Queue()
 
@@ -32,6 +34,14 @@ class DefaultSensorWorkerContainer(SensorWorkerContainer, EventBusContainer, Res
                                      self.event_bus, self.resource_manager, self.config_manager)
         DefaultSensorWorkerContainer.__workers.put(worker)
         worker.start()
+
+    def start_speech_recognition(self):
+        vad_worker = SpeechRecognitionVADWorker(self.vad, "VAD", self.event_bus, self.resource_manager)
+        asr_worker = SpeechRecognitionASRWorker(self.asr(), "ASR", self.event_bus, self.resource_manager)
+        DefaultSensorWorkerContainer.__workers.put(vad_worker)
+        DefaultSensorWorkerContainer.__workers.put(asr_worker)
+        vad_worker.start()
+        asr_worker.start()
 
     @property
     def sensor_workers(self):

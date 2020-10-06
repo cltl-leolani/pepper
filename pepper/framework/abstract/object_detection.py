@@ -1,8 +1,8 @@
 from typing import List
 
 from pepper import ObjectDetectionTarget
+from pepper.framework.abstract._util import event_payload_handler
 from pepper.framework.abstract.component import AbstractComponent
-from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.sensor.api import ObjectDetector
 from pepper.framework.sensor.obj import Object
 
@@ -31,8 +31,9 @@ class ObjectDetectionComponent(AbstractComponent):
         self.event_bus.unsubscribe(ObjectDetector.TOPIC, self._on_object_handler)
         super(ObjectDetectionComponent, self).stop()
 
-    def _on_object_handler(self, event):
-        self.on_object(event.payload)
+    @event_payload_handler
+    def _on_object_handler(self, objects):
+        self.on_object(objects)
 
     def on_object(self, objects):
         # type: (List[Object]) -> None

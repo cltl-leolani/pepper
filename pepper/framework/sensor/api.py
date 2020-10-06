@@ -6,11 +6,12 @@ from typing import Iterable
 from pepper.framework.di_container import DIContainer
 from pepper.framework.multiprocessing import TopicWorker
 from pepper.framework.util import Bounds
-
-
 # Include from submodules
+# noinspection PyUnresolvedReferences
 from .asr import AbstractASR, AbstractTranslator, UtteranceHypothesis
+# noinspection PyUnresolvedReferences
 from .location import Location
+# noinspection PyUnresolvedReferences
 from .obj import Object
 
 
@@ -20,17 +21,21 @@ class SensorContainer(DIContainer):
 
     @property
     def vad(self):
+        # type: () -> VAD
         raise ValueError("VAD not configured")
 
     # TODO use for all translators
     def translator(self, source_language, target_language):
+        # type: (str, str) -> AbstractTranslator
         raise ValueError("AbstractTranslator not configured")
 
     @property
     def face_detector(self):
+        # type: () -> FaceDetector
         raise ValueError("FaceDetector not configured")
 
     def object_detector(self, target):
+        # type: () -> ObjectDetector
         raise ValueError("ObjectDetector not configured")
 
 
@@ -47,6 +52,20 @@ class SensorWorkerContainer(DIContainer):
         """
         raise ValueError("ObjectDetectorWorker not configured")
 
+    def start_face_detector(self):
+        # type: () -> None
+        """
+        Start face detection worker.
+        """
+        raise ValueError("FaceDetectorWorker not configured")
+
+    def start_speech_recognition(self):
+        # type: () -> None
+        """
+        Start speech recognition worker.
+        """
+        raise ValueError("SpeecRecognitionWorkers not configured")
+
     @property
     def sensor_workers(self):
         # type: () -> Iterable[TopicWorker]
@@ -62,9 +81,9 @@ class SensorWorkerContainer(DIContainer):
 
 class FaceDetector(object):
 
-    TOPIC = "pepper.framework.component.face_detector.topic"
-    TOPIC_NEW = "pepper.framework.component.face_detector.topic.new"
-    TOPIC_KNOWN = "pepper.framework.component.face_detector.topic.known"
+    TOPIC = "pepper.framework.sensor.api.face_detector.topic"
+    TOPIC_NEW = "pepper.framework.sensor.api.face_detector.topic.new"
+    TOPIC_KNOWN = "pepper.framework.sensor.api.face_detector.topic.known"
 
     FEATURE_DIM = 128
 
@@ -88,7 +107,7 @@ class FaceDetector(object):
 
 class ObjectDetector(object):
 
-    TOPIC = "pepper.framework.component.object_detector.topic"
+    TOPIC = "pepper.framework.sensor.api.object_detector.topic"
 
     def classify(self, image):
         # type: (AbstractImage) -> List[Object]
@@ -111,32 +130,11 @@ class ObjectDetector(object):
 class Voice(object):
     """Voice Object (for Voice Activity Detection: VAD)"""
 
-    def __init__(self):
+    def __init__(self, frames=None):
         # type: () -> None
         self._queue = Queue()
-        self._frames = []
-
-    @property
-    def frames(self):
-        # type: () -> Iterable[np.ndarray]
-        """
-        Get Voice Frames (chunks of audio)
-
-        Yields
-        -------
-        frames: Iterable of np.ndarray
-        """
-
-        if self._frames:
-            for frame in self._frames:
-                yield frame
-        else:
-            while True:
-                frame = self._queue.get()
-                if frame is None:
-                    break
-                self._frames.append(frame)
-                yield frame
+        self._frames = frames if frames is not None else []
+        self._is_open = True
 
     @property
     def audio(self):
@@ -148,9 +146,7 @@ class Voice(object):
         -------
         audio: np.ndarray
         """
-
-        frames_ = [frame for frame in self.frames]
-        return np.concatenate(frames_)
+        return np.concatenate(self._frames)
 
     def add_frame(self, frame):
         # type: (np.ndarray) -> None
@@ -161,23 +157,27 @@ class Voice(object):
         ----------
         frame: np.ndarray
         """
+        if not self._is_open:
+            raise ValueError("Voice is already closed")
 
         self._queue.put(frame)
+        if frame is not None:
+            self._frames.append(frame)
+        else:
+            self._is_open = False
 
-    def __iter__(self):
-        # type: () -> Iterable[np.ndarray]
-        return self.frames
+    @property
+    def audio_stream(self):
+        if self._is_open:
+            return iter(self._queue.get, None)
+        else:
+            return iter(self._frames, None)
 
 
 class VAD(object):
-    @property
-    def voices(self):
-        # type: () -> Iterable[Voice]
-        """
-        Get Voices from Microphone Stream
 
-        Yields
-        -------
-        voices: Iterable[Voice]
-        """
+    TOPIC = "pepper.framework.sensor.api.vad.topic"
+
+    def on_audio(self, frames, callback):
+        # type: (Iterable[np.array]) -> None
         raise NotImplementedError()

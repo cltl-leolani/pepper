@@ -6,8 +6,8 @@ from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.abstract.object_detection import ObjectDetectionComponent
 from pepper.framework.abstract.face_detection import FaceRecognitionComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
-from pepper.framework.component import StatisticsComponent, ContextComponent, \
-    SpeechRecognitionComponent
+from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
+from pepper.framework.component import StatisticsComponent, ContextComponent
 from pepper.knowledge import sentences
 from pepper.responder import *
 

@@ -15,9 +15,6 @@ Some Components are more complex and require other components to work. They will
 - :class:`~pepper.framework.component.scene.SceneComponent` creates a 3D scatterplot of the visible space.
 - :class:`~pepper.framework.component.display.display.DisplayComponent` shows the live camera feedback and the 3D view of the current space, including the objects that are observed.
 """
-
-from .speech_recognition import SpeechRecognitionComponent
-
 from .brain import BrainComponent
 
 from .context import ContextComponent

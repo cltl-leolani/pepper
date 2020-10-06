@@ -8,7 +8,8 @@ from typing import Optional
 
 from pepper.framework.abstract.component import AbstractComponent
 from pepper.framework.abstract.display import DisplayComponent
-from pepper.framework.component import ContextComponent, SpeechRecognitionComponent
+from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
+from pepper.framework.component import ContextComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 
 
@@ -27,6 +28,7 @@ class SubtitlesComponent(AbstractComponent):
 
         self._subtitles_timeout_timer = None  # type: Optional[Timer]
 
+        # TODO
         self.require(SubtitlesComponent, DisplayComponent)
         self.require(SubtitlesComponent, TextToSpeechComponent)
         self.require(SubtitlesComponent, SpeechRecognitionComponent)

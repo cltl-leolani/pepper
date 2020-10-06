@@ -13,7 +13,7 @@ from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeec
 from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
-from pepper.framework.component import SpeechRecognitionComponent
+from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.framework.config.api import ConfigurationContainer
 from pepper.framework.config.local import LocalConfigurationContainer
@@ -23,7 +23,8 @@ from pepper.framework.event.memory import SynchronousEventBusContainer
 from pepper.framework.resource.api import ResourceContainer
 from pepper.framework.resource.threaded import ThreadedResourceContainer
 from pepper.framework.sensor.api import AbstractTranslator, AbstractASR, UtteranceHypothesis, SensorContainer
-from pepper.framework.sensor.vad import WebRtcVAD
+from pepper.framework.sensor.container import DefaultSensorWorkerContainer
+from pepper.framework.sensor.vad import WebRtcVAD, AbstractVAD
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler(stream=sys.stdout))
@@ -72,20 +73,20 @@ def setupTestComponents():
             self.microphone.stop()
 
 
-    class TestVAD(WebRtcVAD):
-        def __init__(self, event_bus, resource_manager, configuration_manager):
-            super(TestVAD, self).__init__(event_bus, resource_manager, configuration_manager)
+    class TestVAD(AbstractVAD):
+        def __init__(self, resource_manager, configuration_manager):
+            super(TestVAD, self).__init__(resource_manager, configuration_manager)
             self.speech_flag = ThreadsafeBoolean()
 
         def _is_speech(self, frame):
             return self.speech_flag.val
 
 
-    class TestSensorContainer(BackendContainer, SensorContainer, EventBusContainer, ConfigurationContainer):
+    class TestSensorContainer(BackendContainer, SensorContainer, ConfigurationContainer):
         @property
         @singleton
         def vad(self):
-            return TestVAD(self.event_bus, self.resource_manager, self.config_manager)
+            return TestVAD(self.resource_manager, self.config_manager)
 
         def asr(self, language="nl"):
             mock_asr = mock.create_autospec(AbstractASR)
@@ -115,17 +116,11 @@ def setupTestComponents():
         pass
 
 
-    class TestApplication(ApplicationContainer, AbstractApplication,
+    class TestApplication(ApplicationContainer, AbstractApplication, DefaultSensorWorkerContainer,
                           SpeechRecognitionComponent, TextToSpeechComponent):
         def __init__(self):
             super(TestApplication, self).__init__()
             self.hypotheses = []
-
-        def start(self):
-            self.backend.start()
-
-        def stop(self):
-            self.backend.stop()
 
         def on_transcript(self, hypotheses, audio):
             self.hypotheses.extend(hypotheses)

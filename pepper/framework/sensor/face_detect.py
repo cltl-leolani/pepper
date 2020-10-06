@@ -36,7 +36,6 @@ class OpenFace(FaceDetector):
     HOST, PORT = '127.0.0.1', 8989
 
     def __init__(self):
-
         self._log = logger.getChild(self.__class__.__name__)
 
         if not self._openface_running():
