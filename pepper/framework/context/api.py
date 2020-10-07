@@ -3,22 +3,41 @@ Context
 =======
 
 """
-from pepper.framework.backend.abstract.camera import AbstractImage
-from pepper.language import Chat
-from pepper.framework.sensor.api import Location, Object
-from pepper.framework.sensor.face import Face
-
-from pepper.knowledge.objects import OBJECT_INFO
-
-import numpy as np
-
-from sklearn.cluster import DBSCAN
-
-from random import getrandbits
 from datetime import datetime
+from random import getrandbits
 from time import time
 
+import numpy as np
+from sklearn.cluster import DBSCAN
 from typing import List, Iterable, Dict, Tuple, Optional
+
+from pepper.framework.backend.abstract.camera import AbstractImage
+from pepper.framework.di_container import DIContainer, singleton
+from pepper.framework.sensor.api import Location, Object
+from pepper.framework.sensor.face import Face
+from pepper.knowledge.objects import OBJECT_INFO
+from pepper.language import Chat
+
+
+TOPIC_ON_CHAT_ENTER = "pepper.framework.context.topic.chat_enter"
+TOPIC_ON_CHAT_TURN = "pepper.framework.context.topic.chat_turn"
+TOPIC_ON_CHAT_EXIT = "pepper.framework.context.topic.chat_exit"
+
+
+class ContextContainer(DIContainer):
+    @property
+    @singleton
+    def context(self):
+        # type: () -> Context
+        raise NotImplementedError("Context is not configured")
+
+
+class ContextWorkerContainer(DIContainer):
+    def start_context_workers(self):
+        raise NotImplementedError("Context workers are not configured")
+
+    def start_exploration_workers(self):
+        raise NotImplementedError("Exploration worker is not configured")
 
 
 class Context(object):
@@ -41,9 +60,11 @@ class Context(object):
         self._friends = friends
 
         self._chats = []
+        self._chat_start = None
         self._chatting = False
 
         self._people = {}
+        self._current_people = []
         self._objects = Observations()
         self._intention = None
 
@@ -159,6 +180,24 @@ class Context(object):
         """
         return self._friends
 
+    def current_people(self, in_chat=False, timeout=OBSERVATION_TIMEOUT):
+        # type: () -> List[Face]
+        """
+        People seen currently in the Context
+
+        Returns
+        -------
+        people: list of Face
+            List of all People seen currently in the Context
+        """
+        if in_chat and not self.chatting:
+            return []
+
+        timestamp = self.datetime
+
+        return [person for person, t in self._people.values()
+                      if timestamp - t <= timeout and (not in_chat or t >= self._chat_start)]
+
     @property
     def all_people(self):
         # type: () -> List[Face]
@@ -234,12 +273,14 @@ class Context(object):
         speaker: str
             Name of Speaker
         """
+        self._chat_start = self.datetime
         self._chatting = True
         self._chats.append(Chat(speaker, self))
 
     def stop_chat(self):
         # type: () -> None
         """Stop Chat"""
+        self._chat_start = None
         self._chatting = False
 
 

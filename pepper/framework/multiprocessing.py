@@ -4,7 +4,7 @@ from threading import Thread
 from time import sleep
 
 from enum import Enum
-from typing import Iterable
+from typing import Iterable, Optional
 
 from pepper.framework.event.api import EventBus, EventBusContainer, Event
 from pepper.framework.resource.api import ResourceManager, ResourceContainer
@@ -39,16 +39,17 @@ class TopicWorker(Thread):
     Process events on a topic from the event bus.
     """
 
-    def __init__(self, topic, event_bus, interval=0, name=None,
+    def __init__(self, topics, event_bus, interval=0, scheduled=False, name=None,
                  buffer_size=1, rejection_strategy=RejectionStrategy.OVERWRITE,
                  resource_manager=None, requires=(), provides=()):
+        # type: (str, EventBus, float, bool, str, int, RejectionStrategy, ResourceManager, Iterable[str], Iterable[str]) -> None
         """
-
         Parameters
         ----------
         topic : str
         event_bus : EventBus
         interval : float
+        scheduled : bool
         name : str
         buffer_size : int
         rejection_strategy : RejectionStrategy
@@ -56,11 +57,11 @@ class TopicWorker(Thread):
         requires : Iterable[str]
         provides : Iterable[str]
         """
-        # type: (str, EventBus, float, str, int, RejectionStrategy, ResourceManager, Iterable[str], Iterable[str]) -> None
         super(TopicWorker, self).__init__(name=name if name else self.__class__.__name__)
         self._event_bus = event_bus
-        self._topic = topic
+        self._topics = topics if not isinstance(topics, str) else (topics,)
         self._interval = interval
+        self._scheduled = scheduled
         self._buffer = Queue(maxsize=buffer_size)
         self._strategy = rejection_strategy
         self._resource_manager = resource_manager
@@ -76,9 +77,13 @@ class TopicWorker(Thread):
         while not self._running:
             sleep(self._interval)
 
-        self._event_bus.subscribe(self._topic, self.__accept_event)
+        for topic in self._topics:
+            self._event_bus.subscribe(topic, self.__accept_event)
 
     def stop(self):
+        for topic in self._topics:
+            self._event_bus.unsubscribe(topic, self.__accept_event)
+
         self._running = False
         logger.info("Stopping topic worker %s", self.name)
 
@@ -94,13 +99,11 @@ class TopicWorker(Thread):
         logger.info("Stopped topic worker %s", self.name)
 
     def __process_event(self):
-        if self._buffer.empty():
-            return
-
         try:
             self.process(self._buffer.get(block=False))
         except Empty:
-            pass
+            if self._scheduled:
+                self.process(None)
         except:
             logger.exception("Error during thread execution (%s)", self.name)
 
@@ -136,9 +139,10 @@ class TopicWorker(Thread):
                     pass
 
     def process(self, event):
-        # type: (Event) -> None
+        # type: (Optional[Event]) -> None
         pass
 
     @property
     def event_bus(self):
+        # type: () -> EventBus
         return self._event_bus
