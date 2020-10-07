@@ -9,7 +9,7 @@ class ContextComponent(AbstractComponent):
         self._log.info("Initializing ContextComponent")
 
     def start(self):
-        self.start_context_workers()
+        self.start_context_worker()
 
         super(ContextComponent, self).start()
 

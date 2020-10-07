@@ -4,7 +4,8 @@ import logging.config
 import os
 
 from pepper.brain.long_term_memory import BrainContainer, LongTermMemory
-from pepper.framework.context import ContextContainer, Context
+from pepper.framework.context.api import ContextWorkerContainer
+from pepper.framework.context.worker.container import DefaultContextContainer, DefaultContextWorkerContainer
 from pepper.framework.di_container import singleton
 
 logging.config.fileConfig('config/logging.config')
@@ -35,25 +36,13 @@ else:
 
 class ApplicationContainer(backend_container, DefaultSensorContainer, SynchronousEventBusContainer,
                            ThreadedResourceContainer, LocalConfigurationContainer,
-                           ContextContainer, BrainContainer):
+                           DefaultContextWorkerContainer, DefaultContextContainer, BrainContainer):
 
     logger.info("Initialized ApplicationContainer")
 
     @property
     @singleton
-    def context(self):
-        configuration = self.config_manager.get_config("pepper.framework.component.context")
-        name = configuration.get("name")
-        friends_dir = configuration.get("friends_dir")
-
-        # Initialize the Context for this Application
-        friends = [os.path.splitext(path)[0] for path in os.listdir(friends_dir) if path.endswith(".bin")]
-
-        return Context(name, friends)
-
-    @property
-    @singleton
-    def context(self):
+    def brain(self):
         config = self.config_manager.get_config("pepper.framework.component.brain")
         url = config.get("url")
         log_dir = config.get("log_dir")

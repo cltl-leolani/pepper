@@ -33,7 +33,7 @@ class ContextContainer(DIContainer):
 
 
 class ContextWorkerContainer(DIContainer):
-    def start_context_workers(self):
+    def start_context_worker(self):
         raise NotImplementedError("Context workers are not configured")
 
     def start_exploration_workers(self):

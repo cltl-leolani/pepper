@@ -6,10 +6,10 @@ class ExplorationComponent(AbstractComponent):
         # type: () -> None
         super(ExplorationComponent, self).__init__()
 
-        self._log.info("Initializing ContextComponent")
+        self._log.info("Initializing ExplorationComponent")
 
     def start(self):
-        self.start_exploration_workers()
+        self.start_exploration_worker()
 
         super(ExplorationComponent, self).start()
 
