@@ -3,6 +3,7 @@ import logging
 import logging.config
 import os
 
+from pepper.brain.long_term_memory import BrainContainer, LongTermMemory
 from pepper.framework.context import ContextContainer, Context
 from pepper.framework.di_container import singleton
 
@@ -34,7 +35,7 @@ else:
 
 class ApplicationContainer(backend_container, DefaultSensorContainer, SynchronousEventBusContainer,
                            ThreadedResourceContainer, LocalConfigurationContainer,
-                           ContextContainer):
+                           ContextContainer, BrainContainer):
 
     logger.info("Initialized ApplicationContainer")
 
@@ -50,3 +51,11 @@ class ApplicationContainer(backend_container, DefaultSensorContainer, Synchronou
 
         return Context(name, friends)
 
+    @property
+    @singleton
+    def context(self):
+        config = self.config_manager.get_config("pepper.framework.component.brain")
+        url = config.get("url")
+        log_dir = config.get("log_dir")
+
+        return LongTermMemory(url, log_dir)
