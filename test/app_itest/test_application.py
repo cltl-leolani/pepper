@@ -34,7 +34,7 @@ from test import util
 
 logger = logging.getLogger("pepper")
 logger.addHandler(logging.StreamHandler(stream=sys.stdout))
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.ERROR)
 
 TEST_IMG = np.zeros((128,))
 TEST_BOUNDS = Bounds(0.0, 0.0, 1.0, 1.0)

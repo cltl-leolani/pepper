@@ -4,7 +4,8 @@ from pepper.framework.abstract.object_detection import ObjectDetectionComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.framework.abstract.face_detection import FaceRecognitionComponent
 from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.component import StatisticsComponent, DisplayComponent, SceneComponent, ContextComponent
+from pepper.framework.abstract.context import ContextComponent
+from pepper.framework.component import StatisticsComponent, DisplayComponent, SceneComponent
 from pepper.knowledge import animations
 
 """

@@ -40,8 +40,6 @@ class AbstractApplication(AbstractComponent):
     def stop(self):
         super(AbstractApplication, self).stop()
         self.backend.stop()
-        for worker in self.sensor_workers:
-            worker.stop()
 
     @property
     def log(self):

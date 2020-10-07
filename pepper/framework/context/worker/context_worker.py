@@ -4,23 +4,20 @@ import numpy as np
 from typing import List
 
 from pepper import config
-from pepper.framework.backend.abstract.backend import AbstractBackend
-from pepper.framework.context.api import TOPIC_ON_CHAT_ENTER, TOPIC_ON_CHAT_EXIT
-from pepper.framework.event.api import Event
+from pepper.framework.backend.abstract.text_to_speech import TOPIC as TTS_TOPIC
+from pepper.framework.config.api import ConfigurationManager
+from pepper.framework.context.api import TOPIC_ON_CHAT_ENTER, TOPIC_ON_CHAT_EXIT, TOPIC_ON_CHAT_TURN, Context
+from pepper.framework.event.api import Event, EventBus
 from pepper.framework.multiprocessing import TopicWorker, RejectionStrategy
-from pepper.framework.sensor.api import Object, ObjectDetector
+from pepper.framework.resource.api import ResourceManager
+from pepper.framework.sensor.api import Object, ObjectDetector, FaceDetector
+from pepper.framework.sensor.asr import AbstractASR, UtteranceHypothesis
 from pepper.framework.sensor.face import Face
 
+TOPICS = [ObjectDetector.TOPIC, FaceDetector.TOPIC, AbstractASR.TOPIC, TTS_TOPIC]
 
-class ContextObjectWorker(TopicWorker):
-    """
-    Exposes Context to Applications and contains logic to determine whether conversation should start/end.
 
-    Parameters
-    ----------
-    backend: AbstractBackend
-        Application Backend
-    """
+class ContextWorker(TopicWorker):
     # Minimum Distance of Person to Enter/Exit Conversation
     PERSON_AREA_ENTER = 0.25
     PERSON_AREA_EXIT = 0.2
@@ -29,36 +26,35 @@ class ContextObjectWorker(TopicWorker):
     PERSON_DIFF_ENTER = 1.5
     PERSON_DIFF_EXIT = 1.1
 
-    # TODO: Should this be a pepper.config variable? YES!
-    # Number of seconds of inactivity before conversation times out
-    CONVERSATION_TIMEOUT = 30
-
-    def __init__(self, context, name, event_bus, resource_manager):
-        # type: (Context, str, EventBus, ResourceManager) -> None
-        super(ContextObjectWorker, self).__init__(ObjectDetector.TOPIC, event_bus, interval=0, name=name,
-                                                 buffer_size=16, rejection_strategy=RejectionStrategy.DROP,
-                                                 resource_manager=resource_manager,
-                                                 requires=[ObjectDetector.TOPIC],
-                                                 provides=[TOPIC_ON_CHAT_ENTER, TOPIC_ON_CHAT_EXIT])
+    def __init__(self, context, name, event_bus, resource_manager, config_manager):
+        # type: (Context, str, EventBus, ResourceManager, ConfigurationManager) -> None
+        super(ContextWorker, self).__init__(TOPICS, event_bus, interval=0, scheduled=1, name=name,
+                                            buffer_size=32, rejection_strategy=RejectionStrategy.DROP,
+                                            resource_manager=resource_manager, requires=TOPICS,
+                                            provides=[TOPIC_ON_CHAT_ENTER, TOPIC_ON_CHAT_TURN, TOPIC_ON_CHAT_EXIT])
         self.context = context
-        self._chat_lock = resource_manager.get_write_lock(RESOURCE_CHAT)
 
+        configuration = config_manager.get_config("pepper.framework.component.context")
+        self._conversation_timeout = configuration.get_float("conversation_timeout")
         self._conversation_time = time()
 
+        self._people_info = []
+
     def process(self, event):
-        # type: (Event) -> None
-        """
-        Parameters
-        ----------
-        event: Event
-        """
-        objects = event.payload
+        if not event:
+            self.process_scheduled()
+        elif ObjectDetector.TOPIC == event.metadata.topic:
+            self.process_object(event.payload)
+        elif FaceDetector.TOPIC == event.metadata.topic:
+            self.process_face(event.payload)
+        elif AbstractASR.TOPIC == event.metadata.topic:
+            self.process_transcript(event.payload['hypotheses'])
+        elif TTS_TOPIC == event.metadata.topic:
+            self.process_utterance(event.payload['text'])
 
-        self.context.add_objects(objects)
-        people_info = filter(lambda obj: obj.name == "person", objects)
-
+    def process_scheduled(self):
         # Get People within Conversation Bounds
-        closest_people = self.get_closest_people(people_info)
+        closest_people = self.get_closest_people()
         current_faces = self.context.current_people(timeout=5)
 
         if not self.context.chatting:
@@ -84,7 +80,7 @@ class ContextObjectWorker(TopicWorker):
                     self._conversation_time = time()
 
                 # Else, when Group Conversation times out
-                elif time() - self._conversation_time >= self.CONVERSATION_TIMEOUT:
+                elif time() - self._conversation_time >= self._conversation_timeout:
 
                     # If a single Person enters conversation at this point -> Start conversation with them
                     if len(closest_people) == 1:
@@ -112,7 +108,7 @@ class ContextObjectWorker(TopicWorker):
                             self.enter_chat(closest_face.name)
 
                 # Else, when conversation times out with specific Person
-                elif time() - self._conversation_time >= self.CONVERSATION_TIMEOUT:
+                elif time() - self._conversation_time >= self._conversation_timeout:
 
                     # If another Person enters conversation at this point -> Start Conversation with them
                     if len(closest_people) == 1:
@@ -129,6 +125,33 @@ class ContextObjectWorker(TopicWorker):
                     else:
                         self.exit_chat()
 
+    def enter_chat(self, name):
+        self.event_bus.publish(TOPIC_ON_CHAT_ENTER, Event(name, None))
+        self._conversation_time = time()
+
+    def exit_chat(self):
+        self.event_bus.publish(TOPIC_ON_CHAT_EXIT, Event(None, None))
+
+    def process_object(self, objects):
+        # type: (List[Object]) -> None
+        self.context.add_objects(objects)
+        self._people_info = [obj for obj in objects if obj.name == "person"]
+
+    def process_face(self, people):
+        # type: (List[Face]) -> None
+        self.context.add_people(people)
+
+    def process_transcript(self, hypotheses):
+        # type: (List[UtteranceHypothesis]) -> None
+        if self.context.chatting and hypotheses:
+            utterance = self.context.chat.add_utterance(hypotheses, False)
+
+            self.event_bus.publish(TOPIC_ON_CHAT_TURN, Event(utterance, None))
+
+    def process_utterance(self, text):
+        # type: (str) -> None
+        if self.context.chatting:
+            self.context.chat.add_utterance([UtteranceHypothesis(text, 1.0)], me=True)
 
     def get_face_of_person(self, person, faces):
         # type: (Object, List[Face]) -> Face
@@ -152,20 +175,16 @@ class ContextObjectWorker(TopicWorker):
             if face.image_bounds.is_subset_of(person.image_bounds):
                 return face
 
-    def get_closest_people(self, people):
-        # type: (List[Face]) -> List[Face]
+    def get_closest_people(self):
+        # type: () -> List[Face]
         """
         Get Person or People closest to Robot (as they may be subject to conversation)
-
-        Parameters
-        ----------
-        people: List[Face]
-            People, as represented by their face (id)
 
         Returns
         -------
         closest_people: List[Face]
         """
+        people = self._people_info
 
         # To be considered 'closest' people need to make up a predefined area of the camera view
         # This area is defined differently when in conversation then when not in conversation,
@@ -201,28 +220,3 @@ class ContextObjectWorker(TopicWorker):
         # Else (No people are in range)
         else:
             return []
-
-    def enter_chat(self, name):
-        self.event_bus.publish(TOPIC_ON_CHAT_ENTER, Event(None, None))
-        self._conversation_time = time()
-
-    def exit_chat(self):
-        self.event_bus.publish(TOPIC_ON_CHAT_EXIT, Event(None, None))
-
-
-
-# class ContextObjectWorker(TopicWorker):
-#     def __init__(self, context, name, event_bus, resource_manager):
-#         # type: (Context, str, EventBus, ResourceManager) -> None
-#         super(ContextObjectWorker, self).__init__(ObjectDetector.TOPIC, event_bus, interval=0, name=name,
-#                                                   buffer_size=16, rejection_strategy=RejectionStrategy.BLOCK,
-#                                                   resource_manager=resource_manager,
-#                                                   requires=[ObjectDetector.TOPIC], provides=[])
-#         self.context = context
-#
-#     def process(self, event):
-#         # type: (Event) -> None
-#         objects = event.payload
-#
-#         self.context.add_objects(objects)
-#         self._people_info = [obj for obj in objects if obj.name == "person"]

@@ -66,17 +66,12 @@ class SensorWorkerContainer(DIContainer):
         """
         raise ValueError("SpeecRecognitionWorkers not configured")
 
-    @property
-    def sensor_workers(self):
-        # type: () -> Iterable[TopicWorker]
+    def stop(self):
+        # type: () -> None
         """
-        Workers started in the application.
-
-        Returns
-        -------
-        Iterable[TopicWorker]
+        Stop workers started in the application.
         """
-        return ()
+        pass
 
 
 class FaceDetector(object):

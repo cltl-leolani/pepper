@@ -17,7 +17,9 @@ from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.framework.abstract.face_detection import FaceRecognitionComponent
 from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
 from pepper.framework.abstract.brain import BrainComponent
-from pepper.framework.component import StatisticsComponent, ExploreComponent, ContextComponent
+from pepper.framework.abstract.context import ContextComponent
+from pepper.framework.abstract.exploration import ExplorationComponent
+from pepper.framework.component import StatisticsComponent
 # TODO move constants from Openface into a configuration
 from pepper.framework.sensor.api import FaceDetector
 from pepper.framework.sensor.face import Face, FaceClassifier
@@ -41,7 +43,7 @@ class ResponderApp(ApplicationContainer,
                    # SubtitlesComponent,  # TODO: (un)comment to turn tablet subtitles On/Off
                    # DisplayComponent, SceneComponent,  # TODO: (un)comment to turn Web View On/Off
                    # WikipediaResponder, # WolframResponder,   # TODO: (un)comment to turn factual responder On/Off
-                   ExploreComponent, # TODO: (un)comment to turn exploration On/Off
+                   ExplorationComponent, # TODO: (un)comment to turn exploration On/Off
                    ContextComponent, BrainComponent,
                    ObjectDetectionComponent, FaceRecognitionComponent,
                    SpeechRecognitionComponent, TextToSpeechComponent,
@@ -225,7 +227,9 @@ class MeetIntention(AbstractIntention, ResponderApp):
         return False
 
     def _save(self):
-        name, features = self._current_name, np.concatenate(self.face_vectors).reshape(-1, FaceDetector.FEATURE_DIM)
+        # TODO get face_vectors from context or somewhere else
+        face_vectors = self.context.current_people(in_chat=True, timeout=10)
+        name, features = self._current_name, np.concatenate(face_vectors).reshape(-1, FaceDetector.FEATURE_DIM)
 
         if name != FaceClassifier.NEW:  # Prevent Overwrite of NEW.bin
             self.face_classifier.add(name, features)

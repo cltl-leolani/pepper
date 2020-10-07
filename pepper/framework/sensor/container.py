@@ -43,9 +43,11 @@ class DefaultSensorWorkerContainer(SensorWorkerContainer, SensorContainer, Event
         vad_worker.start()
         asr_worker.start()
 
-    @property
-    def sensor_workers(self):
-        return tuple(DefaultSensorWorkerContainer.__workers.queue)
+    def stop(self):
+        for worker in self.__workers.queue:
+            worker.stop()
+        self.__workers.queue.clear()
+        super(DefaultSensorWorkerContainer, self).stop()
 
 
 class DefaultSensorContainer(BackendContainer, SensorContainer, EventBusContainer, ResourceContainer, ConfigurationContainer):

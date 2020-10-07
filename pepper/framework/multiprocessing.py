@@ -4,10 +4,10 @@ from threading import Thread
 from time import sleep
 
 from enum import Enum
-from typing import Iterable, Optional
+from typing import Iterable, Optional, Union
 
-from pepper.framework.event.api import EventBus, EventBusContainer, Event
-from pepper.framework.resource.api import ResourceManager, ResourceContainer
+from pepper.framework.event.api import EventBus, Event
+from pepper.framework.resource.api import ResourceManager
 
 logger = logging.getLogger(__name__)
 
@@ -21,32 +21,19 @@ class RejectionStrategy(Enum):
     EXCEPTION = 2
 
 
-class TopicWorkerContainer(EventBusContainer, ResourceContainer):
-    def create_topic_worker(self, topic, callable_,
-                 interval=0, name=None,
-                 buffer_size=1, rejection_strategy=RejectionStrategy.OVERWRITE,
-                 requires=(), provides=()):
-        resource_manager = self.resource_manager if requires or provides else None
-        return TopicWorker(topic, self.event_bus, interval=interval, name=name,
-                           buffer_size=buffer_size, rejection_strategy=rejection_strategy,
-                           resource_manager=resource_manager,
-                           requires=requires, provides=provides)
-
-
-
 class TopicWorker(Thread):
     """
     Process events on a topic from the event bus.
     """
 
-    def __init__(self, topics, event_bus, interval=0, scheduled=False, name=None,
+    def __init__(self, topics, event_bus, interval=0, scheduled=None, name=None,
                  buffer_size=1, rejection_strategy=RejectionStrategy.OVERWRITE,
                  resource_manager=None, requires=(), provides=()):
-        # type: (str, EventBus, float, bool, str, int, RejectionStrategy, ResourceManager, Iterable[str], Iterable[str]) -> None
+        # type: (Union[str, Iterable[str]], EventBus, float, float, str, int, RejectionStrategy, ResourceManager, Iterable[str], Iterable[str]) -> None
         """
         Parameters
         ----------
-        topic : str
+        topics : str
         event_bus : EventBus
         interval : float
         scheduled : bool
@@ -59,7 +46,7 @@ class TopicWorker(Thread):
         """
         super(TopicWorker, self).__init__(name=name if name else self.__class__.__name__)
         self._event_bus = event_bus
-        self._topics = topics if not isinstance(topics, str) else (topics,)
+        self._topics = topics if not isinstance(topics, basestring) else (topics,)
         self._interval = interval
         self._scheduled = scheduled
         self._buffer = Queue(maxsize=buffer_size)
@@ -100,7 +87,9 @@ class TopicWorker(Thread):
 
     def __process_event(self):
         try:
-            self.process(self._buffer.get(block=False))
+            block = self._interval == 0
+            timeout = self._scheduled if self._scheduled else 1  # Never block forever
+            self.process(self._buffer.get(block=block, timeout=timeout))
         except Empty:
             if self._scheduled:
                 self.process(None)
