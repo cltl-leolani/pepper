@@ -6,15 +6,13 @@ from threading import Timer
 
 from typing import Optional
 
+from pepper.framework.backend.abstract.text_to_speech import TOPIC as TTS_TOPIC
 from pepper.framework.abstract.component import AbstractComponent
-from pepper.framework.abstract.display import DisplayComponent
-from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
 from pepper.framework.component import ContextComponent
-from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
+from pepper.framework.sensor.asr import AbstractASR
 
 
 class SubtitlesComponent(AbstractComponent):
-
     def __init__(self):
         # type: () -> None
         super(SubtitlesComponent, self).__init__()
@@ -28,17 +26,38 @@ class SubtitlesComponent(AbstractComponent):
 
         self._subtitles_timeout_timer = None  # type: Optional[Timer]
 
-        # TODO
-        self.require(SubtitlesComponent, DisplayComponent)
-        self.require(SubtitlesComponent, TextToSpeechComponent)
-        self.require(SubtitlesComponent, SpeechRecognitionComponent)
+    def start(self):
+        self.event_bus.subscribe(TTS_TOPIC, self.__say_handler)
+        self.event_bus.subscribe(AbstractASR.TOPIC, self.__transcript_handler)
 
-    def say(self, text, animation=None, block=False):
+        super(SubtitlesComponent, self).start()
+
+    def stop(self):
+        self.event_bus.unsubscribe(TTS_TOPIC, self.__say_handler)
+        self.event_bus.unsubscribe(AbstractASR.TOPIC, self.__transcript_handler)
+        super(SubtitlesComponent, self).stop()
+
+    def __say_handler(self, event):
+        payload = event.payload
+        text = payload['text']
+        animation = payload['animation']
+        block = payload['block']
+
+        self._say(text, animation, block)
+
+    def __transcript_handler(self, event):
+        payload = event.payload
+        hypotheses = payload['hypotheses']
+        audio = payload['audio']
+
+        self._on_transcript(hypotheses, audio)
+
+    def __say(self, text, animation=None, block=False):
         # type: (str, str, bool) -> None
         self._show_subtitles('{}:/"{}"'.format(self._name, text))
         super(SubtitlesComponent, self).say(text, animation, block)
 
-    def on_transcript(self, hypotheses, audio):
+    def __on_transcript(self, hypotheses, audio):
         speaker = "Human"
 
         try:
@@ -50,7 +69,7 @@ class SubtitlesComponent(AbstractComponent):
         self._show_subtitles('{}:/"{}"'.format(speaker, hypotheses[0].transcript))
         super(SubtitlesComponent, self).on_transcript(hypotheses, audio)
 
-    def _show_subtitles(self, text):
+    def __show_subtitles(self, text):
         # Stop Timeout Timer if running
         if self._subtitles_timeout_timer: self._subtitles_timeout_timer.cancel()
 
