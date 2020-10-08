@@ -78,7 +78,10 @@ class SensorWorkerContainer(DIContainer):
         """
         Stop workers started in the application.
         """
-        pass
+        try:
+            super(SensorWorkerContainer, self).stop()
+        except AttributeError:
+            pass
 
 
 class FaceDetector(object):

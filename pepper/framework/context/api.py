@@ -40,7 +40,11 @@ class ContextWorkerContainer(DIContainer):
         raise NotImplementedError("Exploration worker is not configured")
 
     def stop(self):
-        pass
+        try:
+            super(ContextWorkerContainer, self).stop()
+        except AttributeError:
+            pass
+
 
 class Context(object):
     """

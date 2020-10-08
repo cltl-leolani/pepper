@@ -38,3 +38,9 @@ class DefaultContextWorkerContainer(ContextWorkerContainer, ContextContainer,
         worker = ExplorationWorker(self.context, "Exploration", self.event_bus)
         DefaultContextWorkerContainer.__workers.put(worker)
         worker.start()
+
+    def stop(self):
+        for worker in self.__workers.queue:
+            worker.stop()
+        self.__workers.queue.clear()
+        super(DefaultContextWorkerContainer, self).stop()

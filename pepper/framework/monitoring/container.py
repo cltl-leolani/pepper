@@ -11,7 +11,10 @@ class MonitoringContainer(DIContainer):
         raise NotImplementedError("Monitoring worker not configured")
 
     def stop(self):
-        pass
+        try:
+            super(MonitoringContainer, self).stop()
+        except AttributeError:
+            pass
 
 
 class DefaultMonitoringContainer(MonitoringContainer, ContextContainer):
@@ -33,3 +36,4 @@ class DefaultMonitoringContainer(MonitoringContainer, ContextContainer):
     def stop(self):
         DefaultMonitoringContainer.__server.stop()
         DefaultMonitoringContainer.__worker.stop()
+        super(DefaultMonitoringContainer, self).stop()
