@@ -30,8 +30,9 @@ else:
     raise ValueError("Unknown backend configured: " + str(_application_backend))
 
 
-class ApplicationContainer(backend_container, DefaultContextWorkerContainer, DefaultContextContainer,
+class ApplicationContainer(backend_container,
                            DefaultSensorWorkerContainer, DefaultSensorContainer,
+                           DefaultContextWorkerContainer, DefaultContextContainer,
                            SynchronousEventBusContainer, ThreadedResourceContainer, LocalConfigurationContainer,
                            BrainContainer):
 

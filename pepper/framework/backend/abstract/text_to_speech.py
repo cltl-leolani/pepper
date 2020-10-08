@@ -27,6 +27,8 @@ class AbstractTextToSpeech(object):
 
     def __init__(self, language, event_bus, resource_manager):
         # type: (str, EventBus, ResourceManager) -> None
+        self._log = logger.getChild(self.__class__.__name__)
+
         self._language = language
         self._event_bus = event_bus
         self._resource_manager = resource_manager
@@ -41,15 +43,11 @@ class AbstractTextToSpeech(object):
         self._event_bus.subscribe(TOPIC, self._say)
         self._resource_manager.provide_resource(TOPIC)
 
-        self._log = logger.getChild(self.__class__.__name__)
-
     def stop(self):
-        self._scheduler.stop()
-
         self._event_bus.unsubscribe(TOPIC, self._say)
         self._resource_manager.retract_resource(TOPIC)
 
-        self._log = logger.getChild(self.__class__.__name__)
+        self._scheduler.stop()
 
     @property
     def language(self):

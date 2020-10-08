@@ -4,6 +4,7 @@ import qi
 from typing import Union, Optional
 
 from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
+from pepper.framework.event.api import EventBus
 from pepper.framework.resource.api import ResourceManager
 
 
@@ -19,9 +20,9 @@ class NAOqiTextToSpeech(AbstractTextToSpeech):
 
     SERVICE = "ALAnimatedSpeech"
 
-    def __init__(self, session, language, speed, resource_manager):
-        # type: (qi.Session, str, int, ResourceManager) -> None
-        super(NAOqiTextToSpeech, self).__init__(language, resource_manager)
+    def __init__(self, session, language, speed, event_bus, resource_manager):
+        # type: (qi.Session, str, int, EventBus, ResourceManager) -> None
+        super(NAOqiTextToSpeech, self).__init__(language, event_bus, resource_manager)
 
         # Subscribe to NAOqi Text to Speech Service
         self._speed = speed

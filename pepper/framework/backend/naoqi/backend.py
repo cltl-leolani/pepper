@@ -82,9 +82,9 @@ class NAOqiBackend(AbstractBackend):
         # System Text To Speech Override
         if use_system_text_to_speech:
             translator = translator_factory(internal_language[:2], application_language[:2])
-            text_to_speech = SystemTextToSpeech(translator, application_language, resource_manager)
+            text_to_speech = SystemTextToSpeech(translator, application_language, event_bus, resource_manager)
         else:
-            text_to_speech = NAOqiTextToSpeech(self.session, application_language, speech_speed, resource_manager)
+            text_to_speech = NAOqiTextToSpeech(self.session, application_language, speech_speed, event_bus, resource_manager)
 
         # Set Default Awareness Behaviour
         self._awareness = ALProxy("ALBasicAwareness", ip, port)

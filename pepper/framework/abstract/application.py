@@ -38,6 +38,7 @@ class AbstractApplication(AbstractComponent):
             self.backend.start()
             super(AbstractApplication, self).start()
         except:
+            logger.exception("Failed to start application")
             self.stop()
 
     def stop(self):

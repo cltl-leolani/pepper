@@ -34,6 +34,8 @@ class AbstractMicrophone(object):
         resource_manager : ResourceManager
             Resource manager to manage access to the microphone resource
         """
+        self._log = logger.getChild(self.__class__.__name__)
+
         self._rate = rate
         self._channels = channels
         self._event_bus = event_bus
@@ -54,8 +56,6 @@ class AbstractMicrophone(object):
         self._muted = True
         self._audio_lock = None
         self._mic_lock = None
-
-        self._log = logger.getChild(self.__class__.__name__)
 
     def start(self):
         """Start Microphone Stream"""

@@ -8,6 +8,9 @@ from playsound import playsound
 from typing import Union, Optional
 
 from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
+from pepper.framework.event.api import EventBus
+from pepper.framework.resource.api import ResourceManager
+from pepper.framework.sensor.asr import AbstractTranslator
 
 
 class SystemTextToSpeech(AbstractTextToSpeech):
@@ -22,9 +25,9 @@ class SystemTextToSpeech(AbstractTextToSpeech):
     GENDER = 2  # "Female" or 1 "Male"
     TYPE = "Standard"
 
-    def __init__(self, translator, language, resource_manager):
-        # type: (str) -> None
-        AbstractTextToSpeech.__init__(self, language, resource_manager)
+    def __init__(self, translator, language, event_bus, resource_manager):
+        # type: (AbstractTranslator, str, EventBus, ResourceManager) -> None
+        AbstractTextToSpeech.__init__(self, language, event_bus, resource_manager)
         self._translator = translator
 
         self._client = texttospeech.TextToSpeechClient()

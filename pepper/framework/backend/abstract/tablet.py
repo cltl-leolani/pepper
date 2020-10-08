@@ -1,7 +1,12 @@
+import logging
+
 from typing import Union
 
 from pepper.framework.event.api import EventBus
 from pepper.framework.resource.api import ResourceManager
+
+logger = logging.getLogger(__name__)
+
 
 TOPIC = "pepper.framework.backend.abstract.tablet.topic"
 
@@ -11,6 +16,8 @@ class AbstractTablet(object):
 
     def __init__(self, event_bus, resource_manager):
         # type: (EventBus, ResourceManager) -> None
+        self._log = logger.getChild(self.__class__.__name__)
+
         event_bus.subscribe(TOPIC, self._event_handler)
         resource_manager.provide_resource(TOPIC)
 

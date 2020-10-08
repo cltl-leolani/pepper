@@ -57,7 +57,6 @@ class FaceRecognitionComponent(AbstractComponent):
         """
         pass
 
-    @event_payload_handler
     def on_face_known(self, faces):
         # type: (List[Face]) -> None
         """
@@ -70,7 +69,6 @@ class FaceRecognitionComponent(AbstractComponent):
         """
         pass
 
-    @event_payload_handler
     def on_face_new(self, faces):
         # type: (List[Face]) -> None
         """

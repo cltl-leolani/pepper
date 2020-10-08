@@ -230,6 +230,8 @@ class AbstractCamera(object):
         event_bus: EventBus
             Event bus of the application
         """
+        self._log = logger.getChild(self.__class__.__name__)
+
         # Extract Image Dimensions from CameraResolution
         self._resolution = resolution
         self._width = self._resolution.value[1]
@@ -253,8 +255,6 @@ class AbstractCamera(object):
 
         # Default behaviour is to not run by default. Calling AbstractApplication.run() will activate the camera
         self._running = False
-
-        self._log = logger.getChild(self.__class__.__name__)
 
     @property
     def true_rate(self):
