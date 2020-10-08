@@ -8,7 +8,7 @@ import webbrowser
 import os
 
 
-class DisplayServer(tornado.web.Application):
+class MonitoringServer(tornado.web.Application):
     """Display Server for :class:`~pepper.framework.component.display.display.DisplayComponent`"""
 
     ROOT = os.path.join(os.path.dirname(__file__), "web")
@@ -16,11 +16,10 @@ class DisplayServer(tornado.web.Application):
     HANDLERS = set()
 
     def __init__(self):
-
         # Host web/index.html
         class BaseHandler(tornado.web.RequestHandler):
             def get(self):
-                loader = tornado.template.Loader(DisplayServer.ROOT)
+                loader = tornado.template.Loader(MonitoringServer.ROOT)
                 self.write(loader.load("index.html").generate())
 
         # Accept Web Socket Connections
@@ -29,12 +28,12 @@ class DisplayServer(tornado.web.Application):
                 super(WSHandler, self).__init__(application, request, **kwargs)
 
             def open(self):
-                DisplayServer.HANDLERS.add(self)
+                MonitoringServer.HANDLERS.add(self)
 
             def on_close(self):
-                DisplayServer.HANDLERS.remove(self)
+                MonitoringServer.HANDLERS.remove(self)
 
-        super(DisplayServer, self).__init__([(r'/ws', WSHandler), (r'/', BaseHandler)])
+        super(MonitoringServer, self).__init__([(r'/ws', WSHandler), (r'/', BaseHandler)])
 
     def start(self):
         # type: () -> None

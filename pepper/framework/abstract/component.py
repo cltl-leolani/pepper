@@ -8,6 +8,7 @@ from pepper.framework.backend.container import BackendContainer
 from pepper.framework.config.api import ConfigurationContainer
 from pepper.framework.context.api import ContextContainer, ContextWorkerContainer
 from pepper.framework.event.api import EventBusContainer
+from pepper.framework.monitoring.container import MonitoringContainer
 from pepper.framework.resource.api import ResourceContainer
 from pepper.framework.sensor.api import SensorContainer, SensorWorkerContainer
 
@@ -19,8 +20,9 @@ class ComponentDependencyError(Exception):
     pass
 
 # TODO For now use the mixin pattern, unify dependency management
-class AbstractComponent(BackendContainer, SensorWorkerContainer, SensorContainer, EventBusContainer,
-                        ResourceContainer, ConfigurationContainer, ContextWorkerContainer, ContextContainer):
+class AbstractComponent(BackendContainer, SensorWorkerContainer, SensorContainer, MonitoringContainer,
+                        EventBusContainer, ResourceContainer, ConfigurationContainer,
+                        ContextWorkerContainer, ContextContainer):
     """
     Abstract Base Component on which all Components are Based
 

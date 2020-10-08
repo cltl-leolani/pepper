@@ -9,20 +9,24 @@ from typing import List, Callable
 
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.context import ContextComponent
 from pepper.framework.abstract.display import DisplayComponent
+# noinspection PyUnresolvedReferences
+from pepper.framework.abstract.exploration import ExplorationComponent
+from pepper.framework.abstract.face_detection import FaceRecognitionComponent
 from pepper.framework.abstract.intention import AbstractIntention
+# noinspection PyUnresolvedReferences
+from pepper.framework.abstract.monitoring import MonitoringComponent
 from pepper.framework.abstract.motion import MotionComponent
 from pepper.framework.abstract.object_detection import ObjectDetectionComponent
-from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
-from pepper.framework.abstract.subtitles import SubtitlesComponent
-from pepper.framework.abstract.face_detection import FaceRecognitionComponent
 from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.abstract.context import ContextComponent
-from pepper.framework.abstract.exploration import ExplorationComponent
-from pepper.framework.component import StatisticsComponent
+from pepper.framework.abstract.statistics import StatisticsComponent
+# noinspection PyUnresolvedReferences
+from pepper.framework.abstract.subtitles import SubtitlesComponent
+from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 # TODO move constants from Openface into a configuration
 from pepper.framework.sensor.api import FaceDetector
-from pepper.framework.sensor.face import Face, FaceClassifier
+from pepper.framework.sensor.face import FaceClassifier
 from pepper.knowledge import sentences
 from pepper.responder import *
 
@@ -41,7 +45,7 @@ RESPONDERS = [
 class ResponderApp(ApplicationContainer,
                    AbstractApplication, StatisticsComponent,
                    # SubtitlesComponent,  # TODO: (un)comment to turn tablet subtitles On/Off
-                   # DisplayComponent, SceneComponent,  # TODO: (un)comment to turn Web View On/Off
+                   # MonitoringComponent,  # TODO: (un)comment to turn Web View On/Off
                    # WikipediaResponder, # WolframResponder,   # TODO: (un)comment to turn factual responder On/Off
                    ExplorationComponent, # TODO: (un)comment to turn exploration On/Off
                    ContextComponent,

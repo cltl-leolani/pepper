@@ -5,7 +5,7 @@ from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.object_detection import ObjectDetectionComponent
 from pepper.framework.abstract.face_detection import FaceRecognitionComponent
 from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.component import DisplayComponent, StatisticsComponent
+from pepper.framework.monitoring import DisplayComponent, StatisticsComponent
 
 
 class VerboseApp(ApplicationContainer,

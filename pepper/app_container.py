@@ -4,6 +4,7 @@ import logging.config
 from pepper.brain.long_term_memory import BrainContainer, LongTermMemory
 from pepper.framework.context.container import DefaultContextContainer, DefaultContextWorkerContainer
 from pepper.framework.di_container import singleton
+from pepper.framework.monitoring.container import DefaultMonitoringContainer
 
 logging.config.fileConfig('config/logging.config')
 
@@ -30,8 +31,8 @@ else:
     raise ValueError("Unknown backend configured: " + str(_application_backend))
 
 
-class ApplicationContainer(backend_container, DefaultSensorContainer, SynchronousEventBusContainer,
-                           ThreadedResourceContainer, LocalConfigurationContainer,
+class ApplicationContainer(backend_container, DefaultSensorContainer, DefaultMonitoringContainer,
+                           SynchronousEventBusContainer, ThreadedResourceContainer, LocalConfigurationContainer,
                            DefaultContextWorkerContainer, DefaultContextContainer, BrainContainer):
 
     logger.info("Initialized ApplicationContainer")

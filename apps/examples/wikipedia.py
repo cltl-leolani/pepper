@@ -2,7 +2,7 @@
 
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.component import StatisticsComponent
+from pepper.framework.abstract.statistics import StatisticsComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
 from pepper.knowledge import Wikipedia  # Class to Query Wikipedia using Natural Language

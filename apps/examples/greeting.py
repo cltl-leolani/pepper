@@ -7,7 +7,7 @@ from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.framework.abstract.face_detection import FaceRecognitionComponent
 from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.component import StatisticsComponent
+from pepper.framework.abstract.statistics import StatisticsComponent
 
 
 class GreetingApplication(ApplicationContainer,

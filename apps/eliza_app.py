@@ -6,7 +6,7 @@ from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.display import DisplayComponent
 from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.component import StatisticsComponent
+from pepper.framework.abstract.statistics import StatisticsComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.knowledge import animations
 # TODO Unresolved import
