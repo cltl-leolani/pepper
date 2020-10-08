@@ -413,14 +413,9 @@ class StreamedGoogleASR(BaseGoogleASR):
         Parameters
         ----------
         audio: Iterable[np.ndarray]
-
-        Yields
-        ------
-        request: speech.types.StreamingRecognizeRequest
         """
-        for frame in audio:
-            yield speech.types.StreamingRecognizeRequest(audio_content=frame.tobytes())
-
+        return (speech.types.StreamingRecognizeRequest(audio_content=frame.tobytes())
+                for frame in audio)
 
 class SynchronousGoogleASR(BaseGoogleASR):
     """

@@ -71,7 +71,7 @@ class DefaultSensorContainer(BackendContainer, SensorContainer, EventBusContaine
     @property
     @singleton
     def vad(self):
-        return WebRtcVAD(self.event_bus, self.resource_manager, self.config_manager)
+        return WebRtcVAD(self.resource_manager, self.config_manager)
 
     @singleton_for_kw(["source_language", "target_language"])
     def translator(self, source_language=None, target_language=None):

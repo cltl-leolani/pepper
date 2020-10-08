@@ -28,7 +28,7 @@ class AbstractVAD(VAD):
     MODE = 3
 
     def __init__(self, resource_manager, configuration_manager):
-        # type: (object, ResourceManager, ConfigurationManager) -> None
+        # type: (ResourceManager, ConfigurationManager) -> None
         config = configuration_manager.get_config("pepper.framework.sensors.vad.webrtc")
         self._mic_rate = config.get_int("microphone_sample_rate")
         self._channels = config.get_int("microphone_channels")

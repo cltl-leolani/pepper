@@ -175,10 +175,15 @@ class Voice(object):
     @property
     def audio_stream(self):
         if self._is_open:
-            return iter(self._queue.get, None)
+            return self._stream_from_queue()
         else:
-            return iter(self._frames, None)
+            return self._frames
 
+    def _stream_from_queue(self):
+        frame = self._queue.get()
+        while frame is not None:
+            yield frame
+            frame = self._queue.get()
 
 class VAD(object):
 
