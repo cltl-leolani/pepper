@@ -66,6 +66,13 @@ class SensorWorkerContainer(DIContainer):
         """
         raise ValueError("SpeecRecognitionWorkers not configured")
 
+    def start_subtitles(self):
+        # type: () -> None
+        """
+        Start speech recognition worker.
+        """
+        raise ValueError("SubtitlesWorkers not configured")
+
     def stop(self):
         # type: () -> None
         """

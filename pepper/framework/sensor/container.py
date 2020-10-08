@@ -15,11 +15,15 @@ from .worker.face_detection import FaceDetectionWorker
 from .worker.object_detection import ObjectDetectionWorker
 from .worker.speech_recognition_asr import SpeechRecognitionASRWorker
 from .worker.speech_recognition_vad import SpeechRecognitionVADWorker
+from .worker.subtitles import SubtitlesWorker
+from ..context.api import ContextContainer
 
 logger = logging.getLogger(__name__)
 
 
-class DefaultSensorWorkerContainer(SensorWorkerContainer, SensorContainer, EventBusContainer, ResourceContainer, ConfigurationContainer):
+class DefaultSensorWorkerContainer(SensorWorkerContainer, SensorContainer,
+                                   EventBusContainer, ResourceContainer, ConfigurationContainer,
+                                   ContextContainer):
 
     __workers = Queue()
 
@@ -42,6 +46,11 @@ class DefaultSensorWorkerContainer(SensorWorkerContainer, SensorContainer, Event
         DefaultSensorWorkerContainer.__workers.put(asr_worker)
         vad_worker.start()
         asr_worker.start()
+
+    def start_subtitles(self):
+        worker = SubtitlesWorker(self.context, "Subtitles", self.event_bus, self.resource_manager, self.config_manager)
+        DefaultSensorWorkerContainer.__workers.put(worker)
+        worker.start()
 
     def stop(self):
         for worker in self.__workers.queue:

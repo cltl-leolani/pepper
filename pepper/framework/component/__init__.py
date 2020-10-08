@@ -16,12 +16,6 @@ Some Components are more complex and require other components to work. They will
 - :class:`~pepper.framework.component.display.display.DisplayComponent` shows the live camera feedback and the 3D view of the current space, including the objects that are observed.
 """
 
-from .context import ContextComponent
 from .scene import SceneComponent
-
-from .explore import ExploreComponent
-
 from .statistics import StatisticsComponent
 from .display.display import DisplayComponent
-
-from .subtitles import SubtitlesComponent

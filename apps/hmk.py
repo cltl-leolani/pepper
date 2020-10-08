@@ -13,7 +13,6 @@ from pepper.framework.abstract.object_detection import ObjectDetectionComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
 from pepper.framework.abstract.face_detection import FaceRecognitionComponent
 from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.abstract.brain import BrainComponent
 from pepper.framework.abstract.context import ContextComponent
 from pepper.framework.component import StatisticsComponent
 from pepper.framework.sensor.api import UtteranceHypothesis
@@ -49,8 +48,7 @@ RESPONDERS = [
 
 
 class HMKApp(ApplicationContainer,
-             AbstractApplication, StatisticsComponent,
-             BrainComponent, ContextComponent,
+             AbstractApplication, StatisticsComponent, ContextComponent,
              ObjectDetectionComponent, FaceRecognitionComponent,
              SpeechRecognitionComponent, TextToSpeechComponent,
              MotionComponent, DisplayComponent):

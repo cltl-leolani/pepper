@@ -24,7 +24,7 @@ from pepper.framework.resource.api import ResourceContainer
 from pepper.framework.resource.threaded import ThreadedResourceContainer
 from pepper.framework.sensor.api import AbstractTranslator, AbstractASR, UtteranceHypothesis, SensorContainer
 from pepper.framework.sensor.container import DefaultSensorWorkerContainer
-from pepper.framework.sensor.vad import WebRtcVAD, AbstractVAD
+from pepper.framework.sensor.vad import AbstractVAD
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler(stream=sys.stdout))

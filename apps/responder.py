@@ -14,9 +14,9 @@ from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.abstract.motion import MotionComponent
 from pepper.framework.abstract.object_detection import ObjectDetectionComponent
 from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
+from pepper.framework.abstract.subtitles import SubtitlesComponent
 from pepper.framework.abstract.face_detection import FaceRecognitionComponent
 from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.abstract.brain import BrainComponent
 from pepper.framework.abstract.context import ContextComponent
 from pepper.framework.abstract.exploration import ExplorationComponent
 from pepper.framework.component import StatisticsComponent
@@ -44,7 +44,7 @@ class ResponderApp(ApplicationContainer,
                    # DisplayComponent, SceneComponent,  # TODO: (un)comment to turn Web View On/Off
                    # WikipediaResponder, # WolframResponder,   # TODO: (un)comment to turn factual responder On/Off
                    ExplorationComponent, # TODO: (un)comment to turn exploration On/Off
-                   ContextComponent, BrainComponent,
+                   ContextComponent,
                    ObjectDetectionComponent, FaceRecognitionComponent,
                    SpeechRecognitionComponent, TextToSpeechComponent,
                    MotionComponent, DisplayComponent):
