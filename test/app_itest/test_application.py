@@ -1,6 +1,8 @@
 import logging
 import sys
+import threading
 import unittest
+from time import sleep
 
 import importlib_resources
 import mock
@@ -36,8 +38,11 @@ from pepper.framework.util import Bounds
 from test import util
 
 logger = logging.getLogger("pepper")
-logger.addHandler(logging.StreamHandler(stream=sys.stdout))
-logger.setLevel(logging.DEBUG)
+handler = logging.StreamHandler(stream=sys.stdout)
+handler.setFormatter(logging.Formatter(fmt='%(asctime)s %(levelname)-8s %(message)s',
+                                       datefmt='%Y-%m-%d %H:%M:%S'))
+logger.addHandler(handler)
+logger.setLevel(logging.ERROR)
 
 TEST_IMG = np.zeros((128,))
 TEST_BOUNDS = Bounds(0.0, 0.0, 1.0, 1.0)
@@ -167,6 +172,12 @@ class ApplicationITest(unittest.TestCase):
     def tearDown(self):
         self.application.stop()
         del self.application
+
+        # Try to ensure that the application is stopped
+        try:
+            util.await(lambda: threading.active_count() < 2, max=100)
+        except:
+            sleep(1)
 
     def test_mic_events(self):
         mic_events = []
@@ -303,7 +314,7 @@ class ApplicationITest(unittest.TestCase):
         audio_frame = np.random.rand(80).astype(np.int16)
         mic.on_audio(audio_frame)
 
-        util.await(lambda: len(self.application.chat_turns) > 0, msg="chat_turn", max=1000)
+        util.await(lambda: len(self.application.chat_turns) > 0, msg="chat_turn", max=2000)
 
         self.assertEqual(1, len(self.application.chat_turns))
         self.assertEqual("Test one two", self.application.chat_turns[0].transcript)

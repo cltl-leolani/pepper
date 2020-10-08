@@ -563,17 +563,19 @@ class Parser(object):
     CFG_GRAMMAR_FILE = os.path.join(os.path.dirname(__file__), 'data', 'cfg_new.txt')
 
     def __init__(self, utterance):
+        self._log = logger.getChild(self.__class__.__name__)
 
         if not Parser.POS_TAGGER:
             Parser.POS_TAGGER = POS()
+            logger.info("Started POS tagger")
 
         if not Parser.NER_TAGGER:
             Parser.NER_TAGGER = NER()
+            logger.info("Started NER tagger")
 
         with open(Parser.CFG_GRAMMAR_FILE) as cfg_file:
             self._cfg = cfg_file.read()
-
-        self._log = logger.getChild(self.__class__.__name__)
+            logger.info("Loaded grammar")
 
         self._forest, self._constituents = self._parse(utterance)
 
@@ -586,10 +588,11 @@ class Parser(object):
         return self._constituents
 
     def _parse(self, utterance):
-        '''
+        """
         :param utterance: an Utterance object, typically last one in the Chat
         :return: parsed syntax tree and a dictionary of syntactic realizations
-        '''
+        """
+        self._log.debug("Start parsing")
         tokenized_sentence = utterance.tokens
         pos = self.POS_TAGGER.tag(tokenized_sentence)  # standford
         alternative_pos = pos_tag(tokenized_sentence)  # nltk
@@ -685,6 +688,5 @@ class Parser(object):
                 s_r[el]['raw'] = s_r[el]['raw'].strip()
 
             return forest, s_r
-
         except:
             return [], {}

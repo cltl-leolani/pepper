@@ -28,16 +28,26 @@ class AbstractTextToSpeech(object):
     def __init__(self, language, event_bus, resource_manager):
         # type: (str, EventBus, ResourceManager) -> None
         self._language = language
+        self._event_bus = event_bus
         self._resource_manager = resource_manager
 
         self._queue = Queue()
         self._talking_jobs = 0
 
+    def start(self):
         self._scheduler = Scheduler(self._worker, name="TextToSpeechThread")
         self._scheduler.start()
 
-        event_bus.subscribe(TOPIC, self._say)
-        resource_manager.provide_resource(TOPIC)
+        self._event_bus.subscribe(TOPIC, self._say)
+        self._resource_manager.provide_resource(TOPIC)
+
+        self._log = logger.getChild(self.__class__.__name__)
+
+    def stop(self):
+        self._scheduler.stop()
+
+        self._event_bus.unsubscribe(TOPIC, self._say)
+        self._resource_manager.retract_resource(TOPIC)
 
         self._log = logger.getChild(self.__class__.__name__)
 

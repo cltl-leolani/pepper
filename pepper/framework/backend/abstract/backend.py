@@ -1,9 +1,14 @@
+import logging
+
 from pepper.framework.backend.abstract.camera import AbstractCamera
 from pepper.framework.backend.abstract.led import AbstractLed
 from pepper.framework.backend.abstract.microphone import AbstractMicrophone
 from pepper.framework.backend.abstract.motion import AbstractMotion
 from pepper.framework.backend.abstract.tablet import AbstractTablet
 from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
+
+
+logger = logging.getLogger(__name__)
 
 
 class AbstractBackend(object):
@@ -45,12 +50,20 @@ class AbstractBackend(object):
             self._camera.start()
         if self._microphone:
             self._microphone.start()
+        if self._text_to_speech:
+            self._text_to_speech.start()
 
     def stop(self):
-        if self._camera:
-            self._camera.stop()
-        if self._microphone:
-            self._microphone.stop()
+        self.stop_safe(self._camera)
+        self.stop_safe(self._microphone)
+        self.stop_safe(self._text_to_speech)
+
+    def stop_safe(self, component):
+        if component:
+            try:
+                component.stop()
+            except:
+                logger.exception("Failed to stop " + str(component))
 
     @property
     def camera(self):

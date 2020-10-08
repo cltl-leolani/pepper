@@ -71,8 +71,10 @@ class SystemCamera(AbstractCamera):
         self._log.debug("Started SystemCamera")
 
     def stop(self):
-        super(SystemCamera, self).stop()
-        self._scheduler.stop()
+        try:
+            self._scheduler.stop()
+        finally:
+            super(SystemCamera, self).stop()
 
     def _run(self):
         t0 = time()

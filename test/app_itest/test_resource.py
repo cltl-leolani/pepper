@@ -25,6 +25,7 @@ from pepper.framework.resource.threaded import ThreadedResourceContainer
 from pepper.framework.sensor.api import AbstractTranslator, AbstractASR, UtteranceHypothesis, SensorContainer
 from pepper.framework.sensor.container import DefaultSensorWorkerContainer
 from pepper.framework.sensor.vad import AbstractVAD
+from test import util
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler(stream=sys.stdout))
@@ -65,12 +66,6 @@ def setupTestComponents():
             super(TestBackend, self).__init__(microphone=AbstractMicrophone(8000, 1, event_bus, resource_manager),
                                               text_to_speech=TestTextToSpeech(event_bus, resource_manager),
                                               camera=None, motion=None, led=None, tablet=None)
-
-        def start(self):
-            self.microphone.start()
-
-        def stop(self):
-            self.microphone.stop()
 
 
     class TestVAD(AbstractVAD):
@@ -249,6 +244,12 @@ class ResourceITest(unittest.TestCase):
             thread.join()
         self.application.stop()
         del self.application
+
+        # Try to ensure that the application is stopped
+        try:
+            util.await(lambda: threading.active_count() < 2, max=100)
+        except:
+            sleep(1)
 
     def test_listen(self):
         listening_thread, _ = self.threads
