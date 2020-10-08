@@ -1,5 +1,6 @@
 from pepper.framework.backend.abstract.motion import AbstractMotion
 from pepper.framework.event.api import EventBus
+from pepper.framework.resource.api import ResourceManager
 from pepper.framework.util import spherical2cartesian
 
 import qi
@@ -28,9 +29,9 @@ class NAOqiMotion(AbstractMotion):
     COMMAND_LIMIT = 2  # The maximum number of commands in the queue to prevent blocking all access to robot motion
     FRAME = 0  # 0 = With Respect to Torso
 
-    def __init__(self, session, event_bus):
-        # type: (qi.Session, EventBus) -> None
-        super(NAOqiMotion, self).__init__(event_bus)
+    def __init__(self, session, event_bus, resource_manager):
+        # type: (qi.Session, EventBus, ResourceManager) -> None
+        super(NAOqiMotion, self).__init__(event_bus, resource_manager)
 
         # Connect to Motion and Tracker Services
         self._motion = session.service(NAOqiMotion.SERVICE_MOTION)

@@ -26,10 +26,12 @@ class FaceRecognitionComponent(AbstractComponent):
         super(FaceRecognitionComponent, self).start()
 
     def stop(self):
-        self.event_bus.unsubscribe(FaceDetector.TOPIC, self._on_face_handler)
-        self.event_bus.unsubscribe(FaceDetector.TOPIC_NEW, self._on_face_new_handler)
-        self.event_bus.unsubscribe(FaceDetector.TOPIC_KNOWN, self._on_face_known_handler)
-        super(FaceRecognitionComponent, self).stop()
+        try:
+            self.event_bus.unsubscribe(FaceDetector.TOPIC, self._on_face_handler)
+            self.event_bus.unsubscribe(FaceDetector.TOPIC_NEW, self._on_face_new_handler)
+            self.event_bus.unsubscribe(FaceDetector.TOPIC_KNOWN, self._on_face_known_handler)
+        finally:
+            super(FaceRecognitionComponent, self).stop()
 
     @event_payload_handler
     def _on_face_handler(self, faces):

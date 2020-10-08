@@ -1,12 +1,8 @@
 import unittest
 
-import numpy as np
-
 from pepper.framework.abstract.application import AbstractApplication
 from pepper.framework.abstract.display import DisplayComponent
-from pepper.framework.abstract.led import LedComponent
 from pepper.framework.backend.abstract.backend import AbstractBackend
-from pepper.framework.backend.abstract.led import AbstractLed, Led
 from pepper.framework.backend.abstract.tablet import AbstractTablet
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.di_container import singleton
@@ -25,8 +21,8 @@ class TestBackendContainer(BackendContainer, EventBusContainer):
 
 
 class TestTablet(AbstractTablet):
-    def __init__(self, event_bus):
-        super(TestTablet, self).__init__(event_bus)
+    def __init__(self, event_bus, resource_manager):
+        super(TestTablet, self).__init__(event_bus, resource_manager)
         self.display = None
 
     def show(self, url):
@@ -38,7 +34,7 @@ class TestTablet(AbstractTablet):
 
 class TestBackend(AbstractBackend):
     def __init__(self, event_bus, resource_manager):
-        super(TestBackend, self).__init__(tablet=TestTablet(event_bus),
+        super(TestBackend, self).__init__(tablet=TestTablet(event_bus, resource_manager),
                                           camera=None, microphone=None, text_to_speech=None, motion=None, led=None)
 
 

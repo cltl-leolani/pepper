@@ -1,6 +1,8 @@
 from threading import Lock
 from time import sleep
 
+_MAX_WAIT = 1000
+
 class DIContainer(object):
     """
     Base class for Dependency Injection containers.
@@ -39,9 +41,13 @@ def singleton_for_kw(keys):
                         raise ValueError("could not set " + singleton_attr)
                     setattr(container_type, singleton_attr, instance)
 
+            cnt = 0
             # The instance is created outside the lock, therefore we can end up here with None
             while getattr(container_type, singleton_attr) is None:
                 sleep(0.01)
+                cnt += 1
+                if cnt > _MAX_WAIT:
+                    raise ValueError("Timed out setting " + singleton_attr)
 
             return getattr(container_type, singleton_attr)
 

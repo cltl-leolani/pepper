@@ -22,8 +22,8 @@ class TestBackendContainer(BackendContainer, EventBusContainer):
 
 
 class TestMotion(AbstractMotion):
-    def __init__(self, event_bus):
-        super(TestMotion, self).__init__(event_bus)
+    def __init__(self, event_bus, resource_manager):
+        super(TestMotion, self).__init__(event_bus, resource_manager)
         self.looks = []
         self.points = []
 
@@ -36,7 +36,7 @@ class TestMotion(AbstractMotion):
 
 class TestBackend(AbstractBackend):
     def __init__(self, event_bus, resource_manager):
-        super(TestBackend, self).__init__(motion=TestMotion(event_bus),
+        super(TestBackend, self).__init__(motion=TestMotion(event_bus, resource_manager),
                                           camera=None, microphone=None, text_to_speech=None, led=None, tablet=None)
 
 

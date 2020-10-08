@@ -27,33 +27,36 @@ class DefaultSensorWorkerContainer(ContextContainer, SensorWorkerContainer, Sens
     __workers = Queue()
 
     def start_object_detector(self, target):
-        worker = ObjectDetectionWorker(self.object_detector(target), "ObjectDetector [{}]".format(target),
+        worker = ObjectDetectionWorker(self.object_detector(target), "ObjectDetectorWorker [{}]".format(target),
                                        self.event_bus, self.resource_manager, self.config_manager)
         DefaultSensorWorkerContainer.__workers.put(worker)
         worker.start()
 
     def start_face_detector(self):
-        worker = FaceDetectionWorker(self.face_detector, "FaceDetector",
+        worker = FaceDetectionWorker(self.face_detector, "FaceDetectorWorker",
                                      self.event_bus, self.resource_manager, self.config_manager)
         DefaultSensorWorkerContainer.__workers.put(worker)
         worker.start()
 
     def start_speech_recognition(self):
-        vad_worker = SpeechRecognitionVADWorker(self.vad, "VAD", self.event_bus, self.resource_manager)
-        asr_worker = SpeechRecognitionASRWorker(self.asr(), "ASR", self.event_bus, self.resource_manager)
+        vad_worker = SpeechRecognitionVADWorker(self.vad, "VADWorker", self.event_bus, self.resource_manager)
+        asr_worker = SpeechRecognitionASRWorker(self.asr(), "ASRWorker", self.event_bus, self.resource_manager)
         DefaultSensorWorkerContainer.__workers.put(vad_worker)
         DefaultSensorWorkerContainer.__workers.put(asr_worker)
         vad_worker.start()
         asr_worker.start()
 
     def start_subtitles(self):
-        worker = SubtitlesWorker(self.context, "Subtitles", self.event_bus, self.resource_manager, self.config_manager)
+        worker = SubtitlesWorker(self.context, "SubtitlesWorker", self.event_bus, self.resource_manager, self.config_manager)
         DefaultSensorWorkerContainer.__workers.put(worker)
         worker.start()
 
     def stop(self):
         for worker in self.__workers.queue:
-            worker.stop()
+            try:
+                worker.stop()
+            except:
+                logger.exception("Failed to stop worker " + worker.name)
         self.__workers.queue.clear()
         super(DefaultSensorWorkerContainer, self).stop()
 

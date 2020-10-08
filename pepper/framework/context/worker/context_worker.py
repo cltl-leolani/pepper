@@ -39,6 +39,10 @@ class ContextWorker(TopicWorker):
         self._conversation_time = time()
 
         self._people_info = []
+        self._chatting = False
+
+    def stop(self):
+        super(ContextWorker, self).stop()
 
     def process(self, event):
         if not event:
@@ -58,6 +62,10 @@ class ContextWorker(TopicWorker):
         current_faces = self.context.current_people(timeout=5)
 
         if not self.context.chatting:
+            if self._chatting:
+                # Chat was stopped from context
+                self.exit_chat()
+
             # If one person is closest and his/her face is identifiable -> Start One-on-One Conversation
             if len(closest_people) == 1:
                 closest_person = closest_people[0]
@@ -70,8 +78,7 @@ class ContextWorker(TopicWorker):
             # If multiple people are in range, with nobody seemingly closest -> Start Group Conversation
             elif len(closest_people) >= 2:
                 self.enter_chat(config.HUMAN_CROWD)
-
-        elif self.context.chatting:
+        else:
             # When talking to a Group
             if self.context.chat.speaker == config.HUMAN_CROWD:
 
@@ -126,10 +133,12 @@ class ContextWorker(TopicWorker):
                         self.exit_chat()
 
     def enter_chat(self, name):
-        self.event_bus.publish(TOPIC_ON_CHAT_ENTER, Event(name, None))
+        self._chatting = True
         self._conversation_time = time()
+        self.event_bus.publish(TOPIC_ON_CHAT_ENTER, Event(name, None))
 
     def exit_chat(self):
+        self._chatting = False
         self.event_bus.publish(TOPIC_ON_CHAT_EXIT, Event(None, None))
 
     def process_object(self, objects):
@@ -145,7 +154,6 @@ class ContextWorker(TopicWorker):
         # type: (List[UtteranceHypothesis]) -> None
         if self.context.chatting and hypotheses:
             utterance = self.context.chat.add_utterance(hypotheses, False)
-
             self.event_bus.publish(TOPIC_ON_CHAT_TURN, Event(utterance, None))
 
     def process_utterance(self, text):

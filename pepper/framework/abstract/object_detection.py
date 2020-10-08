@@ -28,8 +28,10 @@ class ObjectDetectionComponent(AbstractComponent):
         super(ObjectDetectionComponent, self).start()
 
     def stop(self):
-        self.event_bus.unsubscribe(ObjectDetector.TOPIC, self._on_object_handler)
-        super(ObjectDetectionComponent, self).stop()
+        try:
+            self.event_bus.unsubscribe(ObjectDetector.TOPIC, self._on_object_handler)
+        finally:
+            super(ObjectDetectionComponent, self).stop()
 
     @event_payload_handler
     def _on_object_handler(self, objects):

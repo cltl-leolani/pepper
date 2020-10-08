@@ -1,14 +1,16 @@
 from typing import List, Tuple
 
 from pepper.framework.backend.abstract.led import AbstractLed, Led
+from pepper.framework.event.api import EventBus
+from pepper.framework.resource.api import ResourceManager
 
 
 class SystemLed(AbstractLed):
     """Control Robot LEDs"""
 
-    def __init__(self, event_bus):
-        # type: (EventBus) -> None
-        super(SystemLed, self).__init__(event_bus)
+    def __init__(self, event_bus, resource_manager):
+        # type: (EventBus, ResourceManager) -> None
+        super(SystemLed, self).__init__(event_bus, resource_manager)
 
     def set(self, leds, rgb, duration):
         # type: (List[Led], Tuple[float, float, float], float) -> None

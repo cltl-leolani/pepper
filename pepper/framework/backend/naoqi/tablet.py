@@ -5,6 +5,7 @@ import qi
 
 from pepper.framework.backend.abstract.tablet import AbstractTablet
 from pepper.framework.event.api import EventBus
+from pepper.framework.resource.api import ResourceManager
 
 logger = logging.getLogger(__name__)
 
@@ -14,9 +15,9 @@ class NAOqiTablet(AbstractTablet):
 
     IMAGE_FORMATS = re.compile("\.(jpeg|jpg|png|gif|bmp)")
 
-    def __init__(self, session, event_bus):
-        # type: (qi.Session, EventBus) -> None
-        super(NAOqiTablet, self).__init__(event_bus)
+    def __init__(self, session, event_bus, resource_manager):
+        # type: (qi.Session, EventBus, ResourceManager) -> None
+        super(NAOqiTablet, self).__init__(event_bus, resource_manager)
 
         self._session = session
         self._service = self._session.service("ALTabletService")

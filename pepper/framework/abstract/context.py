@@ -20,11 +20,12 @@ class ContextComponent(AbstractComponent):
         super(ContextComponent, self).start()
 
     def stop(self):
-        self.event_bus.unsubscribe(TOPIC_ON_CHAT_ENTER, self.__on_chat_enter_handler)
-        self.event_bus.unsubscribe(TOPIC_ON_CHAT_TURN, self.__on_chat_turn_handler)
-        self.event_bus.unsubscribe(TOPIC_ON_CHAT_EXIT, self.__on_chat_exit_handler)
-
-        super(ContextComponent, self).stop()
+        try:
+            self.event_bus.unsubscribe(TOPIC_ON_CHAT_ENTER, self.__on_chat_enter_handler)
+            self.event_bus.unsubscribe(TOPIC_ON_CHAT_TURN, self.__on_chat_turn_handler)
+            self.event_bus.unsubscribe(TOPIC_ON_CHAT_EXIT, self.__on_chat_exit_handler)
+        finally:
+            super(ContextComponent, self).stop()
 
     @event_payload_handler
     def __on_chat_enter_handler(self, name):

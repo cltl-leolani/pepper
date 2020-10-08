@@ -37,6 +37,7 @@ class AbstractTextToSpeech(object):
         self._scheduler.start()
 
         event_bus.subscribe(TOPIC, self._say)
+        resource_manager.provide_resource(TOPIC)
 
         self._log = logger.getChild(self.__class__.__name__)
 

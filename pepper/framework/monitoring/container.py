@@ -14,6 +14,7 @@ class MonitoringContainer(DIContainer):
         try:
             super(MonitoringContainer, self).stop()
         except AttributeError:
+            # Ignore if the container is on top of the MRO
             pass
 
 
@@ -29,11 +30,13 @@ class DefaultMonitoringContainer(MonitoringContainer, ContextContainer):
         server_thread.daemon = True
         server_thread.start()
 
-        DefaultMonitoringContainer.__worker = MonitoringWorker(self.context, server, "Monitoring",
+        DefaultMonitoringContainer.__worker = MonitoringWorker(self.context, server, "MonitoringWorker",
                                                                self.event_bus, self.resource_manager)
         DefaultMonitoringContainer.__worker.start()
 
     def stop(self):
-        DefaultMonitoringContainer.__server.stop()
-        DefaultMonitoringContainer.__worker.stop()
-        super(DefaultMonitoringContainer, self).stop()
+        try:
+            DefaultMonitoringContainer.__server.stop()
+            DefaultMonitoringContainer.__worker.stop()
+        finally:
+            super(DefaultMonitoringContainer, self).stop()

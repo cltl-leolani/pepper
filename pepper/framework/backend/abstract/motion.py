@@ -1,5 +1,7 @@
 from typing import Tuple
 
+from pepper.framework.event.api import EventBus
+from pepper.framework.resource.api import ResourceManager
 
 TOPIC_POINT = "pepper.framework.backend.abstract.motion.point"
 TOPIC_LOOK = "pepper.framework.backend.abstract.motion.look"
@@ -8,10 +10,12 @@ TOPIC_LOOK = "pepper.framework.backend.abstract.motion.look"
 class AbstractMotion(object):
     """Control Robot Motion (other than speech animation)"""
 
-    def __init__(self, event_bus):
-        # type: (EventBus) -> None
+    def __init__(self, event_bus, resource_manager):
+        # type: (EventBus, ResourceManager) -> None
         event_bus.subscribe(TOPIC_POINT, self._point_handler)
         event_bus.subscribe(TOPIC_LOOK, self._look_handler)
+        resource_manager.provide_resource(TOPIC_POINT)
+        resource_manager.provide_resource(TOPIC_LOOK)
 
     def _look_handler(self, event):
         payload = event.payload

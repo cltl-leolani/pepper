@@ -1,6 +1,8 @@
 from enum import Enum
 from typing import List, Tuple
 
+from pepper.framework.event.api import EventBus
+from pepper.framework.resource.api import ResourceManager
 
 TOPIC = "pepper.framework.backend.abstract.led.topic"
 
@@ -53,9 +55,10 @@ class Led(Enum):
 class AbstractLed(object):
     """Control Robot LEDs"""
 
-    def __init__(self, event_bus):
-        # type: (EventBus) -> None
+    def __init__(self, event_bus, resource_manager):
+        # type: (EventBus, ResourceManager) -> None
         event_bus.subscribe(TOPIC, self._event_handler)
+        resource_manager.provide_resource(TOPIC)
 
     def _event_handler(self, event):
         payload = event.payload

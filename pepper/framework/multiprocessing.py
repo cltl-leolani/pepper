@@ -1,13 +1,14 @@
 import logging
 from Queue import Queue, Empty, Full
+import threading
 from threading import Thread
 from time import sleep
 
 from enum import Enum
 from typing import Iterable, Optional, Union
 
-from pepper.framework.event.api import EventBus, Event
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.event.api import EventBus, Event, TopicError
+from pepper.framework.resource.api import ResourceManager, LockTimeoutError
 
 logger = logging.getLogger(__name__)
 
@@ -54,6 +55,7 @@ class TopicWorker(Thread):
         self._resource_manager = resource_manager
         self._requires = requires
         self._provides = provides
+        self._started = threading.Event()
         self._running = False
 
     def start(self):
@@ -61,15 +63,20 @@ class TopicWorker(Thread):
 
         super(TopicWorker, self).start()
 
-        while not self._running:
-            sleep(self._interval)
+        self._started.wait(timeout=_DEPENDENCY_TIMEOUT)
+
+        if not self._running:
+            raise RuntimeError("Failed to start worker " + self.name)
 
         for topic in self._topics:
             self._event_bus.subscribe(topic, self.__accept_event)
 
     def stop(self):
         for topic in self._topics:
-            self._event_bus.unsubscribe(topic, self.__accept_event)
+            try:
+                self._event_bus.unsubscribe(topic, self.__accept_event)
+            except:
+                logger.exception("Failed to unsubscribe " + self.name + " from " + topic)
 
         self._running = False
         logger.info("Stopping topic worker %s", self.name)
@@ -77,6 +84,7 @@ class TopicWorker(Thread):
     def run(self):
         self.__resolve_dependencies()
         self._running = True
+        self._started.set()
         logger.info("Started topic worker %s", self.name)
 
         while self._running:
@@ -119,7 +127,11 @@ class TopicWorker(Thread):
     def __resolve_dependencies(self):
         if self._resource_manager:
             for required in self._requires:
-                self._resource_manager.get_read_lock(required, timeout=_DEPENDENCY_TIMEOUT)
+                try:
+                    self._resource_manager.get_read_lock(required, timeout=_DEPENDENCY_TIMEOUT)
+                except LockTimeoutError as e:
+                    raise TopicError(self.name + " failed to obtain required topic: " + required)
+
             for provided in self._provides:
                 try:
                     self._resource_manager.provide_resource(provided)

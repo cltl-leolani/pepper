@@ -34,12 +34,17 @@ class AbstractApplication(AbstractComponent):
         self.log.info("Booted Application")
 
     def start(self):
-        self.backend.start()
-        super(AbstractApplication, self).start()
+        try:
+            self.backend.start()
+            super(AbstractApplication, self).start()
+        except:
+            self.stop()
 
     def stop(self):
-        super(AbstractApplication, self).stop()
-        self.backend.stop()
+        try:
+            super(AbstractApplication, self).stop()
+        finally:
+            self.backend.stop()
 
     @property
     def log(self):

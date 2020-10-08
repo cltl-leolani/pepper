@@ -4,6 +4,10 @@ import uuid
 from pepper.framework.di_container import DIContainer
 
 
+class TopicError(ValueError):
+    pass
+
+
 class EventBusContainer(DIContainer):
     @property
     def event_bus(self):

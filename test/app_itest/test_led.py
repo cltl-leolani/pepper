@@ -23,8 +23,8 @@ class TestBackendContainer(BackendContainer, EventBusContainer):
 
 
 class TestLed(AbstractLed):
-    def __init__(self, event_bus):
-        super(TestLed, self).__init__(event_bus)
+    def __init__(self, event_bus, resource_manager):
+        super(TestLed, self).__init__(event_bus, resource_manager)
         self.active = set()
 
     def set(self, leds, rgb, duration):
@@ -36,7 +36,7 @@ class TestLed(AbstractLed):
 
 class TestBackend(AbstractBackend):
     def __init__(self, event_bus, resource_manager):
-        super(TestBackend, self).__init__(led=TestLed(event_bus),
+        super(TestBackend, self).__init__(led=TestLed(event_bus, resource_manager),
                                           camera=None, microphone=None, text_to_speech=None, motion=None, tablet=None)
 
 

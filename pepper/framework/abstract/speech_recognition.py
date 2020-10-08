@@ -25,8 +25,10 @@ class SpeechRecognitionComponent(AbstractComponent):
         super(SpeechRecognitionComponent, self).start()
 
     def stop(self):
-        self.event_bus.unsubscribe(AbstractASR.TOPIC, self._on_transcript_handler)
-        super(SpeechRecognitionComponent, self).stop()
+        try:
+            self.event_bus.unsubscribe(AbstractASR.TOPIC, self._on_transcript_handler)
+        finally:
+            super(SpeechRecognitionComponent, self).stop()
 
     def _on_transcript_handler(self, event):
         payload = event.payload

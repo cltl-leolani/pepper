@@ -1,12 +1,14 @@
 from pepper.framework.backend.abstract.tablet import AbstractTablet
+from pepper.framework.event.api import EventBus
+from pepper.framework.resource.api import ResourceManager
 
 
 class SystemTablet(AbstractTablet):
     """Access Robot Tablet to show URLs"""
 
-    def __init__(self, event_bus):
-        # type: (EventBus) -> None
-        super(SystemTablet, self).__init__(event_bus)
+    def __init__(self, event_bus, resource_manager):
+        # type: (EventBus, ResourceManager) -> None
+        super(SystemTablet, self).__init__(event_bus, resource_manager)
 
     def show(self, url):
         # type: (str) -> None

@@ -43,6 +43,7 @@ class ContextWorkerContainer(DIContainer):
         try:
             super(ContextWorkerContainer, self).stop()
         except AttributeError:
+            # Ignore if the container is on top of the MRO
             pass
 
 
@@ -171,7 +172,9 @@ class Context(object):
         people: list of Face
             List of People seen within Observation Timeout
         """
-        return [person for person, t in self._people.values() if (time() - t) < Context.OBSERVATION_TIMEOUT]
+        current_time = time()
+
+        return [person for person, t in self._people.values() if (current_time - t) < Context.OBSERVATION_TIMEOUT]
 
     @property
     def friends(self):
@@ -199,10 +202,10 @@ class Context(object):
         if in_chat and not self.chatting:
             return []
 
-        timestamp = self.datetime
+        current_time = time()
 
         return [person for person, t in self._people.values()
-                      if timestamp - t <= timeout and (not in_chat or t >= self._chat_start)]
+                      if current_time - t <= timeout and (not in_chat or t >= self._chat_start)]
 
     @property
     def all_people(self):
@@ -279,7 +282,7 @@ class Context(object):
         speaker: str
             Name of Speaker
         """
-        self._chat_start = self.datetime
+        self._chat_start = time()
         self._chatting = True
         self._chats.append(Chat(speaker, self))
 

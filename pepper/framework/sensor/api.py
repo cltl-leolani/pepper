@@ -81,6 +81,7 @@ class SensorWorkerContainer(DIContainer):
         try:
             super(SensorWorkerContainer, self).stop()
         except AttributeError:
+            # Ignore if the container is on top of the MRO
             pass
 
 
