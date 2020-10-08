@@ -21,9 +21,8 @@ from ..context.api import ContextContainer
 logger = logging.getLogger(__name__)
 
 
-class DefaultSensorWorkerContainer(SensorWorkerContainer, SensorContainer,
-                                   EventBusContainer, ResourceContainer, ConfigurationContainer,
-                                   ContextContainer):
+class DefaultSensorWorkerContainer(ContextContainer, SensorWorkerContainer, SensorContainer,
+                                   EventBusContainer, ResourceContainer, ConfigurationContainer):
 
     __workers = Queue()
 

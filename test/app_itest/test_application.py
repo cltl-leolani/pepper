@@ -22,6 +22,7 @@ from pepper.framework.backend.abstract.tablet import AbstractTablet
 from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.config.local import LocalConfigurationContainer
+from pepper.framework.context.container import DefaultContextWorkerContainer, DefaultContextContainer
 from pepper.framework.di_container import singleton
 from pepper.framework.event.api import EventBusContainer
 from pepper.framework.event.memory import SynchronousEventBusContainer
@@ -97,6 +98,8 @@ class TestSensorContainer(SensorContainer):
 
 
 class ApplicationContainer(TestBackendContainer,
+                           DefaultContextWorkerContainer,
+                           DefaultContextContainer,
                            DefaultSensorWorkerContainer,
                            TestSensorContainer,
                            SynchronousEventBusContainer,
@@ -252,6 +255,18 @@ class ApplicationITest(unittest.TestCase):
             pass
 
     def test_speech_events(self):
+        self.application.start()
+
+        mic = self.application.backend.microphone
+        audio_frame = np.random.rand(80).astype(np.int16)
+        mic.on_audio(audio_frame)
+
+        util.await(lambda: len(self.application.hypotheses) > 0, msg="mic event")
+
+        self.assertEqual(1, len(self.application.hypotheses))
+        self.assertEqual("Test one two", self.application.hypotheses[0].transcript)
+
+    def test_context_on_chat_enter(self):
         self.application.start()
 
         mic = self.application.backend.microphone

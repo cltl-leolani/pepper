@@ -12,8 +12,7 @@ from pepper import ApplicationBackend
 from pepper.framework.config.local import LocalConfigurationContainer
 from pepper.framework.event.memory import SynchronousEventBusContainer
 from pepper.framework.resource.threaded import ThreadedResourceContainer
-from pepper.framework.sensor.container import DefaultSensorContainer
-
+from pepper.framework.sensor.container import DefaultSensorContainer, DefaultSensorWorkerContainer
 
 logger = logging.getLogger(__name__)
 
@@ -31,9 +30,10 @@ else:
     raise ValueError("Unknown backend configured: " + str(_application_backend))
 
 
-class ApplicationContainer(backend_container, DefaultSensorContainer, DefaultMonitoringContainer,
+class ApplicationContainer(backend_container, DefaultContextWorkerContainer, DefaultContextContainer,
+                           DefaultSensorWorkerContainer, DefaultSensorContainer,
                            SynchronousEventBusContainer, ThreadedResourceContainer, LocalConfigurationContainer,
-                           DefaultContextWorkerContainer, DefaultContextContainer, BrainContainer):
+                           BrainContainer):
 
     logger.info("Initialized ApplicationContainer")
 

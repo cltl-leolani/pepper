@@ -6,7 +6,7 @@ from pepper.framework.monitoring.server.server import MonitoringServer
 from pepper.framework.monitoring.worker.monitoring import MonitoringWorker
 
 
-class MonitoringContainer(DIContainer, ContextContainer):
+class MonitoringContainer(DIContainer):
     def start_monitoring(self):
         raise NotImplementedError("Monitoring worker not configured")
 
@@ -14,7 +14,7 @@ class MonitoringContainer(DIContainer, ContextContainer):
         pass
 
 
-class DefaultMonitoringContainer(DIContainer, ContextContainer):
+class DefaultMonitoringContainer(MonitoringContainer, ContextContainer):
     __server = None
     __worker = None
 

@@ -19,10 +19,12 @@ class ComponentDependencyError(Exception):
     """Raised when a Component Dependency hasn't been met"""
     pass
 
+
 # TODO For now use the mixin pattern, unify dependency management
-class AbstractComponent(BackendContainer, SensorWorkerContainer, SensorContainer, MonitoringContainer,
-                        EventBusContainer, ResourceContainer, ConfigurationContainer,
-                        ContextWorkerContainer, ContextContainer):
+class AbstractComponent(BackendContainer, ContextWorkerContainer, ContextContainer,
+                        SensorWorkerContainer, SensorContainer,
+                        MonitoringContainer,
+                        EventBusContainer, ResourceContainer, ConfigurationContainer):
     """
     Abstract Base Component on which all Components are Based
 
