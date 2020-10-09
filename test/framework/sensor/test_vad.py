@@ -3,8 +3,8 @@ import unittest
 import mock
 import numpy as np
 
-from pepper.framework.config.api import ConfigurationManager
-from pepper.framework.resource.api import ResourceManager, ReadLock
+from pepper.framework.infra.config.api import ConfigurationManager
+from pepper.framework.infra.resource.api import ResourceManager, ReadLock
 from pepper.framework.sensor.vad import AbstractVAD
 from test.util import TestConfiguration
 

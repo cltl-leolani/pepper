@@ -7,9 +7,9 @@ import numpy as np
 
 from pepper.framework.backend.abstract.motion import TOPIC_LOOK
 from pepper.framework.context.api import TOPIC_ON_CHAT_ENTER, TOPIC_ON_CHAT_EXIT, Context
-from pepper.framework.event.api import Event, EventBus
-from pepper.framework.multiprocessing import TopicWorker, RejectionStrategy
-from pepper.framework.resource.api import acquire
+from pepper.framework.infra.event.api import Event, EventBus
+from pepper.framework.infra.multiprocessing import TopicWorker, RejectionStrategy
+from pepper.framework.infra.resource.api import acquire
 from pepper.framework.sensor.api import ObjectDetector, FaceDetector
 from pepper.framework.sensor.asr import AbstractASR
 

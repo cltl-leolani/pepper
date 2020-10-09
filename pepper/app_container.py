@@ -7,9 +7,9 @@ from pepper.framework.context.container import DefaultContextContainer, DefaultC
 logging.config.fileConfig('config/logging.config')
 
 from pepper import ApplicationBackend
-from pepper.framework.config.local import LocalConfigurationContainer
-from pepper.framework.event.memory import SynchronousEventBusContainer
-from pepper.framework.resource.threaded import ThreadedResourceContainer
+from pepper.framework.infra.config.local import LocalConfigurationContainer
+from pepper.framework.infra.event.memory import SynchronousEventBusContainer
+from pepper.framework.infra.resource.threaded import ThreadedResourceContainer
 from pepper.framework.sensor.container import DefaultSensorContainer, DefaultSensorWorkerContainer
 
 logger = logging.getLogger(__name__)

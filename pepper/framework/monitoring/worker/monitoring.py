@@ -7,10 +7,10 @@ from typing import List, Optional
 
 from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC, AbstractImage
 from pepper.framework.context.api import Context
-from pepper.framework.event.api import Event, EventBus
+from pepper.framework.infra.event.api import Event, EventBus
 from pepper.framework.monitoring.scene import Scene
 from pepper.framework.monitoring.server.server import MonitoringServer
-from pepper.framework.multiprocessing import TopicWorker, RejectionStrategy
+from pepper.framework.infra.multiprocessing import TopicWorker, RejectionStrategy
 from pepper.framework.sensor.api import FaceDetector, ObjectDetector
 from pepper.framework.sensor.obj import Object
 

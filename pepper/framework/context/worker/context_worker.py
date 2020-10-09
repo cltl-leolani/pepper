@@ -5,11 +5,11 @@ from typing import List
 
 from pepper import config
 from pepper.framework.backend.abstract.text_to_speech import TOPIC as TTS_TOPIC
-from pepper.framework.config.api import ConfigurationManager
+from pepper.framework.infra.config.api import ConfigurationManager
 from pepper.framework.context.api import TOPIC_ON_CHAT_ENTER, TOPIC_ON_CHAT_EXIT, TOPIC_ON_CHAT_TURN, Context
-from pepper.framework.event.api import Event, EventBus
-from pepper.framework.multiprocessing import TopicWorker, RejectionStrategy
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.infra.event.api import Event, EventBus
+from pepper.framework.infra.multiprocessing import TopicWorker, RejectionStrategy
+from pepper.framework.infra.resource.api import ResourceManager
 from pepper.framework.sensor.api import Object, ObjectDetector, FaceDetector
 from pepper.framework.sensor.asr import AbstractASR, UtteranceHypothesis
 from pepper.framework.sensor.face import Face

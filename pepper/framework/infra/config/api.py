@@ -1,7 +1,7 @@
 import enum
 from typing import Iterable, Callable, Type
 
-from pepper.framework.di_container import DIContainer
+from pepper.framework.infra.di_container import DIContainer
 
 
 class ConfigurationContainer(DIContainer):

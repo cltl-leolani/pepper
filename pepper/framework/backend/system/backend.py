@@ -7,10 +7,10 @@ from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech, \
     SystemMotion, SystemLed, SystemTablet
-from pepper.framework.config.api import ConfigurationManager, ConfigurationContainer
-from pepper.framework.di_container import singleton
-from pepper.framework.event.api import EventBusContainer, EventBus
-from pepper.framework.resource.api import ResourceContainer, ResourceManager
+from pepper.framework.infra.config.api import ConfigurationManager, ConfigurationContainer
+from pepper.framework.infra.di_container import singleton
+from pepper.framework.infra.event.api import EventBusContainer, EventBus
+from pepper.framework.infra.resource.api import ResourceContainer, ResourceManager
 from pepper.framework.sensor.api import SensorContainer
 from pepper.framework.sensor.asr import AbstractTranslator
 

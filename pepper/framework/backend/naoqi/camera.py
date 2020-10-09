@@ -1,7 +1,7 @@
 from pepper.framework.backend.abstract.camera import AbstractCamera, AbstractImage
-from pepper.framework.event.api import EventBus
-from pepper.framework.resource.api import ResourceManager
-from pepper.framework.util import Bounds
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
+from pepper.framework.infra.util import Bounds
 from pepper import NAOqiCameraIndex, CameraResolution
 
 import qi
@@ -11,8 +11,6 @@ import numpy as np
 from random import getrandbits
 from threading import Thread
 from time import time, sleep
-
-from typing import List, Callable
 
 
 class NAOqiImage(AbstractImage):

@@ -3,7 +3,7 @@ import os
 from configparser import ConfigParser
 
 import pepper
-from pepper.framework.di_container import singleton
+from pepper.framework.infra.di_container import singleton
 from .api import Configuration, ConfigurationManager, ConfigurationContainer
 
 _DELIMITER = ","

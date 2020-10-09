@@ -4,8 +4,8 @@ import re
 import qi
 
 from pepper.framework.backend.abstract.tablet import AbstractTablet
-from pepper.framework.event.api import EventBus
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
 
 logger = logging.getLogger(__name__)
 

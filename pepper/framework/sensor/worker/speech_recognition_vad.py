@@ -1,7 +1,7 @@
 from pepper.framework.backend.abstract.microphone import TOPIC as MIC_TOPIC
-from pepper.framework.event.api import Event, EventBus
-from pepper.framework.multiprocessing import TopicWorker, RejectionStrategy
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.infra.event.api import Event, EventBus
+from pepper.framework.infra.multiprocessing import TopicWorker, RejectionStrategy
+from pepper.framework.infra.resource.api import ResourceManager
 from pepper.framework.sensor.api import VAD
 
 

@@ -5,9 +5,9 @@ from time import sleep
 from typing import Optional, Union
 
 from pepper.framework.backend.abstract.microphone import AUDIO_RESOURCE_NAME as AUDIO_RESOURCE
-from pepper.framework.event.api import EventBus, Event
-from pepper.framework.resource.api import ResourceManager
-from pepper.framework.util import Scheduler
+from pepper.framework.infra.event.api import EventBus, Event
+from pepper.framework.infra.resource.api import ResourceManager
+from pepper.framework.infra.util import Scheduler
 
 logger = logging.getLogger(__name__)
 

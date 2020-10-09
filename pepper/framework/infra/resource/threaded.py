@@ -3,7 +3,7 @@ import threading
 from collections import defaultdict
 from contextlib import contextmanager
 
-from pepper.framework.di_container import singleton
+from pepper.framework.infra.di_container import singleton
 from .api import ReadLock, WriteLock, ResourceManager, ResourceContainer, LockTimeoutError
 
 logger = logging.getLogger(__name__)

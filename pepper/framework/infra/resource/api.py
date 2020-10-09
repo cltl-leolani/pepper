@@ -2,7 +2,7 @@ from contextlib import contextmanager
 
 from typing import Iterable
 
-from pepper.framework.di_container import DIContainer
+from pepper.framework.infra.di_container import DIContainer
 
 
 class LockTimeoutError(Exception):
@@ -14,7 +14,7 @@ class LockTimeoutError(Exception):
 
 class ResourceContainer(DIContainer):
     """
-    :class:`~pepper.framework.di_container.DIContainer` providing a :class:`.ResourceManager` instance.
+    :class:`~pepper.framework.infra.di_container.DIContainer` providing a :class:`.ResourceManager` instance.
     """
     @property
     def resource_manager(self):

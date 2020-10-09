@@ -5,8 +5,8 @@ import threading
 import time
 import unittest
 
-from pepper.framework.resource.api import Lock, acquire
-from pepper.framework.resource.threaded import ThreadedResourceManager
+from pepper.framework.infra.resource.api import Lock, acquire
+from pepper.framework.infra.resource.threaded import ThreadedResourceManager
 
 
 logger = logging.getLogger(__name__)

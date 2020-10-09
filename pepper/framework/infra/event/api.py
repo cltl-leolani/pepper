@@ -1,7 +1,7 @@
 import time
 import uuid
 
-from pepper.framework.di_container import DIContainer
+from pepper.framework.infra.di_container import DIContainer
 
 
 class TopicError(ValueError):

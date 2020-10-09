@@ -15,13 +15,13 @@ from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
 from pepper.framework.application.text_to_speech import TextToSpeechComponent
-from pepper.framework.config.api import ConfigurationContainer
-from pepper.framework.config.local import LocalConfigurationContainer
-from pepper.framework.di_container import singleton
-from pepper.framework.event.api import EventBusContainer
-from pepper.framework.event.memory import SynchronousEventBusContainer
-from pepper.framework.resource.api import ResourceContainer
-from pepper.framework.resource.threaded import ThreadedResourceContainer
+from pepper.framework.infra.config.api import ConfigurationContainer
+from pepper.framework.infra.config.local import LocalConfigurationContainer
+from pepper.framework.infra.di_container import singleton
+from pepper.framework.infra.event.api import EventBusContainer
+from pepper.framework.infra.event.memory import SynchronousEventBusContainer
+from pepper.framework.infra.resource.api import ResourceContainer
+from pepper.framework.infra.resource.threaded import ThreadedResourceContainer
 from pepper.framework.sensor.api import AbstractTranslator, AbstractASR, UtteranceHypothesis, SensorContainer
 from pepper.framework.sensor.container import DefaultSensorWorkerContainer
 from pepper.framework.sensor.vad import AbstractVAD

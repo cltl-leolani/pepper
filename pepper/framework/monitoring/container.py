@@ -1,7 +1,7 @@
 from threading import Thread
 
 from pepper.framework.context.api import ContextContainer
-from pepper.framework.di_container import DIContainer
+from pepper.framework.infra.di_container import DIContainer
 from pepper.framework.monitoring.server.server import MonitoringServer
 from pepper.framework.monitoring.worker.monitoring import MonitoringWorker
 

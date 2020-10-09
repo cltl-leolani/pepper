@@ -8,8 +8,8 @@ from playsound import playsound
 from typing import Union, Optional
 
 from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
-from pepper.framework.event.api import EventBus
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
 from pepper.framework.sensor.asr import AbstractTranslator
 
 

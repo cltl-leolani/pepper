@@ -1,4 +1,3 @@
-from Queue import Queue
 from collections import deque
 
 import numpy as np
@@ -6,11 +5,9 @@ import webrtcvad
 from typing import Iterable
 
 from pepper.framework.backend.abstract.microphone import AbstractMicrophone
-from pepper.framework.backend.abstract.microphone import TOPIC as MIC_TOPIC
 from pepper.framework.backend.abstract.microphone import MIC_RESOURCE_NAME as MIC_RESOURCE
-from pepper.framework.config.api import ConfigurationManager
-from pepper.framework.event.api import EventBus, Event
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.infra.config.api import ConfigurationManager
+from pepper.framework.infra.resource.api import ResourceManager
 from .api import VAD, Voice
 
 

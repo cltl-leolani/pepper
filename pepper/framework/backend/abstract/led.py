@@ -3,8 +3,8 @@ import logging
 from enum import Enum
 from typing import List, Tuple
 
-from pepper.framework.event.api import EventBus
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
 
 logger = logging.getLogger(__name__)
 

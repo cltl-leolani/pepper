@@ -8,11 +8,11 @@ from typing import Optional
 
 from pepper.framework.backend.abstract.text_to_speech import TOPIC as TTS_TOPIC
 from pepper.framework.backend.abstract.tablet import TOPIC as TABLET_TOPIC
-from pepper.framework.config.api import ConfigurationManager
+from pepper.framework.infra.config.api import ConfigurationManager
 from pepper.framework.context.api import Context
-from pepper.framework.event.api import EventBus, Event
-from pepper.framework.multiprocessing import TopicWorker
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.infra.event.api import EventBus, Event
+from pepper.framework.infra.multiprocessing import TopicWorker
+from pepper.framework.infra.resource.api import ResourceManager
 from pepper.framework.sensor.asr import AbstractASR
 
 TOPICS = [AbstractASR.TOPIC, TTS_TOPIC]

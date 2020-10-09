@@ -5,9 +5,9 @@ import numpy as np
 
 from pepper import CameraResolution
 from pepper.framework.backend.abstract.camera import AbstractCamera, AbstractImage
-from pepper.framework.event.api import EventBus
-from pepper.framework.resource.api import ResourceManager
-from pepper.framework.util import Scheduler, Bounds
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
+from pepper.framework.infra.util import Scheduler, Bounds
 
 
 class SystemImage(AbstractImage):

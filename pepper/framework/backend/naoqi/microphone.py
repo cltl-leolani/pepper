@@ -1,13 +1,13 @@
-from pepper.framework.event.api import EventBus
+from pepper.framework.infra.event.api import EventBus
 from pepper.framework.backend.abstract.microphone import AbstractMicrophone
 from pepper import NAOqiMicrophoneIndex
 import numpy as np
 
 import qi
 
-from typing import List, Callable, Tuple
+from typing import Tuple
 
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.infra.resource.api import ResourceManager
 
 
 class NAOqiMicrophone(AbstractMicrophone):

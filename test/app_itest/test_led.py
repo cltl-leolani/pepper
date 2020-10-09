@@ -7,10 +7,10 @@ from pepper.framework.application.led import LedComponent
 from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.abstract.led import AbstractLed, Led
 from pepper.framework.backend.container import BackendContainer
-from pepper.framework.di_container import singleton
-from pepper.framework.event.api import EventBusContainer
-from pepper.framework.event.memory import SynchronousEventBusContainer
-from pepper.framework.resource.threaded import ThreadedResourceContainer
+from pepper.framework.infra.di_container import singleton
+from pepper.framework.infra.event.api import EventBusContainer
+from pepper.framework.infra.event.memory import SynchronousEventBusContainer
+from pepper.framework.infra.resource.threaded import ThreadedResourceContainer
 from test import util
 
 

@@ -1,7 +1,7 @@
 import unittest
 
-from pepper.framework.event.api import Event, EventMetadata
-from pepper.framework.event.memory import SynchronousEventBus
+from pepper.framework.infra.event.api import Event, EventMetadata
+from pepper.framework.infra.event.memory import SynchronousEventBus
 
 
 class SynchronousEventBusTestCase(unittest.TestCase):

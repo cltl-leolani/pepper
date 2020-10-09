@@ -1,11 +1,9 @@
 from pepper.framework.backend.abstract.microphone import AbstractMicrophone
-from pepper.framework.event.api import EventBus
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
 
 import pyaudio
 import numpy as np
-
-from typing import List, Callable
 
 
 class SystemMicrophone(AbstractMicrophone):

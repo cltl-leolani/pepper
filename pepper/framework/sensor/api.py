@@ -3,9 +3,8 @@ from Queue import Queue
 import numpy as np
 from typing import Iterable
 
-from pepper.framework.di_container import DIContainer
-from pepper.framework.multiprocessing import TopicWorker
-from pepper.framework.util import Bounds
+from pepper.framework.infra.di_container import DIContainer
+from pepper.framework.infra.util import Bounds
 # Include from submodules
 # noinspection PyUnresolvedReferences
 from .asr import AbstractASR, AbstractTranslator, UtteranceHypothesis

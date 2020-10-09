@@ -4,7 +4,7 @@ import unittest
 import importlib_resources
 from enum import Enum
 
-from pepper.framework.config.local import LocalConfigurationContainer
+from pepper.framework.infra.config.local import LocalConfigurationContainer
 
 
 class TestEnum(Enum):

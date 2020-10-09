@@ -1,12 +1,9 @@
 import logging
-import os
 import socket
-import subprocess
-from time import sleep
 
 import numpy as np
 
-from pepper.framework.util import Bounds
+from pepper.framework.infra.util import Bounds
 from .api import FaceDetector
 
 logger = logging.getLogger(__name__)

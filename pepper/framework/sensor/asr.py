@@ -7,7 +7,7 @@ from google.cloud import speech, translate_v2
 from typing import List, Tuple, Iterable, Union
 
 # TODO extract interfaces to .api
-from pepper.framework.config.api import ConfigurationManager
+from pepper.framework.infra.config.api import ConfigurationManager
 
 logger = logging.getLogger(__name__)
 

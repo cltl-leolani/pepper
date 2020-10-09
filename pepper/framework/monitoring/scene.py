@@ -2,7 +2,7 @@ import numpy as np
 from cv2 import resize
 from typing import Tuple
 
-from pepper.framework.util import spherical2cartesian
+from pepper.framework.infra.util import spherical2cartesian
 
 
 class Scene(object):

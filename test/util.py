@@ -2,7 +2,7 @@ from time import sleep
 
 from unittest import TestCase
 
-from pepper.framework.config.api import Configuration
+from pepper.framework.infra.config.api import Configuration
 
 
 class TestConfiguration(Configuration):

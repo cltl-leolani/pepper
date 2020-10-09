@@ -4,7 +4,7 @@ from typing import List, Tuple
 from pepper.framework.application.component import AbstractComponent
 from pepper.framework.backend.abstract.led import Led
 from pepper.framework.backend.abstract.led import TOPIC
-from pepper.framework.event.api import Event
+from pepper.framework.infra.event.api import Event
 
 
 class LedComponent(AbstractComponent):

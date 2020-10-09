@@ -5,11 +5,11 @@ from typing import ClassVar
 
 from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
-from pepper.framework.config.api import ConfigurationContainer
+from pepper.framework.infra.config.api import ConfigurationContainer
 from pepper.framework.context.api import ContextContainer, ContextWorkerContainer
-from pepper.framework.event.api import EventBusContainer
+from pepper.framework.infra.event.api import EventBusContainer
 from pepper.framework.monitoring.container import MonitoringWorkerContainer
-from pepper.framework.resource.api import ResourceContainer
+from pepper.framework.infra.resource.api import ResourceContainer
 from pepper.framework.sensor.api import SensorContainer, SensorWorkerContainer
 
 logger = logging.getLogger(__name__)

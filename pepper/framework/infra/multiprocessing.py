@@ -7,8 +7,8 @@ from time import sleep
 from enum import Enum
 from typing import Iterable, Optional, Union
 
-from pepper.framework.event.api import EventBus, Event, TopicError
-from pepper.framework.resource.api import ResourceManager, LockTimeoutError
+from pepper.framework.infra.event.api import EventBus, Event, TopicError
+from pepper.framework.infra.resource.api import ResourceManager, LockTimeoutError
 
 logger = logging.getLogger(__name__)
 

@@ -9,9 +9,9 @@ from PIL import Image
 from typing import Tuple, List, Optional
 
 from pepper import CameraResolution
-from pepper.framework.event.api import Event, EventBus
-from pepper.framework.resource.api import ResourceManager
-from pepper.framework.util import Mailbox, Scheduler, Bounds, spherical2cartesian
+from pepper.framework.infra.event.api import Event, EventBus
+from pepper.framework.infra.resource.api import ResourceManager
+from pepper.framework.infra.util import Mailbox, Scheduler, Bounds, spherical2cartesian
 
 logger = logging.getLogger(__name__)
 

@@ -1,8 +1,8 @@
 from typing import List, Tuple
 
 from pepper.framework.backend.abstract.led import AbstractLed, Led
-from pepper.framework.event.api import EventBus
-from pepper.framework.resource.api import ResourceManager
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
 
 
 class SystemLed(AbstractLed):

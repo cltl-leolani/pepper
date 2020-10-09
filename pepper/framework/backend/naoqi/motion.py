@@ -1,7 +1,7 @@
 from pepper.framework.backend.abstract.motion import AbstractMotion
-from pepper.framework.event.api import EventBus
-from pepper.framework.resource.api import ResourceManager
-from pepper.framework.util import spherical2cartesian
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
+from pepper.framework.infra.util import spherical2cartesian
 
 import qi
 

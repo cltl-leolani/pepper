@@ -12,7 +12,7 @@ from sklearn.cluster import DBSCAN
 from typing import List, Iterable, Dict, Tuple, Optional
 
 from pepper.framework.backend.abstract.camera import AbstractImage
-from pepper.framework.di_container import DIContainer, singleton
+from pepper.framework.infra.di_container import DIContainer, singleton
 from pepper.framework.sensor.api import Location, Object
 from pepper.framework.sensor.face import Face
 from pepper.knowledge.objects import OBJECT_INFO

@@ -2,8 +2,8 @@ import threading
 import time
 import unittest
 
-from pepper.framework.resource.api import Lock, ReadLock, WriteLock
-from pepper.framework.resource.threaded import ThreadedResourceManager
+from pepper.framework.infra.resource.api import Lock, ReadLock, WriteLock
+from pepper.framework.infra.resource.threaded import ThreadedResourceManager
 
 TIMEOUT=1
 

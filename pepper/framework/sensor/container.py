@@ -4,10 +4,10 @@ from Queue import Queue
 from typing import Iterable
 
 from pepper.framework.backend.container import BackendContainer
-from pepper.framework.config.api import ConfigurationContainer
-from pepper.framework.di_container import singleton, singleton_for_kw
-from pepper.framework.event.api import EventBusContainer
-from pepper.framework.resource.api import ResourceContainer
+from pepper.framework.infra.config.api import ConfigurationContainer
+from pepper.framework.infra.di_container import singleton, singleton_for_kw
+from pepper.framework.infra.event.api import EventBusContainer
+from pepper.framework.infra.resource.api import ResourceContainer
 from .api import SensorContainer, SensorWorkerContainer
 from .asr import StreamedGoogleASR, GoogleTranslator
 from .face_detect import OpenFace

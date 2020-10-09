@@ -1,5 +1,5 @@
 from pepper.framework.backend.abstract.backend import AbstractBackend
-from pepper.framework.di_container import DIContainer
+from pepper.framework.infra.di_container import DIContainer
 
 class BackendContainer(DIContainer):
     @property

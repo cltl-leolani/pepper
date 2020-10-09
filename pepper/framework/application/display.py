@@ -1,6 +1,6 @@
 from pepper.framework.application.component import AbstractComponent
 from pepper.framework.backend.abstract.tablet import TOPIC
-from pepper.framework.event.api import Event
+from pepper.framework.infra.event.api import Event
 
 
 class DisplayComponent(AbstractComponent):

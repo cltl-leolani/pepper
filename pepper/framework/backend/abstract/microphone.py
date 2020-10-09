@@ -5,9 +5,9 @@ from time import time, sleep
 
 import numpy as np
 
-from pepper.framework.event.api import Event
-from pepper.framework.resource.api import ResourceManager
-from pepper.framework.util import Scheduler
+from pepper.framework.infra.event.api import Event
+from pepper.framework.infra.resource.api import ResourceManager
+from pepper.framework.infra.util import Scheduler
 
 logger = logging.getLogger(__name__)
 
