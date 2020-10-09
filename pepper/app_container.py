@@ -1,8 +1,9 @@
 # TODO Load configuration from application once we don't use inheritance anymore for components
 import logging.config
 
-from pepper.brain.long_term_memory import BrainContainer
+from pepper.brain.long_term_memory import BrainContainer, LongTermMemory
 from pepper.framework.context.container import DefaultContextContainer, DefaultContextWorkerContainer
+from pepper.framework.infra.di_container import singleton
 
 logging.config.fileConfig('config/logging.config')
 
@@ -35,3 +36,12 @@ class ApplicationContainer(backend_container,
                            BrainContainer):
 
     logger.info("Initialized ApplicationContainer")
+
+    @property
+    @singleton
+    def brain(self):
+        config = self.config_manager.get_config("pepper.framework.component.brain")
+        url = config.get("url")
+        log_dir = config.get("log_dir")
+
+        return LongTermMemory(url, log_dir)
