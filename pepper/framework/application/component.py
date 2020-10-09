@@ -3,6 +3,7 @@ from logging import Logger
 
 from typing import ClassVar
 
+from pepper.brain.long_term_memory import BrainContainer
 from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.infra.config.api import ConfigurationContainer
@@ -21,8 +22,10 @@ class ComponentDependencyError(Exception):
 
 
 # TODO For now use the mixin pattern, unify dependency management
-class AbstractComponent(BackendContainer, ContextWorkerContainer, ContextContainer,
+class AbstractComponent(BackendContainer,
+                        ContextWorkerContainer, ContextContainer,
                         SensorWorkerContainer, SensorContainer,
+                        BrainContainer,
                         MonitoringWorkerContainer,
                         EventBusContainer, ResourceContainer, ConfigurationContainer):
     """

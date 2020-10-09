@@ -32,8 +32,8 @@ else:
 class ApplicationContainer(backend_container,
                            DefaultSensorWorkerContainer, DefaultSensorContainer,
                            DefaultContextWorkerContainer, DefaultContextContainer,
-                           SynchronousEventBusContainer, ThreadedResourceContainer, LocalConfigurationContainer,
-                           BrainContainer):
+                           BrainContainer,
+                           SynchronousEventBusContainer, ThreadedResourceContainer, LocalConfigurationContainer):
 
     logger.info("Initialized ApplicationContainer")
 
