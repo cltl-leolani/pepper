@@ -1,5 +1,5 @@
-from pepper.framework.abstract._util import event_payload_handler
-from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.application._util import event_payload_handler
+from pepper.framework.application.component import AbstractComponent
 from pepper.framework.context.api import TOPIC_ON_CHAT_ENTER, TOPIC_ON_CHAT_TURN, TOPIC_ON_CHAT_EXIT
 from pepper.language import Utterance
 

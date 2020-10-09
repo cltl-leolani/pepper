@@ -1,7 +1,7 @@
 import unittest
 
-from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.display import DisplayComponent
+from pepper.framework.application.application import AbstractApplication
+from pepper.framework.application.display import DisplayComponent
 from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.abstract.tablet import AbstractTablet
 from pepper.framework.backend.container import BackendContainer

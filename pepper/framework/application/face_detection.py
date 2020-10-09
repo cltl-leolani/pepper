@@ -1,7 +1,7 @@
 from typing import List
 
-from pepper.framework.abstract._util import event_payload_handler
-from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.application._util import event_payload_handler
+from pepper.framework.application.component import AbstractComponent
 from pepper.framework.sensor.api import FaceDetector
 from pepper.framework.sensor.face import Face
 

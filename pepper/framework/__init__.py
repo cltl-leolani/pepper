@@ -4,10 +4,10 @@ The Pepper Framework Package consists out of the basic building blocks to make r
 Abstract
 ========
 
-The framework.abstract package contains specifications for:
+The framework.application package contains specifications for:
 
-- Applications: :class:`~pepper.framework.abstract.application.AbstractApplication`
-- Components & Intentions: :class:`~pepper.framework.abstract.component.AbstractComponent` :class:`~pepper.framework.abstract.intention.AbstractIntention`
+- Applications: :class:`~pepper.framework.application.application.AbstractApplication`
+- Components & Intentions: :class:`~pepper.framework.application.component.AbstractComponent` :class:`~pepper.framework.application.intention.AbstractIntention`
 
 Backend
 =======
@@ -31,15 +31,15 @@ The framework.sensor package implements Face, Object and Speech Recognition:
 Component
 =========
 
-Applications are made out of several instances of :class:`~pepper.framework.abstract.component.AbstractComponent`,
+Applications are made out of several instances of :class:`~pepper.framework.application.component.AbstractComponent`,
 which expose various methods and events to applications. They are summarized below:
 
-- :class:`~from pepper.framework.abstract.object_detection.ObjectDetectionComponent` exposes the :meth:`~pepper.framework.component.object_detection.ObjectDetectionComponent.on_object` event.
+- :class:`~from pepper.framework.application.object_detection.ObjectDetectionComponent` exposes the :meth:`~pepper.framework.component.object_detection.ObjectDetectionComponent.on_object` event.
 - :class:`~pepper.framework.component.face_detection.FaceRecognitionComponent` exposes the :meth:`~pepper.framework.component.face_detection.FaceRecognitionComponent.on_face`, :meth:`~pepper.framework.component.face_detection.FaceRecognitionComponentComponent.on_face_known` & :meth:`~pepper.framework.component.face_detection.FaceRecognitionComponent.on_face_new` events.
 - :class:`~pepper.framework.component.text_to_speech.TextToSpeechComponent` exposes the :meth:`~pepper.framework.component.text_to_speech.TextToSpeechComponent.say` method.
 - :class:`~pepper.framework.component.brain.BrainComponent` exposes :class:`pepper.brain.long_term_memory.LongTermMemory` to the application.
 
-Some Components are more complex and require other components to work. They will raise a :class:`pepper.framework.abstract.component.ComponentDependencyError` if dependencies are not met.
+Some Components are more complex and require other components to work. They will raise a :class:`pepper.framework.application.component.ComponentDependencyError` if dependencies are not met.
 
 - :class:`~pepper.framework.component.context.ContextComponent` exposes :class:`pepper.framework.context.Context` to the application and overrides the :meth:`~pepper.framework.component.context.ContextComponent.say` method to work with the :class:`~pepper.language.language.Chat` class. It also exposes the :meth:`~pepper.framework.component.context.ContextComponent.on_chat_turn`, :meth:`~pepper.framework.component.context.ContextComponent.on_chat_enter` & :meth:`~pepper.framework.component.context.ContextComponent.on_chat_exit` events.
 - :class:`~pepper.framework.component.statistics.StatisticsComponent` displays realtime system statistics in the command line.

@@ -2,7 +2,7 @@ from random import choice, random
 
 from typing import Optional, Union, Tuple, Callable
 
-from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
 from pepper.knowledge import animations, sentences
 from pepper.language import Utterance
 from .responder import Responder, ResponderType

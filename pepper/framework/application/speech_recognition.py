@@ -3,7 +3,7 @@ from threading import Thread
 import numpy as np
 from typing import *
 
-from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.application.component import AbstractComponent
 from pepper.framework.sensor.api import UtteranceHypothesis
 from pepper.framework.sensor.asr import AbstractASR
 

@@ -1,14 +1,14 @@
 """Example Application that displays what it sees in the browser"""
 
 from pepper.app_container import ApplicationContainer
-from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.object_detection import ObjectDetectionComponent
-from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
-from pepper.framework.abstract.face_detection import FaceRecognitionComponent
-from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.abstract.context import ContextComponent
-from pepper.framework.abstract.statistics import StatisticsComponent
-from pepper.framework.abstract.monitoring import MonitoringComponent
+from pepper.framework.application.application import AbstractApplication
+from pepper.framework.application.object_detection import ObjectDetectionComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
+from pepper.framework.application.face_detection import FaceRecognitionComponent
+from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
+from pepper.framework.application.context import ContextComponent
+from pepper.framework.application.statistics import StatisticsComponent
+from pepper.framework.application.monitoring import MonitoringComponent
 
 
 class DisplayApp(ApplicationContainer,

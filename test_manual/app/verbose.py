@@ -1,10 +1,10 @@
 from pepper.app_container import ApplicationContainer
 from pepper.framework.backend.abstract.microphone import TOPIC as MIC_TOPIC
 from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
-from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.object_detection import ObjectDetectionComponent
-from pepper.framework.abstract.face_detection import FaceRecognitionComponent
-from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
+from pepper.framework.application.application import AbstractApplication
+from pepper.framework.application.object_detection import ObjectDetectionComponent
+from pepper.framework.application.face_detection import FaceRecognitionComponent
+from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
 from pepper.framework.monitoring import DisplayComponent, StatisticsComponent
 
 

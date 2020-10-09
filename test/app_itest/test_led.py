@@ -2,8 +2,8 @@ import unittest
 
 import numpy as np
 
-from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.led import LedComponent
+from pepper.framework.application.application import AbstractApplication
+from pepper.framework.application.led import LedComponent
 from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.abstract.led import AbstractLed, Led
 from pepper.framework.backend.container import BackendContainer

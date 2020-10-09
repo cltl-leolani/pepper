@@ -2,9 +2,9 @@ import logging
 
 from typing import Iterator, ClassVar
 
-from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.component import AbstractComponent
-from pepper.framework.abstract.component import ComponentDependencyError
+from pepper.framework.application.application import AbstractApplication
+from pepper.framework.application.component import AbstractComponent
+from pepper.framework.application.component import ComponentDependencyError
 
 logger = logging.getLogger(__name__)
 
@@ -12,13 +12,13 @@ logger = logging.getLogger(__name__)
 class AbstractIntention(object):
     """
     The Intention class is at the base of more involved robot applications.
-    They build on top of :class:`~pepper.framework.abstract.application.AbstractApplication`
+    They build on top of :class:`~pepper.framework.application.application.AbstractApplication`
     instances and allow for switching between robot behaviours.
 
     Parameters
     ----------
     application: AbstractApplication
-        :class:`~pepper.framework.abstract.application.AbstractApplication` to base Intention on
+        :class:`~pepper.framework.application.application.AbstractApplication` to base Intention on
     """
 
     def __init__(self, application):
@@ -55,7 +55,7 @@ class AbstractIntention(object):
     def application(self):
         # type: () -> AbstractApplication
         """
-        The :class:`~pepper.framework.abstract.application.AbstractApplication` Intention is based on
+        The :class:`~pepper.framework.application.application.AbstractApplication` Intention is based on
 
         Returns
         -------
@@ -87,7 +87,7 @@ class AbstractIntention(object):
         """
         Enforce Component Dependency
 
-        Checks whether Component is included in :class:`~pepper.framework.abstract.application.AbstractApplication`
+        Checks whether Component is included in :class:`~pepper.framework.application.application.AbstractApplication`
 
         Parameters
         ----------

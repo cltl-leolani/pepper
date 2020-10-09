@@ -2,8 +2,8 @@ import unittest
 
 import numpy as np
 
-from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.motion import MotionComponent
+from pepper.framework.application.application import AbstractApplication
+from pepper.framework.application.motion import MotionComponent
 from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.abstract.motion import AbstractMotion
 from pepper.framework.backend.container import BackendContainer

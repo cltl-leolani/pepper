@@ -8,23 +8,23 @@ import numpy as np
 from typing import List, Callable
 
 from pepper.app_container import ApplicationContainer
-from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.brain import BrainComponent
-from pepper.framework.abstract.context import ContextComponent
-from pepper.framework.abstract.display import DisplayComponent
+from pepper.framework.application.application import AbstractApplication
+from pepper.framework.application.brain import BrainComponent
+from pepper.framework.application.context import ContextComponent
+from pepper.framework.application.display import DisplayComponent
 # noinspection PyUnresolvedReferences
-from pepper.framework.abstract.exploration import ExplorationComponent
-from pepper.framework.abstract.face_detection import FaceRecognitionComponent
-from pepper.framework.abstract.intention import AbstractIntention
+from pepper.framework.application.exploration import ExplorationComponent
+from pepper.framework.application.face_detection import FaceRecognitionComponent
+from pepper.framework.application.intention import AbstractIntention
 # noinspection PyUnresolvedReferences
-from pepper.framework.abstract.monitoring import MonitoringComponent
-from pepper.framework.abstract.motion import MotionComponent
-from pepper.framework.abstract.object_detection import ObjectDetectionComponent
-from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.abstract.statistics import StatisticsComponent
+from pepper.framework.application.monitoring import MonitoringComponent
+from pepper.framework.application.motion import MotionComponent
+from pepper.framework.application.object_detection import ObjectDetectionComponent
+from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
+from pepper.framework.application.statistics import StatisticsComponent
 # noinspection PyUnresolvedReferences
-from pepper.framework.abstract.subtitles import SubtitlesComponent
-from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
+from pepper.framework.application.subtitles import SubtitlesComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
 # TODO move constants from Openface into a configuration
 from pepper.framework.sensor.api import FaceDetector
 from pepper.framework.sensor.face import FaceClassifier

@@ -4,7 +4,7 @@ import threading
 from sys import stdout, stderr
 from time import time
 
-from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.application.component import AbstractComponent
 from pepper.framework.util import Scheduler
 
 

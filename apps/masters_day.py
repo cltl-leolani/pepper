@@ -3,18 +3,18 @@ from threading import Thread
 from time import time, sleep
 
 from pepper.app_container import ApplicationContainer
-from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.brain import BrainComponent
-from pepper.framework.abstract.display import DisplayComponent
-from pepper.framework.abstract.intention import AbstractIntention
-from pepper.framework.abstract.motion import MotionComponent
-from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
-from pepper.framework.abstract.object_detection import ObjectDetectionComponent
-from pepper.framework.abstract.face_detection import FaceRecognitionComponent
-from pepper.framework.abstract.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.abstract.context import ContextComponent
-from pepper.framework.abstract.subtitles import SubtitlesComponent
-from pepper.framework.abstract.statistics import StatisticsComponent
+from pepper.framework.application.application import AbstractApplication
+from pepper.framework.application.brain import BrainComponent
+from pepper.framework.application.display import DisplayComponent
+from pepper.framework.application.intention import AbstractIntention
+from pepper.framework.application.motion import MotionComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
+from pepper.framework.application.object_detection import ObjectDetectionComponent
+from pepper.framework.application.face_detection import FaceRecognitionComponent
+from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
+from pepper.framework.application.context import ContextComponent
+from pepper.framework.application.subtitles import SubtitlesComponent
+from pepper.framework.application.statistics import StatisticsComponent
 from pepper.framework.sensor.api import UtteranceHypothesis
 from pepper.knowledge import sentences, animations
 from pepper.language.generation.reply import reply_to_question

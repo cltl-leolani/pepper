@@ -1,10 +1,8 @@
 # TODO Load configuration from application once we don't use inheritance anymore for components
 import logging.config
 
-from pepper.brain.long_term_memory import BrainContainer, LongTermMemory
+from pepper.brain.long_term_memory import BrainContainer
 from pepper.framework.context.container import DefaultContextContainer, DefaultContextWorkerContainer
-from pepper.framework.di_container import singleton
-from pepper.framework.monitoring.container import DefaultMonitoringWorkerContainer
 
 logging.config.fileConfig('config/logging.config')
 

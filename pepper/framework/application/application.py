@@ -2,7 +2,7 @@ import logging
 from logging import Logger
 from time import sleep
 
-from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.application.component import AbstractComponent
 from pepper.framework.backend.abstract.led import AbstractLed
 from pepper.framework.backend.abstract.motion import AbstractMotion
 from pepper.framework.backend.abstract.tablet import AbstractTablet
@@ -15,8 +15,8 @@ logger = logging.getLogger(__name__)
 class AbstractApplication(AbstractComponent):
     """
     The Application class is at the base of every robot application.
-    It keeps track of events from different instances of :class:`~pepper.framework.abstract.component.AbstractComponent`,
-    allows extension by instances of :class:`~pepper.framework.abstract.intention.AbstractIntention` and
+    It keeps track of events from different instances of :class:`~pepper.framework.application.component.AbstractComponent`,
+    allows extension by instances of :class:`~pepper.framework.application.intention.AbstractIntention` and
     exposes :class:`~pepper.framework.backend.abstract.AbstractBackend` devices to the Application Layer.
     """
 

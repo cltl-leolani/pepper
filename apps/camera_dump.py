@@ -6,8 +6,8 @@ import numpy as np
 from PIL import Image
 
 from pepper.app_container import ApplicationContainer
-from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.object_detection import ObjectDetectionComponent
+from pepper.framework.application.application import AbstractApplication
+from pepper.framework.application.object_detection import ObjectDetectionComponent
 
 
 class CameraDumpApp(ApplicationContainer, AbstractApplication, ObjectDetectionComponent):

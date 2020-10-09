@@ -2,9 +2,9 @@ from random import choice
 
 from typing import Optional, Union, Tuple, Callable
 
-from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.brain import BrainComponent
-from pepper.framework.abstract.text_to_speech import TextToSpeechComponent
+from pepper.framework.application.application import AbstractApplication
+from pepper.framework.application.brain import BrainComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
 from pepper.knowledge import animations
 from pepper.language import Utterance
 from .responder import Responder, ResponderType

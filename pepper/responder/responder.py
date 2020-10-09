@@ -4,8 +4,8 @@ from time import time
 from enum import Enum
 from typing import List, Union, Tuple, Optional, ClassVar, Callable
 
-from pepper.framework.abstract.application import AbstractApplication
-from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.application.application import AbstractApplication
+from pepper.framework.application.component import AbstractComponent
 from pepper.language import Utterance
 
 logger = logging.getLogger(__name__)

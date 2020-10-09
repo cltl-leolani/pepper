@@ -1,6 +1,6 @@
 from typing import Tuple
 
-from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.application.component import AbstractComponent
 from pepper.framework.backend.abstract.motion import TOPIC_LOOK
 from pepper.framework.backend.abstract.motion import TOPIC_POINT
 from pepper.framework.event.api import Event

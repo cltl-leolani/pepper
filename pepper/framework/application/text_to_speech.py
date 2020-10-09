@@ -1,6 +1,6 @@
 from typing import Optional, Union
 
-from pepper.framework.abstract.component import AbstractComponent
+from pepper.framework.application.component import AbstractComponent
 from pepper.framework.event.api import Event
 from pepper.framework.backend.abstract.text_to_speech import TOPIC as TTS_TOPIC
 
