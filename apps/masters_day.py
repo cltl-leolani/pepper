@@ -4,6 +4,7 @@ from time import time, sleep
 
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.brain import BrainComponent
 from pepper.framework.abstract.display import DisplayComponent
 from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.abstract.motion import MotionComponent
@@ -57,6 +58,7 @@ class PresentTeamApp(ApplicationContainer,
                      SubtitlesComponent, ContextComponent,
                      ObjectDetectionComponent, FaceRecognitionComponent,
                      SpeechRecognitionComponent, TextToSpeechComponent,
+                     BrainComponent,
                      MotionComponent, DisplayComponent):
     SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
 
@@ -70,7 +72,7 @@ class PresentTeamApp(ApplicationContainer,
         sleep(1.5)
 
     def show_text(self, text):
-        self.backend.show_on_display(self.SUBTITLES_URL.format(text))
+        self.show_on_display(self.SUBTITLES_URL.format(text))
 
 
 class WaitForStartCueIntention(AbstractIntention, PresentTeamApp):

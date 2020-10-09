@@ -6,6 +6,7 @@ from time import time, sleep
 
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.brain import BrainComponent
 from pepper.framework.abstract.display import DisplayComponent
 from pepper.framework.abstract.intention import AbstractIntention
 from pepper.framework.abstract.motion import MotionComponent
@@ -47,10 +48,11 @@ RESPONDERS = [
 ]
 
 
-class HMKApp(ApplicationContainer,
-             AbstractApplication, StatisticsComponent, ContextComponent,
+class HMKApp(ApplicationContainer, AbstractApplication,
+             StatisticsComponent, ContextComponent,
              ObjectDetectionComponent, FaceRecognitionComponent,
              SpeechRecognitionComponent, TextToSpeechComponent,
+             BrainComponent,
              MotionComponent, DisplayComponent):
     SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
 
@@ -65,7 +67,7 @@ class HMKApp(ApplicationContainer,
 
     def show_text(self, text):
         text_websafe = urllib.quote(''.join([i for i in re.sub(r'\\\\\S+\\\\', "", text) if ord(i) < 128]))
-        self.backend.show_on_display(self.SUBTITLES_URL.format(text_websafe))
+        self.show_on_display(self.SUBTITLES_URL.format(text_websafe))
 
 
 class WaitForStartCueIntention(AbstractIntention, HMKApp):

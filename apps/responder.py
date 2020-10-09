@@ -9,6 +9,7 @@ from typing import List, Callable
 
 from pepper.app_container import ApplicationContainer
 from pepper.framework.abstract.application import AbstractApplication
+from pepper.framework.abstract.brain import BrainComponent
 from pepper.framework.abstract.context import ContextComponent
 from pepper.framework.abstract.display import DisplayComponent
 # noinspection PyUnresolvedReferences
@@ -51,11 +52,12 @@ class ResponderApp(ApplicationContainer,
                    ContextComponent,
                    ObjectDetectionComponent, FaceRecognitionComponent,
                    SpeechRecognitionComponent, TextToSpeechComponent,
+                   BrainComponent,
                    MotionComponent, DisplayComponent):
 
     def __init__(self):
         super(ResponderApp, self).__init__()
-        self.backend.show_on_display(IMAGE_VU)
+        self.show_on_display(IMAGE_VU)
 
 
 class DefaultIntention(AbstractIntention, ResponderApp):
