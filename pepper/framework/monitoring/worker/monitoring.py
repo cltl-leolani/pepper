@@ -8,13 +8,12 @@ from typing import List, Optional
 from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC, AbstractImage
 from pepper.framework.context.api import Context
 from pepper.framework.infra.event.api import Event, EventBus
+from pepper.framework.infra.multiprocessing import TopicWorker, RejectionStrategy
+from pepper.framework.infra.resource.api import ResourceManager
 from pepper.framework.monitoring.scene import Scene
 from pepper.framework.monitoring.server.server import MonitoringServer
-from pepper.framework.infra.multiprocessing import TopicWorker, RejectionStrategy
-from pepper.framework.sensor.api import FaceDetector, ObjectDetector
-from pepper.framework.sensor.obj import Object
+from pepper.framework.sensor.api import FaceDetector, ObjectDetector, Object
 
-TOPIC = "pepper.framework.monitoring.topic"
 TOPICS = (CAM_TOPIC, FaceDetector.TOPIC_KNOWN, ObjectDetector.TOPIC)
 
 
@@ -28,7 +27,7 @@ class MonitoringWorker(TopicWorker):
         super(MonitoringWorker, self).__init__(TOPICS, event_bus, interval=0, name=name,
                                                buffer_size=16, rejection_strategy=RejectionStrategy.DROP,
                                                resource_manager=resource_manager,
-                                               requires=TOPICS, provides=[TOPIC])
+                                               requires=TOPICS, provides=[])
         self._context = context
         self._server = server
         self._display_info = {}
@@ -55,7 +54,7 @@ class MonitoringWorker(TopicWorker):
         # Get Scatter Coordinates
 
         # Update Server with Display Info of previous image with added items
-        self.event_bus.publish(TOPIC, Event(json.dumps(self. _display_info), None))
+        self._server.update(json.dumps(self._display_info))
 
         self._scene.on_image(image)
         x, y, z, c = self._scene.scatter_map

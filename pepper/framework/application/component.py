@@ -22,11 +22,10 @@ class ComponentDependencyError(Exception):
 
 
 # TODO For now use the mixin pattern, unify dependency management
-class AbstractComponent(BackendContainer,
+class AbstractComponent(MonitoringWorkerContainer, BackendContainer,
                         ContextWorkerContainer, ContextContainer,
                         SensorWorkerContainer, SensorContainer,
                         BrainContainer,
-                        MonitoringWorkerContainer,
                         EventBusContainer, ResourceContainer, ConfigurationContainer):
     """
     Abstract Base Component on which all Components are Based

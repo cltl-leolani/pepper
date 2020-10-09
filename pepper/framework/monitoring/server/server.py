@@ -42,6 +42,9 @@ class MonitoringServer(tornado.web.Application):
         webbrowser.open("http://localhost:{}".format(self.PORT))
         tornado.ioloop.IOLoop.instance().start()
 
+    def stop(self):
+        tornado.ioloop.IOLoop.instance().stop()
+
     def update(self, json):
         # type: (str) -> None
         """Update WebServer"""

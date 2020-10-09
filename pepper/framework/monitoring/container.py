@@ -2,6 +2,8 @@ from threading import Thread
 
 from pepper.framework.context.api import ContextContainer
 from pepper.framework.infra.di_container import DIContainer
+from pepper.framework.infra.event.api import EventBusContainer
+from pepper.framework.infra.resource.api import ResourceContainer
 from pepper.framework.monitoring.server.server import MonitoringServer
 from pepper.framework.monitoring.worker.monitoring import MonitoringWorker
 
@@ -18,7 +20,7 @@ class MonitoringWorkerContainer(DIContainer):
             pass
 
 
-class DefaultMonitoringWorkerContainer(MonitoringWorkerContainer, ContextContainer):
+class DefaultMonitoringWorkerContainer(MonitoringWorkerContainer, ContextContainer, EventBusContainer, ResourceContainer):
     __server = None
     __worker = None
 

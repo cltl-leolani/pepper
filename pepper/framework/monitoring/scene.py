@@ -1,8 +1,13 @@
+import logging
+
 import numpy as np
 from cv2 import resize
 from typing import Tuple
 
+from pepper.framework.backend.abstract.camera import AbstractImage
 from pepper.framework.infra.util import spherical2cartesian
+
+logger = logging.getLogger(__name__)
 
 
 class Scene(object):
@@ -17,7 +22,7 @@ class Scene(object):
 
     def __init__(self):
         # type: () -> None
-        self._log.info("Initializing SceneComponent")
+        logger.info("Initializing SceneComponent")
 
         # Create Spherical Coordinate Map
         self._theta_map, self._phi_map = np.meshgrid(
@@ -33,7 +38,7 @@ class Scene(object):
         self._last_bounds = None
 
     def on_image(self, image):
-        # type: (Image) -> None
+        # type: (AbstractImage) -> None
         """
         Called every time an image was taken by Backend
 
