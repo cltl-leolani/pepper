@@ -1,5 +1,5 @@
 from pepper.framework.infra.event.api import Event, EventBus
-from pepper.framework.infra.multiprocessing import TopicWorker, RejectionStrategy
+from pepper.framework.infra.topic_worker import TopicWorker, RejectionStrategy
 from pepper.framework.infra.resource.api import ResourceManager
 from pepper.framework.sensor.api import VAD
 from pepper.framework.sensor.asr import AbstractASR

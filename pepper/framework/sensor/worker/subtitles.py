@@ -11,7 +11,7 @@ from pepper.framework.backend.abstract.tablet import TOPIC as TABLET_TOPIC
 from pepper.framework.infra.config.api import ConfigurationManager
 from pepper.framework.context.api import Context
 from pepper.framework.infra.event.api import EventBus, Event
-from pepper.framework.infra.multiprocessing import TopicWorker
+from pepper.framework.infra.topic_worker import TopicWorker
 from pepper.framework.infra.resource.api import ResourceManager
 from pepper.framework.sensor.asr import AbstractASR
 

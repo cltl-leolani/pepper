@@ -6,8 +6,8 @@ from typing import Iterable
 
 from pepper.framework.infra.config.api import ConfigurationContainer
 from pepper.framework.context.api import ContextContainer, Context, ContextWorkerContainer
-from pepper.framework.context.worker.context_worker import ContextWorker
-from pepper.framework.context.worker.exploration_worker import ExplorationWorker
+from pepper.framework.context.worker.context import ContextWorker
+from pepper.framework.context.worker.exploration import ExplorationWorker
 from pepper.framework.infra.di_container import singleton
 from pepper.framework.infra.event.api import EventBusContainer
 from pepper.framework.infra.resource.api import ResourceContainer

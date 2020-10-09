@@ -8,7 +8,7 @@ from typing import List, Optional
 from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC, AbstractImage
 from pepper.framework.context.api import Context
 from pepper.framework.infra.event.api import Event, EventBus
-from pepper.framework.infra.multiprocessing import TopicWorker, RejectionStrategy
+from pepper.framework.infra.topic_worker import TopicWorker, RejectionStrategy
 from pepper.framework.infra.resource.api import ResourceManager
 from pepper.framework.monitoring.scene import Scene
 from pepper.framework.monitoring.server.server import MonitoringServer

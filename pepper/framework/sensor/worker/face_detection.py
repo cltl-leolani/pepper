@@ -2,7 +2,7 @@ from pepper import config
 from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.infra.config.api import ConfigurationManager
 from pepper.framework.infra.event.api import Event, EventBus
-from pepper.framework.infra.multiprocessing import TopicWorker
+from pepper.framework.infra.topic_worker import TopicWorker
 from pepper.framework.infra.resource.api import ResourceManager
 from pepper.framework.sensor.api import FaceDetector
 from pepper.framework.sensor.face import FaceClassifier
