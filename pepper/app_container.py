@@ -4,7 +4,7 @@ import logging.config
 from pepper.brain.long_term_memory import BrainContainer, LongTermMemory
 from pepper.framework.context.container import DefaultContextContainer, DefaultContextWorkerContainer
 from pepper.framework.di_container import singleton
-from pepper.framework.monitoring.container import DefaultMonitoringContainer
+from pepper.framework.monitoring.container import DefaultMonitoringWorkerContainer
 
 logging.config.fileConfig('config/logging.config')
 
@@ -37,12 +37,3 @@ class ApplicationContainer(backend_container,
                            BrainContainer):
 
     logger.info("Initialized ApplicationContainer")
-
-    @property
-    @singleton
-    def brain(self):
-        config = self.config_manager.get_config("pepper.framework.component.brain")
-        url = config.get("url")
-        log_dir = config.get("log_dir")
-
-        return LongTermMemory(url, log_dir)

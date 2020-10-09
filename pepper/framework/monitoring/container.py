@@ -6,37 +6,38 @@ from pepper.framework.monitoring.server.server import MonitoringServer
 from pepper.framework.monitoring.worker.monitoring import MonitoringWorker
 
 
-class MonitoringContainer(DIContainer):
+class MonitoringWorkerContainer(DIContainer):
     def start_monitoring(self):
         raise NotImplementedError("Monitoring worker not configured")
 
     def stop(self):
         try:
-            super(MonitoringContainer, self).stop()
+            super(MonitoringWorkerContainer, self).stop()
         except AttributeError:
             # Ignore if the container is on top of the MRO
             pass
 
 
-class DefaultMonitoringContainer(MonitoringContainer, ContextContainer):
+class DefaultMonitoringWorkerContainer(MonitoringWorkerContainer, ContextContainer):
     __server = None
     __worker = None
 
     def start_monitoring(self):
         server = MonitoringServer()
-        DefaultMonitoringContainer.__server = server
+        DefaultMonitoringWorkerContainer.__server = server
 
         server_thread = Thread(target=server.start, name="DisplayServerThread")
         server_thread.daemon = True
         server_thread.start()
 
-        DefaultMonitoringContainer.__worker = MonitoringWorker(self.context, server, "MonitoringWorker",
-                                                               self.event_bus, self.resource_manager)
-        DefaultMonitoringContainer.__worker.start()
+        DefaultMonitoringWorkerContainer.__worker = MonitoringWorker(self.context, server, "MonitoringWorker",
+                                                                     self.event_bus, self.resource_manager)
+
+        return (DefaultMonitoringWorkerContainer.__worker.start(),)
 
     def stop(self):
         try:
-            DefaultMonitoringContainer.__server.stop()
-            DefaultMonitoringContainer.__worker.stop()
+            DefaultMonitoringWorkerContainer.__server.stop()
+            DefaultMonitoringWorkerContainer.__worker.stop()
         finally:
-            super(DefaultMonitoringContainer, self).stop()
+            super(DefaultMonitoringWorkerContainer, self).stop()

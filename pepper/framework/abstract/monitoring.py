@@ -9,9 +9,13 @@ class MonitoringComponent(AbstractComponent):
         self._log.info("Initializing MonitoringComponent")
 
     def start(self):
-        self.start_monitoring()
+        started_events = self.start_monitoring()
 
         super(MonitoringComponent, self).start()
+
+        timeout = self.config_manager.get_config("DEFAULT").get_float("dependency_timeout")
+        for event in started_events:
+            event.wait(timeout=timeout)
 
     def stop(self):
         super(MonitoringComponent, self).stop()

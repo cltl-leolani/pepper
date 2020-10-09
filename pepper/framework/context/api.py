@@ -18,7 +18,6 @@ from pepper.framework.sensor.face import Face
 from pepper.knowledge.objects import OBJECT_INFO
 from pepper.language import Chat
 
-
 TOPIC_ON_CHAT_ENTER = "pepper.framework.context.topic.chat_enter"
 TOPIC_ON_CHAT_TURN = "pepper.framework.context.topic.chat_turn"
 TOPIC_ON_CHAT_EXIT = "pepper.framework.context.topic.chat_exit"
@@ -36,7 +35,7 @@ class ContextWorkerContainer(DIContainer):
     def start_context_worker(self):
         raise NotImplementedError("Context workers are not configured")
 
-    def start_exploration_workers(self):
+    def start_exploration_worker(self):
         raise NotImplementedError("Exploration worker is not configured")
 
     def stop(self):

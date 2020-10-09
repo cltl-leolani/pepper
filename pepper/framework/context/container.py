@@ -1,6 +1,8 @@
 import logging
 import os
+import threading
 from Queue import Queue
+from typing import Iterable
 
 from pepper.framework.config.api import ConfigurationContainer
 from pepper.framework.context.api import ContextContainer, Context, ContextWorkerContainer
@@ -34,14 +36,18 @@ class DefaultContextWorkerContainer(ContextWorkerContainer, ContextContainer,
     __workers = Queue()
 
     def start_context_worker(self):
+        # type: () -> Iterable[threading.Event]
         worker = ContextWorker(self.context, "ContextWorker", self.event_bus, self.resource_manager, self.config_manager)
         DefaultContextWorkerContainer.__workers.put(worker)
-        worker.start()
+
+        return (worker.start(),)
 
     def start_exploration_worker(self):
+        # type: () -> Iterable[threading.Event]
         worker = ExplorationWorker(self.context, "ExplorationWorker", self.event_bus)
         DefaultContextWorkerContainer.__workers.put(worker)
-        worker.start()
+
+        return (worker.start(),)
 
     def stop(self):
         for worker in self.__workers.queue:

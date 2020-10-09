@@ -3,6 +3,7 @@ from time import sleep
 
 _MAX_WAIT = 1000
 
+
 class DIContainer(object):
     """
     Base class for Dependency Injection containers.

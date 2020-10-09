@@ -1,5 +1,7 @@
 import logging
+import threading
 from Queue import Queue
+from typing import Iterable
 
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.config.api import ConfigurationContainer
@@ -27,29 +29,36 @@ class DefaultSensorWorkerContainer(ContextContainer, SensorWorkerContainer, Sens
     __workers = Queue()
 
     def start_object_detector(self, target):
+        # type: (str) -> Iterable[threading.Event]
         worker = ObjectDetectionWorker(self.object_detector(target), "ObjectDetectorWorker [{}]".format(target),
                                        self.event_bus, self.resource_manager, self.config_manager)
         DefaultSensorWorkerContainer.__workers.put(worker)
-        worker.start()
+
+        return (worker.start(),)
 
     def start_face_detector(self):
+        # type: () -> Iterable[threading.Event]
         worker = FaceDetectionWorker(self.face_detector, "FaceDetectorWorker",
                                      self.event_bus, self.resource_manager, self.config_manager)
         DefaultSensorWorkerContainer.__workers.put(worker)
-        worker.start()
+
+        return (worker.start(),)
 
     def start_speech_recognition(self):
+        # type: () -> Iterable[threading.Event]
         vad_worker = SpeechRecognitionVADWorker(self.vad, "VADWorker", self.event_bus, self.resource_manager)
         asr_worker = SpeechRecognitionASRWorker(self.asr(), "ASRWorker", self.event_bus, self.resource_manager)
         DefaultSensorWorkerContainer.__workers.put(vad_worker)
         DefaultSensorWorkerContainer.__workers.put(asr_worker)
-        vad_worker.start()
-        asr_worker.start()
+
+        return (vad_worker.start(), asr_worker.start())
 
     def start_subtitles(self):
+        # type: () -> Iterable[threading.Event]
         worker = SubtitlesWorker(self.context, "SubtitlesWorker", self.event_bus, self.resource_manager, self.config_manager)
         DefaultSensorWorkerContainer.__workers.put(worker)
-        worker.start()
+
+        return (worker.start(),)
 
     def stop(self):
         for worker in self.__workers.queue:

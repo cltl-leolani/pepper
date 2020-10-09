@@ -22,10 +22,15 @@ class ObjectDetectionComponent(AbstractComponent):
 
     def start(self):
         self.event_bus.subscribe(ObjectDetector.TOPIC, self._on_object_handler)
+        started_events = []
         for target in self._targets:
-            self.start_object_detector(target)
+            started_events.extend(self.start_object_detector(target))
 
         super(ObjectDetectionComponent, self).start()
+
+        timeout = self.config_manager.get_config("DEFAULT").get_float("dependency_timeout")
+        for event in started_events:
+            event.wait(timeout=timeout)
 
     def stop(self):
         try:

@@ -20,9 +20,13 @@ class SpeechRecognitionComponent(AbstractComponent):
 
     def start(self):
         self.event_bus.subscribe(AbstractASR.TOPIC, self._on_transcript_handler)
-        self.start_speech_recognition()
+        started_events = self.start_speech_recognition()
 
         super(SpeechRecognitionComponent, self).start()
+
+        timeout = self.config_manager.get_config("DEFAULT").get_float("dependency_timeout")
+        for event in started_events:
+            event.wait(timeout=timeout)
 
     def stop(self):
         try:

@@ -21,9 +21,13 @@ class FaceRecognitionComponent(AbstractComponent):
         self.event_bus.subscribe(FaceDetector.TOPIC, self._on_face_handler)
         self.event_bus.subscribe(FaceDetector.TOPIC_NEW, self._on_face_new_handler)
         self.event_bus.subscribe(FaceDetector.TOPIC_KNOWN, self._on_face_known_handler)
-        self.start_face_detector()
+        started_events = self.start_face_detector()
 
         super(FaceRecognitionComponent, self).start()
+
+        timeout = self.config_manager.get_config("DEFAULT").get_float("dependency_timeout")
+        for event in started_events:
+            event.wait(timeout=timeout)
 
     def stop(self):
         try:

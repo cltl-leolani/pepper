@@ -1,15 +1,16 @@
 from pepper import config
 from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.config.api import ConfigurationManager
-from pepper.framework.event.api import Event
+from pepper.framework.event.api import Event, EventBus
 from pepper.framework.multiprocessing import TopicWorker
+from pepper.framework.resource.api import ResourceManager
 from pepper.framework.sensor.api import FaceDetector
 from pepper.framework.sensor.face import FaceClassifier
 
 
 class FaceDetectionWorker(TopicWorker):
     def __init__(self, face_detector, name, event_bus, resource_manager, config_manager):
-        # type: (FaceDetector, ConfigurationManager) -> None
+        # type: (FaceDetector, str, EventBus, ResourceManager, ConfigurationManager) -> None
         super(FaceDetectionWorker, self).__init__(CAM_TOPIC, event_bus, interval=0, name=name,
                                                   resource_manager=resource_manager, requires=[CAM_TOPIC],
                                                   provides=[FaceDetector.TOPIC, FaceDetector.TOPIC_NEW, FaceDetector.TOPIC_KNOWN])

@@ -1,6 +1,6 @@
 import logging
-from Queue import Queue, Empty, Full
 import threading
+from Queue import Queue, Empty, Full
 from threading import Thread
 from time import sleep
 
@@ -11,6 +11,7 @@ from pepper.framework.event.api import EventBus, Event, TopicError
 from pepper.framework.resource.api import ResourceManager, LockTimeoutError
 
 logger = logging.getLogger(__name__)
+
 
 _DEPENDENCY_TIMEOUT = 10
 
@@ -59,19 +60,15 @@ class TopicWorker(Thread):
         self._running = False
 
     def start(self):
+        # type: () -> threading.Event
         logger.info("Starting topic worker %s", self.name)
 
         super(TopicWorker, self).start()
 
-        self._started.wait(timeout=_DEPENDENCY_TIMEOUT)
-
-        if not self._running:
-            raise RuntimeError("Failed to start worker " + self.name)
-
-        for topic in self._topics:
-            self._event_bus.subscribe(topic, self.__accept_event)
+        return self._started
 
     def stop(self):
+        # type: () -> None
         for topic in self._topics:
             try:
                 self._event_bus.unsubscribe(topic, self.__accept_event)
@@ -84,7 +81,12 @@ class TopicWorker(Thread):
     def run(self):
         self.__resolve_dependencies()
         self._running = True
+
+        for topic in self._topics:
+            self._event_bus.subscribe(topic, self.__accept_event)
+
         self._started.set()
+
         logger.info("Started topic worker %s", self.name)
 
         while self._running:

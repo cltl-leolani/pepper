@@ -9,9 +9,13 @@ class SubtitlesComponent(AbstractComponent):
         self._log.info("Initializing SubtitlesComponent")
 
     def start(self):
-        self.start_subtitles()
+        started_events = self.start_subtitles()
 
         super(SubtitlesComponent, self).start()
+
+        timeout = self.config_manager.get_config("DEFAULT").get_float("dependency_timeout")
+        for event in started_events:
+            event.wait(timeout=timeout)
 
     def stop(self):
         super(SubtitlesComponent, self).stop()

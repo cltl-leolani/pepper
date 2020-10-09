@@ -1,13 +1,14 @@
 from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
 from pepper.framework.config.api import ConfigurationManager
-from pepper.framework.event.api import Event
+from pepper.framework.event.api import Event, EventBus
 from pepper.framework.multiprocessing import TopicWorker
+from pepper.framework.resource.api import ResourceManager
 from pepper.framework.sensor.api import ObjectDetector
 
 
 class ObjectDetectionWorker(TopicWorker):
     def __init__(self, object_detector, name, event_bus, resource_manager, config_manager):
-        # type: (ObjectDetector, ConfigurationManager) -> None
+        # type: (ObjectDetector, str, EventBus, ResourceManager, ConfigurationManager) -> None
         super(ObjectDetectionWorker, self).__init__(CAM_TOPIC, event_bus, interval=0, name=name,
                  resource_manager=resource_manager, requires=[CAM_TOPIC], provides=[ObjectDetector.TOPIC])
         config = config_manager.get_config("pepper.framework.component.object")

@@ -15,9 +15,13 @@ class ContextComponent(AbstractComponent):
         self.event_bus.subscribe(TOPIC_ON_CHAT_ENTER, self.__on_chat_enter_handler)
         self.event_bus.subscribe(TOPIC_ON_CHAT_TURN, self.__on_chat_turn_handler)
         self.event_bus.subscribe(TOPIC_ON_CHAT_EXIT, self.__on_chat_exit_handler)
-        self.start_context_worker()
+        started_events = self.start_context_worker()
 
         super(ContextComponent, self).start()
+
+        timeout = self.config_manager.get_config("DEFAULT").get_float("dependency_timeout")
+        for event in started_events:
+            event.wait(timeout=timeout)
 
     def stop(self):
         try:

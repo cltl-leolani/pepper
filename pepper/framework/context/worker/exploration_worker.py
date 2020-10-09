@@ -25,7 +25,8 @@ class ExplorationWorker(TopicWorker):
     LAST_MOVE = 0
     SPEED = 0.05
 
-    TOPICS = [ObjectDetector.TOPIC, FaceDetector.TOPIC, AbstractASR.TOPIC]
+    TOPICS = [ObjectDetector.TOPIC, FaceDetector.TOPIC, AbstractASR.TOPIC,
+              TOPIC_ON_CHAT_ENTER, TOPIC_ON_CHAT_EXIT]
 
     def __init__(self, context, name, event_bus):
         # type: (Context, str, EventBus) -> None
@@ -35,30 +36,20 @@ class ExplorationWorker(TopicWorker):
         self._context = context
         self._chat_lock = Lock()
         
-    def start(self):
-        self.event_bus.subscribe(TOPIC_ON_CHAT_ENTER, self.on_chat_enter)
-        self.event_bus.subscribe(TOPIC_ON_CHAT_EXIT, self.on_chat_exit)
-        super(ExplorationWorker, self).start()
-
-    def stop(self):
-        self.event_bus.unsubscribe(TOPIC_ON_CHAT_ENTER, self.on_chat_enter)
-        self.event_bus.unsubscribe(TOPIC_ON_CHAT_EXIT, self.on_chat_exit)
-        super(ExplorationWorker, self).stop()
-
-    def on_chat_enter(self, _):
-        self._chat_lock.acquire()
-
-    def on_chat_exit(self, _):
-        self._chat_lock.release()
-
-    def on_event(self, _):
+    def process(self, event):
         # type: (Event) -> None
-        with acquire(self._chat_lock, blocking=False) as locked:
-            if locked:
-                # At a certain interval
-                if time() - ExplorationWorker.LAST_MOVE > ExplorationWorker.TIMEOUT:
-                    self.explore()  # Explore!
-                    ExplorationWorker.LAST_MOVE = time()
+        if not event:
+            # Only explore if we are not in a chat
+            with acquire(self._chat_lock, blocking=False) as locked:
+                if locked:
+                    # At a certain interval
+                    if time() - ExplorationWorker.LAST_MOVE > ExplorationWorker.TIMEOUT:
+                        self.explore()  # Explore!
+                        ExplorationWorker.LAST_MOVE = time()
+        elif TOPIC_ON_CHAT_ENTER == event.metadata.topic:
+            self._chat_lock.acquire()
+        elif TOPIC_ON_CHAT_EXIT == event.metadata.topic:
+            self._chat_lock.release()
 
     def explore(self):
         # type: () -> None
