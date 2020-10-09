@@ -170,6 +170,11 @@ class Voice(object):
             self._frames.append(frame)
         else:
             self._is_open = False
+        # DEBUG
+        # if frame is None:
+        #     import scipy.io.wavfile as wavfile
+        #     import time
+        #     wavfile.write("./audio/" + str(time.time()) + ".wav", 16000, np.concatenate(self._frames))
 
     @property
     def audio_stream(self):

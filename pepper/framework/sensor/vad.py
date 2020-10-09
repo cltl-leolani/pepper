@@ -2,7 +2,7 @@ from collections import deque
 
 import numpy as np
 import webrtcvad
-from typing import Iterable
+from typing import Iterable, Optional
 
 from pepper.framework.backend.abstract.microphone import AbstractMicrophone
 from pepper.framework.backend.abstract.microphone import MIC_RESOURCE_NAME as MIC_RESOURCE
@@ -42,6 +42,7 @@ class AbstractVAD(VAD):
         audio_frame_ms = config.get_int("audio_frame_ms")
         self._vad_frame_size = audio_frame_ms * self._mic_rate // 1000
 
+        self._audio_buffer = deque(maxlen=self._buffer_size)
         self._activation_window = deque(maxlen=self._voice_window)
         self._activation = 0
 
@@ -84,16 +85,16 @@ class AbstractVAD(VAD):
         vad_size = vad_frame_cnt * self._vad_frame_size
         vad_frames = self._input_buffer[:vad_size].reshape((vad_frame_cnt, -1, self._channels))
 
-        for index, vad_frame in enumerate(vad_frames):
-            voice = self._on_vad_frame(vad_frame, index)
+        for vad_frame in vad_frames:
+            voice = self._on_vad_frame(vad_frame)
             if voice:
                 voice_callback(voice)
 
         # Keep the remainder if there is a partially filled VAD frame
         self._input_buffer = self._input_buffer[vad_size:]
 
-    def _on_vad_frame(self, vad_frame, index):
-        # type: (np.ndarray) -> None
+    def _on_vad_frame(self, vad_frame):
+        # type: (np.ndarray) -> Optional[Voice]
         """
         Is-Speech/Is-Not-Speech Logic, called every frame
 
@@ -110,6 +111,7 @@ class AbstractVAD(VAD):
             return
 
         if not self._voice:
+            self._audio_buffer.append(vad_frame)
             # Only release the lock if there is no voice activity
             if self._mic_lock.interrupted:
                 self._mic_lock.release()
@@ -120,11 +122,12 @@ class AbstractVAD(VAD):
                 self._voice = Voice()
 
                 # Add Buffer Contents to Utterance
-                start = max(0, (index + 1 - self._buffer_size) * vad_frame.shape[0])
-                end = (index + 1) * vad_frame.shape[0]
+                # start = max(0, (index + 1 - self._buffer_size) * vad_frame.shape[0])
+                # end = (index + 1) * vad_frame.shape[0]
 
-                x = self._input_buffer[start:end]
-                self._voice.add_frame(self._input_buffer[start:end].ravel())
+                audio = np.concatenate(self._audio_buffer).ravel()
+                self._voice.add_frame(audio)
+                self._audio_buffer.clear()
 
                 # Add Utterance to Utterance Queue
                 return self._voice
