@@ -16,7 +16,7 @@ from pepper.framework.infra.util import Mailbox, Scheduler, Bounds, spherical2ca
 logger = logging.getLogger(__name__)
 
 
-TOPIC = "pepper.framework.backend.abstract.microphone.camera.topic"
+TOPIC = "pepper.framework.backend.abstract.camera.topic"
 
 
 # TODO this should not be abstract, all implementations are the same

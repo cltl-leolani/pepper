@@ -5,7 +5,7 @@ from time import time, sleep
 
 import numpy as np
 
-from pepper.framework.infra.event.api import Event
+from pepper.framework.infra.event.api import Event, EventBus
 from pepper.framework.infra.resource.api import ResourceManager
 from pepper.framework.infra.util import Scheduler
 
@@ -14,7 +14,13 @@ logger = logging.getLogger(__name__)
 
 TOPIC = "pepper.framework.backend.abstract.microphone.topic"
 AUDIO_RESOURCE_NAME = "pepper.framework.backend.abstract.audio"
+"""Resource name to be shared with the speaker to mute the microphone when the speaker is active.
+The AbstractMicrophone holds a reader-lock on this resource.
+"""
 MIC_RESOURCE_NAME = "pepper.framework.backend.abstract.microphone"
+"""Resource name to be shared with application components that allows to retract microphone access from those components.
+The AbstractMicrophone holds a writer-lock on this resource.
+"""
 
 
 class AbstractMicrophone(object):
@@ -40,6 +46,7 @@ class AbstractMicrophone(object):
         self._channels = channels
         self._event_bus = event_bus
         self._resource_manager = resource_manager
+        self._timeout_interval = 1.0 / self._rate
 
         # Variables to do some performance statistics
         self._dt_buffer = deque([], maxlen=32)
@@ -79,7 +86,6 @@ class AbstractMicrophone(object):
         self._resource_manager.retract_resource(TOPIC)
         self._resource_manager.retract_resource(AUDIO_RESOURCE_NAME)
         self._resource_manager.retract_resource(MIC_RESOURCE_NAME)
-
 
     @property
     def true_rate(self):
@@ -135,10 +141,9 @@ class AbstractMicrophone(object):
             * when the AUDIO Reader-lock is acquired, it releases the MIC Writer-lock
               (speaker ends, listening starts again)
         """
-        timeout_interval = 1/self._rate
 
         if self._queue.empty():
-            sleep(timeout_interval/10)
+            sleep(self._timeout_interval/10)
             return
 
         if self._muted:
@@ -147,7 +152,7 @@ class AbstractMicrophone(object):
             self._try_mute()
 
         # Don't wait forever for the queue, otherwise we can't terminate the worker
-        audio = self._queue.get(timeout=2*timeout_interval)
+        audio = self._queue.get(timeout=2*self._timeout_interval)
         if not self._muted:
             self._event_bus.publish(TOPIC, Event(audio, None))
 
@@ -155,17 +160,25 @@ class AbstractMicrophone(object):
         self._update_dt(len(audio))
 
     def _try_unmute(self):
-        self._audio_lock.interrupt_writers()
-        if self._audio_lock.acquire(blocking=False):
+        logger.debug("Try to unmute microphone")
+        if self._audio_lock.acquire(blocking=True, timeout=self._timeout_interval):
+            self._audio_lock.interrupt_writers(False)
             self._muted = False
             if self._mic_lock.locked:
                 self._mic_lock.release()
+            logger.debug("Microphone unmuted")
+        else:
+            self._audio_lock.interrupt_writers()
 
     def _try_mute(self):
-        self._mic_lock.interrupt_readers()
-        if self._mic_lock.acquire(blocking=False):
+        logger.debug("Try to mute microphone")
+        if self._mic_lock.acquire(blocking=True, timeout=self._timeout_interval):
+            self._mic_lock.interrupt_readers(False)
             self._muted = True
             self._audio_lock.release()
+            logger.debug("Microphone muted")
+        else:
+            self._mic_lock.interrupt_readers()
 
     def _update_dt(self, n_bytes):
         t1 = time()
