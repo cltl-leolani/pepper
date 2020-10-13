@@ -4,14 +4,14 @@ from pepper.framework.application.face_detection import FaceRecognitionComponent
 from pepper.framework.application.object_detection import ObjectDetectionComponent
 from pepper.framework.application.text_to_speech import TextToSpeechComponent
 from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.monitoring import DisplayComponent, SceneComponent, ExploreComponent, ContextComponent
 
 
 class ObjPosApp(ApplicationContainer,
                 AbstractApplication,
+                ObjectDetectionComponent, SpeechRecognitionComponent,
+                FaceRecognitionComponent, TextToSpeechComponent,
                 DisplayComponent, SceneComponent,
-                ExploreComponent, ContextComponent,
-                ObjectDetectionComponent, SpeechRecognitionComponent, FaceRecognitionComponent, TextToSpeechComponent):
+                ExploreComponent, ContextComponent,):
 
     def __init__(self, backend):
         super(ObjPosApp, self).__init__(backend)

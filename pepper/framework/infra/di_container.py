@@ -11,11 +11,8 @@ class DIContainer(object):
     DIContainers manage object creation (injecting necessary dependencies) and
     their life-cycle.
     """
-    __lock = Lock()
-
-    @property
-    def _lock(self):
-        return DIContainer.__lock
+    _lock = Lock()
+    _singletons = dict()
 
 
 def singleton_for_kw(keys):
@@ -27,30 +24,29 @@ def singleton_for_kw(keys):
         def decorated(self, *args, **kwargs):
             prefix_values = [kwargs[k] for k in keys if k in kwargs and kwargs[k]]
             prefix = "_".join(prefix_values) + "_" if keys else ""
-            container_type = type(self)
             singleton_attr = "_" + prefix + method.__name__
-            if not hasattr(container_type, singleton_attr):
+            if not singleton_attr in DIContainer._singletons:
                 create_instance = False
                 with self._lock:
-                    if not hasattr(container_type, singleton_attr):
+                    if not singleton_attr in DIContainer._singletons:
                         #First set to None and then instantiate outside the lock to avoid dead-locks
-                        setattr(container_type, singleton_attr, None)
+                        DIContainer._singletons[singleton_attr] = None
                         create_instance = True
                 if create_instance:
                     instance = method(self, *args, **kwargs)
                     if not instance:
                         raise ValueError("could not set " + singleton_attr)
-                    setattr(container_type, singleton_attr, instance)
+                    DIContainer._singletons[singleton_attr] = instance
 
             cnt = 0
             # The instance is created outside the lock, therefore we can end up here with None
-            while getattr(container_type, singleton_attr) is None:
+            while DIContainer._singletons[singleton_attr] is None:
                 sleep(0.01)
                 cnt += 1
                 if cnt > _MAX_WAIT:
                     raise ValueError("Timed out setting " + singleton_attr)
 
-            return getattr(container_type, singleton_attr)
+            return DIContainer._singletons[singleton_attr]
 
         return decorated
 

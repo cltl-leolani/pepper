@@ -7,8 +7,7 @@ from time import time
 import numpy as np
 from typing import List, Callable
 
-from pepper.app_container import ApplicationContainer
-from pepper.framework.application.application import AbstractApplication
+from pepper.app_container import ApplicationContainer, Application
 from pepper.framework.application.brain import BrainComponent
 from pepper.framework.application.context import ContextComponent
 from pepper.framework.application.display import DisplayComponent
@@ -43,31 +42,34 @@ RESPONDERS = [
 ]
 
 
-class ResponderApp(ApplicationContainer,
-                   AbstractApplication, StatisticsComponent,
-                   # SubtitlesComponent,  # TODO: (un)comment to turn tablet subtitles On/Off
-                   # MonitoringComponent,  # TODO: (un)comment to turn Web View On/Off
-                   # WikipediaResponder, # WolframResponder,   # TODO: (un)comment to turn factual responder On/Off
-                   ExplorationComponent, # TODO: (un)comment to turn exploration On/Off
-                   ContextComponent,
-                   ObjectDetectionComponent, FaceRecognitionComponent,
-                   SpeechRecognitionComponent, TextToSpeechComponent,
-                   BrainComponent,
-                   MotionComponent, DisplayComponent):
+class ResponderIntention(ApplicationContainer,
+                         AbstractIntention, StatisticsComponent,
+                         # SubtitlesComponent,  # TODO: (un)comment to turn tablet subtitles On/Off
+                         MonitoringComponent,  # TODO: (un)comment to turn Web View On/Off
+                         # WikipediaResponder, # WolframResponder,   # TODO: (un)comment to turn factual responder On/Off
+                         ExplorationComponent,  # TODO: (un)comment to turn exploration On/Off
+                         ContextComponent,
+                         ObjectDetectionComponent, FaceRecognitionComponent,
+                         SpeechRecognitionComponent, TextToSpeechComponent,
+                         BrainComponent,
+                         MotionComponent, DisplayComponent):
 
     def __init__(self):
-        super(ResponderApp, self).__init__()
-        self.show_on_display(IMAGE_VU)
+        super(ResponderIntention, self).__init__()
 
 
-class DefaultIntention(AbstractIntention, ResponderApp):
+class DefaultIntention(ResponderIntention):
     IGNORE_TIMEOUT = 60
 
-    def __init__(self, application):
-        super(DefaultIntention, self).__init__(application)
+    def __init__(self):
+        super(DefaultIntention, self).__init__()
 
         self._ignored_people = {}
         self.response_picker = ResponsePicker(self, RESPONDERS + [MeetIntentionResponder()])
+
+    def start(self):
+        super(DefaultIntention, self).start()
+        self.show_on_display(IMAGE_VU)
 
     def on_chat_enter(self, name):
         self._ignored_people = {n: t for n, t in self._ignored_people.items() if time() - t < self.IGNORE_TIMEOUT}
@@ -86,7 +88,7 @@ class DefaultIntention(AbstractIntention, ResponderApp):
         responder = self.response_picker.respond(utterance)
 
         if isinstance(responder, MeetIntentionResponder):
-            MeetIntention(self.application)
+            self.change_intention(MeetIntention())
 
         elif isinstance(responder, GoodbyeResponder):
             self._ignored_people[utterance.chat.speaker] = time()
@@ -95,13 +97,13 @@ class DefaultIntention(AbstractIntention, ResponderApp):
 
 # TODO: What are you thinking about? -> Well, Bram, I thought....
 
-class BinaryQuestionIntention(AbstractIntention, ResponderApp):
+class BinaryQuestionIntention(ResponderIntention):
     NEGATION = NegationResponder
     AFFIRMATION = AffirmationResponder
 
-    def __init__(self, application, question, callback, responders):
-        # type: (AbstractApplication, List[str], Callable[[bool], None], List[Responder]) -> None
-        super(BinaryQuestionIntention, self).__init__(application)
+    def __init__(self, question, callback, responders):
+        # type: (List[str], Callable[[bool], None], List[Responder]) -> None
+        super(BinaryQuestionIntention, self).__init__()
 
         self.question = question
         self.callback = callback
@@ -113,7 +115,9 @@ class BinaryQuestionIntention(AbstractIntention, ResponderApp):
 
         self.response_picker = ResponsePicker(self, responders)
 
-        self.say(choice(question))
+    def start(self):
+        super(BinaryQuestionIntention, self).start()
+        self.say(choice(self.question))
 
     def on_chat_turn(self, utterance):
         responder = self.response_picker.respond(utterance)
@@ -126,14 +130,14 @@ class BinaryQuestionIntention(AbstractIntention, ResponderApp):
             self.say(choice(self.question))
 
 
-class MeetIntention(AbstractIntention, ResponderApp):
+class MeetIntention(ResponderIntention):
     CUES = ["my name is", "i am", "no my name is", "no i am"]
 
-    def __init__(self, application):
-        super(MeetIntention, self).__init__(application)
+    def __init__(self):
+        super(MeetIntention, self).__init__()
 
-        self._friends_dir = application.config_manager.get_config("DEFAULT").get("people_friends_dir")
-        self._new_dir = application.config_manager.get_config("DEFAULT").get("people_new_dir")
+        self._friends_dir = self.config_manager.get_config("DEFAULT").get("people_friends_dir")
+        self._new_dir = self.config_manager.get_config("DEFAULT").get("people_new_dir")
 
         self.response_picker = ResponsePicker(self, RESPONDERS)
 
@@ -144,13 +148,16 @@ class MeetIntention(AbstractIntention, ResponderApp):
         self._possible_names = {}
         self._denied_names = set()
 
+    def start(self):
+        super(MeetIntention, self).start()
+
         self.context.start_chat("Stranger")
 
         self.say("{} {}".format(choice(sentences.INTRODUCE), choice(sentences.ASK_NAME)))
 
     def on_chat_exit(self):
         self.context.stop_chat()
-        DefaultIntention(self.application)
+        self.change_intention(DefaultIntention())
 
     def on_transcript(self, hypotheses, audio):
         self._last_statement_was_name = False
@@ -209,11 +216,11 @@ class MeetIntention(AbstractIntention, ResponderApp):
 
                     # Start new chat and switch intention
                     self.context.start_chat(self._current_name)
-                    DefaultIntention(self.application)
+                    self.change_intention(DefaultIntention())
 
                 # Exit on User Goodbye
                 elif isinstance(responder, GoodbyeResponder):
-                    DefaultIntention(self.application)
+                    self.change_intention(DefaultIntention())
 
                 else:  # If some other question was asked, remind human of intention
                     self.say(choice(sentences.VERIFY_NAME).format(self._current_name))
@@ -243,7 +250,4 @@ class MeetIntention(AbstractIntention, ResponderApp):
 
 
 if __name__ == '__main__':
-    while True:
-        application = ResponderApp()
-        intention = DefaultIntention(application)
-        application.run()
+    Application(DefaultIntention()).run()

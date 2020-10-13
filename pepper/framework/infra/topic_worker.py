@@ -58,6 +58,7 @@ class TopicWorker(Thread):
         self._provides = provides
         self._started = threading.Event()
         self._running = False
+        self._stop_event = None # type: threading.Event
 
     def start(self):
         # type: () -> threading.Event
@@ -76,7 +77,14 @@ class TopicWorker(Thread):
                 logger.exception("Failed to unsubscribe " + self.name + " from " + topic)
 
         self._running = False
+        self._stop_event = threading.Event()
         logger.info("Stopping topic worker %s", self.name)
+
+    def await_stop(self):
+        if not self._stop_event:
+            raise ValueError("Worker " + self.name + " is not stopped")
+
+        self._stop_event.wait(_DEPENDENCY_TIMEOUT)
 
     def run(self):
         self.__resolve_dependencies()
@@ -93,6 +101,9 @@ class TopicWorker(Thread):
             self.__process_event()
             if self._interval:
                 sleep(self._interval)
+
+        if self._stop_event:
+            self._stop_event.set()
         logger.info("Stopped topic worker %s", self.name)
 
     def __process_event(self):

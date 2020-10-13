@@ -2,7 +2,7 @@ import logging
 import os
 import threading
 from Queue import Queue
-from typing import Iterable
+from typing import Iterable, Any
 
 from pepper.framework.infra.config.api import ConfigurationContainer
 from pepper.framework.context.api import ContextContainer, Context, ContextWorkerContainer
@@ -11,7 +11,7 @@ from pepper.framework.context.worker.exploration import ExplorationWorker
 from pepper.framework.infra.di_container import singleton
 from pepper.framework.infra.event.api import EventBusContainer
 from pepper.framework.infra.resource.api import ResourceContainer
-
+from pepper.framework.infra.topic_worker import TopicWorker
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ class DefaultContextContainer(ContextContainer, ConfigurationContainer):
 class DefaultContextWorkerContainer(ContextWorkerContainer, ContextContainer,
                                     EventBusContainer, ResourceContainer, ConfigurationContainer):
 
-    __workers = Queue()
+    __workers = Queue()  # type: Queue[TopicWorker]
 
     def start_context_worker(self):
         # type: () -> Iterable[threading.Event]
@@ -50,10 +50,18 @@ class DefaultContextWorkerContainer(ContextWorkerContainer, ContextContainer,
         return (worker.start(),)
 
     def stop(self):
+        logger.info("Stopping workers")
+
         for worker in self.__workers.queue:
             try:
                 worker.stop()
             except:
                 logger.exception("Failed to stop worker " + worker.name)
-        self.__workers.queue.clear()
+
         super(DefaultContextWorkerContainer, self).stop()
+
+        for worker in self.__workers.queue:
+            worker.await_stop()
+        self.__workers.queue.clear()
+
+        logger.info("Stopped workers")

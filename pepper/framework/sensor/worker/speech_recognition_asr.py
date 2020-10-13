@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pepper.framework.infra.event.api import Event, EventBus
 from pepper.framework.infra.topic_worker import TopicWorker, RejectionStrategy
 from pepper.framework.infra.resource.api import ResourceManager

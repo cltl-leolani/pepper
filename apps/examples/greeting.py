@@ -2,26 +2,26 @@
 
 from time import time
 
-from pepper.app_container import ApplicationContainer
-from pepper.framework.application.application import AbstractApplication
-from pepper.framework.application.text_to_speech import TextToSpeechComponent
+from pepper.app_container import ApplicationContainer, Application
 from pepper.framework.application.face_detection import FaceRecognitionComponent
+from pepper.framework.application.intention import AbstractIntention
 from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
 from pepper.framework.application.statistics import StatisticsComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
 
 
-class GreetingApplication(ApplicationContainer,
-                          AbstractApplication,          # All Applications inherit from AbstractApplication
-                          FaceRecognitionComponent,     # We need Face Recognition to Greet People by Name
-                          StatisticsComponent,
-                          SpeechRecognitionComponent,
-                          TextToSpeechComponent):       # We need Text to Speech to actually greet people
+class GreetingIntention(ApplicationContainer,
+                        AbstractIntention,
+                        FaceRecognitionComponent,     # We need Face Recognition to Greet People by Name
+                        StatisticsComponent,
+                        SpeechRecognitionComponent,
+                        TextToSpeechComponent):       # We need Text to Speech to actually greet people
 
     GREET_TIMEOUT = 15  # Only Greet people once every X seconds
 
     def __init__(self):
         """Greets New and Known People"""
-        super(GreetingApplication, self).__init__()
+        super(GreetingIntention, self).__init__()
 
         self.name_time = {}  # Dictionary of <name, time> pairs, to keep track of who is greeted when
 
@@ -63,4 +63,4 @@ class GreetingApplication(ApplicationContainer,
 
 
 if __name__ == "__main__":
-    GreetingApplication().run()
+    Application(GreetingIntention()).run()

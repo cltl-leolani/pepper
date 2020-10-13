@@ -8,6 +8,7 @@ import importlib_resources
 import mock
 import numpy as np
 
+from pepper.framework.application.intention import AbstractIntention
 from pepper.framework.backend.abstract.microphone import AbstractMicrophone
 from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
 from pepper.framework.application.application import AbstractApplication
@@ -17,7 +18,7 @@ from pepper.framework.application.speech_recognition import SpeechRecognitionCom
 from pepper.framework.application.text_to_speech import TextToSpeechComponent
 from pepper.framework.infra.config.api import ConfigurationContainer
 from pepper.framework.infra.config.local import LocalConfigurationContainer
-from pepper.framework.infra.di_container import singleton
+from pepper.framework.infra.di_container import singleton, DIContainer
 from pepper.framework.infra.event.api import EventBusContainer
 from pepper.framework.infra.event.memory import SynchronousEventBusContainer
 from pepper.framework.infra.resource.api import ResourceContainer
@@ -27,10 +28,10 @@ from pepper.framework.sensor.container import DefaultSensorWorkerContainer
 from pepper.framework.sensor.vad import AbstractVAD
 from test import util
 
+
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler(stream=sys.stdout))
 logger.setLevel(logging.ERROR)
-
 
 
 AUDIO_FRAME = np.zeros(80).astype(np.int16)
@@ -38,6 +39,7 @@ AUDIO_FRAME = np.zeros(80).astype(np.int16)
 
 def setupTestComponents():
     """Workaround to overwrite static state in DIContainers across tests"""
+    global TestIntention
     global TestApplication
 
     with importlib_resources.path(__package__, "test.config") as test_config:
@@ -111,14 +113,19 @@ def setupTestComponents():
         pass
 
 
-    class TestApplication(ApplicationContainer, AbstractApplication, DefaultSensorWorkerContainer,
+    class TestIntention(ApplicationContainer, AbstractIntention, DefaultSensorWorkerContainer,
                           SpeechRecognitionComponent, TextToSpeechComponent):
         def __init__(self):
-            super(TestApplication, self).__init__()
+            super(TestIntention, self).__init__()
             self.hypotheses = []
 
         def on_transcript(self, hypotheses, audio):
             self.hypotheses.extend(hypotheses)
+
+
+    class TestApplication(AbstractApplication, ApplicationContainer):
+        def __init__(self, intention):
+            super(TestApplication, self).__init__(intention)
 
 
 class ListeningThread(threading.Thread):
@@ -136,6 +143,7 @@ class ListeningThread(threading.Thread):
 
     def stop(self):
         self.running = False
+        self.exit_latch.wait(1)
         self.listening_latch.set()
         self.exit_latch.set()
         self.continue_speech_latch.set()
@@ -186,9 +194,9 @@ class ListeningThread(threading.Thread):
         logger.debug("Thread %s stopped", self.name)
 
 class TalkingThread(threading.Thread):
-    def __init__(self, application, name="Talking"):
+    def __init__(self, intention, name="Talking"):
         super(TalkingThread, self).__init__(name=name)
-        self._application = application
+        self._intention = intention
         self.running = True
         self.talking = False
         self.talking_latch = threading.Event()
@@ -196,6 +204,7 @@ class TalkingThread(threading.Thread):
 
     def stop(self):
         self.running = False
+        self.exit_latch.wait(1)
         self.talking_latch.set()
         self.exit_latch.set()
 
@@ -212,7 +221,7 @@ class TalkingThread(threading.Thread):
         while self.running:
             logger.debug("Started talking")
             for utterance in self.utterances:
-                self._application.say(utterance, block=True)
+                self._intention.say(utterance, block=True)
                 logger.debug("Said utterance")
                 sleep(0.001)
 
@@ -227,23 +236,29 @@ class TalkingThread(threading.Thread):
 class ResourceITest(unittest.TestCase):
     def setUp(self):
         setupTestComponents()
-        self.application = TestApplication()
+        self.intention = TestIntention()
+        self.application = TestApplication(self.intention)
         self.application.start()
 
-        webrtc_buffer_size = self.application.config_manager\
+        sleep(1)
+
+        webrtc_buffer_size = self.intention.config_manager\
             .get_config("pepper.framework.sensors.vad.webrtc")\
             .get_int("buffer_size")
-        self.threads = [ListeningThread(self.application.vad.speech_flag, self.application.backend.microphone, webrtc_buffer_size),
-                        TalkingThread(self.application)]
+        self.threads = [ListeningThread(self.intention.vad.speech_flag, self.intention.backend.microphone, webrtc_buffer_size),
+                        TalkingThread(self.intention)]
         for thread in self.threads:
             thread.start()
 
     def tearDown(self):
+        self.application.stop()
+
         for thread in self.threads:
             thread.stop()
             thread.join()
-        self.application.stop()
+
         del self.application
+        DIContainer._singletons.clear()
 
         # Try to ensure that the application is stopped
         try:
@@ -259,14 +274,14 @@ class ResourceITest(unittest.TestCase):
 
         sleep(0.1)
 
-        self.assertEqual(2, len(self.application.hypotheses))
-        self.assertEqual('Test one two', self.application.hypotheses[0].transcript)
-        self.assertEqual(1.0, self.application.hypotheses[0].confidence)
-        self.assertEqual('Test one two', self.application.hypotheses[1].transcript)
-        self.assertEqual(1.0, self.application.hypotheses[1].confidence)
+        self.assertEqual(2, len(self.intention.hypotheses))
+        self.assertEqual('Test one two', self.intention.hypotheses[0].transcript)
+        self.assertEqual(1.0, self.intention.hypotheses[0].confidence)
+        self.assertEqual('Test one two', self.intention.hypotheses[1].transcript)
+        self.assertEqual(1.0, self.intention.hypotheses[1].confidence)
 
     def test_talk(self):
-        self.application.backend.text_to_speech.latch.set()
+        self.intention.backend.text_to_speech.latch.set()
 
         _, talking_thread = self.threads
 
@@ -276,11 +291,11 @@ class ResourceITest(unittest.TestCase):
 
         sleep(0.1)
 
-        self.assertEqual(1, len(self.application.backend.text_to_speech.utterances))
-        self.assertEqual("Test", self.application.backend.text_to_speech.utterances[0])
+        self.assertEqual(1, len(self.intention.backend.text_to_speech.utterances))
+        self.assertEqual("Test", self.intention.backend.text_to_speech.utterances[0])
 
     def test_talk_after_vad_stops(self):
-        self.application.backend.text_to_speech.latch.set()
+        self.intention.backend.text_to_speech.latch.set()
         listening_thread, talking_thread = self.threads
 
         in_speech_latch, exit_speech_latch, continue_speech_latch = listening_thread.listen(1, continue_latch=True)
@@ -296,8 +311,8 @@ class ResourceITest(unittest.TestCase):
 
         sleep(0.1)
 
-        self.assertEqual(1, len(self.application.backend.text_to_speech.utterances))
-        self.assertEqual("Test", self.application.backend.text_to_speech.utterances[0])
+        self.assertEqual(1, len(self.intention.backend.text_to_speech.utterances))
+        self.assertEqual("Test", self.intention.backend.text_to_speech.utterances[0])
 
     def test_listen_after_talk_stops(self):
         listening_thread, talking_thread = self.threads
@@ -312,32 +327,32 @@ class ResourceITest(unittest.TestCase):
         exit_speech_latch.wait()
 
         # Ignoring speech while talking
-        self.assertEqual(1, len(self.application.hypotheses))
-        self.assertEqual('Test one two', self.application.hypotheses[0].transcript)
-        self.assertEqual(1.0, self.application.hypotheses[0].confidence)
+        self.assertEqual(1, len(self.intention.hypotheses))
+        self.assertEqual('Test one two', self.intention.hypotheses[0].transcript)
+        self.assertEqual(1.0, self.intention.hypotheses[0].confidence)
 
         _, exit_speech_latch = listening_thread.listen(1)
         exit_speech_latch.wait()
 
-        self.assertEqual(1, len(self.application.hypotheses))
-        self.assertEqual('Test one two', self.application.hypotheses[0].transcript)
-        self.assertEqual(1.0, self.application.hypotheses[0].confidence)
+        self.assertEqual(1, len(self.intention.hypotheses))
+        self.assertEqual('Test one two', self.intention.hypotheses[0].transcript)
+        self.assertEqual(1.0, self.intention.hypotheses[0].confidence)
 
         # Pick up speech again after talking
         _, exit_speech_latch, continue_speech_latch = listening_thread.listen(1, continue_latch=True)
 
         continue_speech_latch.set()
-        self.application.backend.text_to_speech.latch.set()
+        self.intention.backend.text_to_speech.latch.set()
         exit_talk_latch.wait()
         exit_speech_latch.wait()
 
         sleep(0.1)
 
-        self.assertEqual(2, len(self.application.hypotheses))
-        self.assertEqual('Test one two', self.application.hypotheses[0].transcript)
-        self.assertEqual(1.0, self.application.hypotheses[0].confidence)
-        self.assertEqual('Test one two', self.application.hypotheses[1].transcript)
-        self.assertEqual(1.0, self.application.hypotheses[1].confidence)
+        self.assertEqual(2, len(self.intention.hypotheses))
+        self.assertEqual('Test one two', self.intention.hypotheses[0].transcript)
+        self.assertEqual(1.0, self.intention.hypotheses[0].confidence)
+        self.assertEqual('Test one two', self.intention.hypotheses[1].transcript)
+        self.assertEqual(1.0, self.intention.hypotheses[1].confidence)
 
     def await(self, predicate, max=100, msg="predicate"):
         cnt = 0

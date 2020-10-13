@@ -14,8 +14,6 @@ class TextToSpeechComponent(AbstractComponent):
         # type: () -> None
         super(TextToSpeechComponent, self).__init__()
 
-        self._log.info("Initializing TextToSpeechComponent")
-
     def say(self, text, animation=None, block=False):
         # type: (Union[str, unicode], Optional[str], bool) -> None
         """

@@ -2,10 +2,11 @@ import unittest
 
 from pepper.framework.application.application import AbstractApplication
 from pepper.framework.application.display import DisplayComponent
+from pepper.framework.application.intention import AbstractIntention
 from pepper.framework.backend.abstract.backend import AbstractBackend
 from pepper.framework.backend.abstract.tablet import AbstractTablet
 from pepper.framework.backend.container import BackendContainer
-from pepper.framework.infra.di_container import singleton
+from pepper.framework.infra.di_container import singleton, DIContainer
 from pepper.framework.infra.event.api import EventBusContainer
 from pepper.framework.infra.event.memory import SynchronousEventBusContainer
 from pepper.framework.infra.resource.threaded import ThreadedResourceContainer
@@ -43,36 +44,43 @@ class ApplicationContainer(TestBackendContainer, SynchronousEventBusContainer, T
         super(ApplicationContainer, self).__init__()
 
 
-class TestApplication(ApplicationContainer, AbstractApplication, DisplayComponent):
+class TestIntention(ApplicationContainer, AbstractIntention, DisplayComponent):
     def __init__(self):
-        super(TestApplication, self).__init__()
+        super(TestIntention, self).__init__()
+
+
+class TestApplication(AbstractApplication, ApplicationContainer):
+    def __init__(self, intention):
+        super(TestApplication, self).__init__(intention)
 
 
 class DisplayITest(unittest.TestCase):
     def setUp(self):
-        self.application = TestApplication()
-        self.application.start()
+        self.intention = TestIntention()
+        self.appliation = TestApplication(self.intention)
+        self.appliation.start()
 
     def tearDown(self):
-        self.application.stop()
-        del self.application
+        self.appliation.stop()
+        del self.appliation
+        DIContainer._singletons.clear()
 
     def test_show(self):
-        self.application.show_on_display("test://url")
+        self.intention.show_on_display("test://url")
 
-        util.await(lambda: self.application.backend.tablet.display, msg="point event")
+        util.await(lambda: self.intention.backend.tablet.display, msg="point event")
 
-        self.assertEqual("test://url", self.application.backend.tablet.display)
+        self.assertEqual("test://url", self.intention.backend.tablet.display)
 
 
     def test_hide(self):
-        self.application.show_on_display("test://url")
-        util.await(lambda: self.application.backend.tablet.display, msg="point event")
+        self.intention.show_on_display("test://url")
+        util.await(lambda: self.intention.backend.tablet.display, msg="point event")
 
-        self.application.hide_display()
-        util.await(lambda: not self.application.backend.tablet.display, msg="point event")
+        self.intention.hide_display()
+        util.await(lambda: not self.intention.backend.tablet.display, msg="point event")
 
-        self.assertIsNone(self.application.backend.tablet.display)
+        self.assertIsNone(self.intention.backend.tablet.display)
 
 
 if __name__ == '__main__':

@@ -4,8 +4,8 @@ from time import time
 from enum import Enum
 from typing import List, Union, Tuple, Optional, ClassVar, Callable
 
-from pepper.framework.application.application import AbstractApplication
 from pepper.framework.application.component import AbstractComponent
+from pepper.framework.application.intention import AbstractIntention
 from pepper.language import Utterance
 
 logger = logging.getLogger(__name__)
@@ -49,7 +49,7 @@ class Responder(object):
         """
         raise NotImplementedError()
 
-    def respond(self, utterance, app):
+    def respond(self, utterance, intention):
         # type: (Utterance, Union[requirements]) -> Optional[Tuple[float, Callable]]
         """
         Respond to Utterance
@@ -60,7 +60,7 @@ class Responder(object):
         ----------
         utterance: Utterance
             Utterance to respond to
-        app: Union[requirements]
+        intention: Union[requirements]
             Components to Interact with as Response
 
         Returns
@@ -73,10 +73,10 @@ class Responder(object):
 
 class ResponsePicker(object):
 
-    def __init__(self, app, responders):
-        # type: (AbstractApplication, List[Responder]) -> None
+    def __init__(self, intention, responders):
+        # type: (AbstractIntention, List[Responder]) -> None
 
-        self._app = app
+        self._intention = intention
 
         self._responders = responders
 
@@ -96,9 +96,9 @@ class ResponsePicker(object):
         return self._groups
 
     @property
-    def app(self):
-        # type: () -> AbstractApplication
-        return self._app
+    def intention(self):
+        # type: () -> AbstractIntention
+        return self._intention
 
     def respond(self, utterance):
         # type: (Utterance) -> Optional[Responder]
@@ -113,7 +113,7 @@ class ResponsePicker(object):
 
             for responder in group:
 
-                result = responder.respond(utterance, self.app)
+                result = responder.respond(utterance, self.intention)
 
                 if result:
                     score, func = result
@@ -135,9 +135,9 @@ class ResponsePicker(object):
 
         for responder in self.responders:
             for requirement in responder.requirements:
-                if not isinstance(self.app, requirement):
+                if not isinstance(self.intention, requirement):
                     unmet_requirements.add(requirement)
 
         if unmet_requirements:
             raise ResponderRequirementUnmetError("{} depends on {}, but these are not superclasses of {}".format(
-                self.__class__.__name__, unmet_requirements, self.app.__class__.__name__))
+                self.__class__.__name__, unmet_requirements, self.intention.__class__.__name__))

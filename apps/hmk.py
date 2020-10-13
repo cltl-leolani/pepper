@@ -1,21 +1,19 @@
 import re
 import urllib
 from random import choice
-from threading import Thread
 from time import time, sleep
 
-from pepper.app_container import ApplicationContainer
-from pepper.framework.application.application import AbstractApplication
+from pepper.app_container import ApplicationContainer, Application
 from pepper.framework.application.brain import BrainComponent
+from pepper.framework.application.context import ContextComponent
 from pepper.framework.application.display import DisplayComponent
+from pepper.framework.application.face_detection import FaceRecognitionComponent
 from pepper.framework.application.intention import AbstractIntention
 from pepper.framework.application.motion import MotionComponent
 from pepper.framework.application.object_detection import ObjectDetectionComponent
-from pepper.framework.application.text_to_speech import TextToSpeechComponent
-from pepper.framework.application.face_detection import FaceRecognitionComponent
 from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.application.context import ContextComponent
 from pepper.framework.application.statistics import StatisticsComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
 from pepper.framework.sensor.api import UtteranceHypothesis
 from pepper.knowledge import sentences, animations
 from pepper.language.generation.reply import reply_to_question
@@ -48,21 +46,19 @@ RESPONDERS = [
 ]
 
 
-class HMKApp(ApplicationContainer, AbstractApplication,
-             StatisticsComponent, ContextComponent,
-             ObjectDetectionComponent, FaceRecognitionComponent,
-             SpeechRecognitionComponent, TextToSpeechComponent,
-             BrainComponent,
-             MotionComponent, DisplayComponent):
+class HMKIntention(ApplicationContainer, AbstractIntention,
+                   StatisticsComponent, ContextComponent,
+                   ObjectDetectionComponent, FaceRecognitionComponent,
+                   SpeechRecognitionComponent, TextToSpeechComponent,
+                   BrainComponent,
+                   MotionComponent, DisplayComponent):
     SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
 
     def __init__(self):
-        super(HMKApp, self).__init__()
-
-        self.show_on_display(IMAGE_VU)
+        super(HMKIntention, self).__init__()
 
     def say(self, text, animation=None, block=True):
-        super(HMKApp, self).say(text, animation, block)
+        super(HMKIntention, self).say(text, animation, block)
         sleep(1.5)
 
     def show_text(self, text):
@@ -70,7 +66,7 @@ class HMKApp(ApplicationContainer, AbstractApplication,
         self.show_on_display(self.SUBTITLES_URL.format(text_websafe))
 
 
-class WaitForStartCueIntention(AbstractIntention, HMKApp):
+class WaitForStartCueIntention(HMKIntention):
     START_CUE_TEXT = [
         "she's here",
         "she is here",
@@ -81,11 +77,16 @@ class WaitForStartCueIntention(AbstractIntention, HMKApp):
         "you can start"
     ]
 
-    def __init__(self, application):
-        super(WaitForStartCueIntention, self).__init__(application)
+    def __init__(self):
+        super(WaitForStartCueIntention, self).__init__()
 
         # Initialize Response Picker
         self.response_picker = ResponsePicker(self, RESPONDERS)
+
+    def start(self):
+        super(WaitForStartCueIntention, self).start()
+
+        self.show_on_display(IMAGE_VU)
 
         # Start Chat with Default Speaker
         self.context.start_chat(DEFAULT_SPEAKER)
@@ -94,7 +95,7 @@ class WaitForStartCueIntention(AbstractIntention, HMKApp):
         # If Start Face Cue is observed by Leolani -> Start Main Intention
         if any([face.name == SPEAKER_FACE for face in faces]):
             self.say("Ah, I can see {}! Let me begin!".format(SPEAKER_NAME_THIRD))
-            IntroductionIntention(self.application)
+            self.change_intention(IntroductionIntention())
 
     def on_chat_turn(self, utterance):
 
@@ -102,19 +103,21 @@ class WaitForStartCueIntention(AbstractIntention, HMKApp):
         transcript = utterance.transcript.lower()
         if any([cue in transcript for cue in self.START_CUE_TEXT]):
             self.say("Oh, {}!".format(choice(sentences.HAPPY)), animation=animations.HAPPY)
-            IntroductionIntention(self.application)
+            self.change_intention(IntroductionIntention())
             return
 
 
-class IntroductionIntention(AbstractIntention, HMKApp):
-    def __init__(self, application):
-        super(IntroductionIntention, self).__init__(application)
+class IntroductionIntention(HMKIntention):
+    def __init__(self):
+        super(IntroductionIntention, self).__init__()
+
+    def start(self):
+        super(IntroductionIntention, self).start()
 
         # Start Chat with Main Speaker
         self.context.start_chat(SPEAKER_NAME)
 
-        # Start Speech
-        Thread(target=self.speech).start()
+        self.speech()
 
     def speech(self):
 
@@ -165,7 +168,7 @@ class IntroductionIntention(AbstractIntention, HMKApp):
         sleep(2.5)
 
         # Move to Brexit QnA
-        BrexitQuestionIntention(self.application)
+        self.change_intention(BrexitQuestionIntention())
 
     def brexit_in_brain(self):
         self.answer_brain_query("what is the brexit about")
@@ -185,14 +188,17 @@ class IntroductionIntention(AbstractIntention, HMKApp):
 
 
 # 2.3 - Brexit Question
-class BrexitQuestionIntention(AbstractIntention, HMKApp):
-    def __init__(self, application):
-        super(BrexitQuestionIntention, self).__init__(application)
+class BrexitQuestionIntention(HMKIntention):
+    def __init__(self):
+        super(BrexitQuestionIntention, self).__init__()
 
         # Initialize Response Picker
         self.response_picker = ResponsePicker(self, RESPONDERS)
 
         self._retried = False
+
+    def start(self):
+        super(BrexitQuestionIntention, self).start()
 
         # Start Chat with Speaker if not already running
         if not self.context.chatting:
@@ -218,18 +224,21 @@ class BrexitQuestionIntention(AbstractIntention, HMKApp):
             # -> Thank Speaker and Move on to BrexitAnswerIntention
             self.say("Thank you for your answer!", animations.HAPPY)
             self.show_on_display(IMAGE_VU)
-            BrexitAnswerIntention(self.application)
+            self.change_intention(BrexitAnswerIntention())
 
 
 # 2.4 - Brexit Answer
-class BrexitAnswerIntention(AbstractIntention, HMKApp):
-    def __init__(self, application):
-        super(BrexitAnswerIntention, self).__init__(application)
+class BrexitAnswerIntention(HMKIntention):
+    def __init__(self):
+        super(BrexitAnswerIntention, self).__init__()
 
         # Initialize Response Picker
         self.response_picker = ResponsePicker(self, RESPONDERS)
 
         self._retried = False
+
+    def start(self):
+        super(BrexitAnswerIntention, self).start()
 
         # Start Chat with Speaker if not already running
         if not self.context.chatting:
@@ -253,21 +262,24 @@ class BrexitAnswerIntention(AbstractIntention, HMKApp):
             # -> Thank Speaker and Move on to OutroIntention
             self.say("Thank you!", animations.HAPPY)
             self.show_on_display(IMAGE_VU)
-            OutroIntention(self.application)
+            self.change_intention(OutroIntention())
 
 
-class OutroIntention(AbstractIntention, HMKApp):
-    def __init__(self, application):
-        super(OutroIntention, self).__init__(application)
+class OutroIntention(HMKIntention):
+    def __init__(self):
+        super(OutroIntention, self).__init__()
 
         # Initialize Response Picker
         self.response_picker = ResponsePicker(self, RESPONDERS)
+
+    def start(self):
+        super(OutroIntention, self).start()
 
         # Start Chat with Speaker if not already running
         if not self.context.chatting:
             self.context.start_chat(SPEAKER_NAME)
 
-        Thread(target=self.speech).start()
+        self.speech()
 
     def speech(self):
         # 5.1 - Wish all a fruitful discussion
@@ -286,14 +298,14 @@ class OutroIntention(AbstractIntention, HMKApp):
         self.say("I believe it is now time for a group picture! I love pictures!", animations.HAPPY)
 
         # Switch to Default Intention
-        DefaultIntention(self.application)
+        self.change_intention(DefaultIntention())
 
 
-class DefaultIntention(AbstractIntention, HMKApp):
+class DefaultIntention(HMKIntention):
     IGNORE_TIMEOUT = 60
 
-    def __init__(self, application):
-        super(DefaultIntention, self).__init__(application)
+    def __init__(self):
+        super(DefaultIntention, self).__init__()
 
         self._ignored_people = {}
         self.response_picker = ResponsePicker(self, RESPONDERS)
@@ -318,11 +330,4 @@ class DefaultIntention(AbstractIntention, HMKApp):
 
 
 if __name__ == '__main__':
-    # Initialize Application
-    application = HMKApp()
-
-    # Initialize Intention
-    WaitForStartCueIntention(application)
-
-    # Run Application
-    application.run()
+    Application(WaitForStartCueIntention()).run()

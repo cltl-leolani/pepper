@@ -93,8 +93,8 @@ class AbstractTextToSpeech(object):
         self._talking_jobs += 1
         self._queue.put((text, animation))
 
-        while block and self.talking:
-            sleep(1E-3)
+        while block and self.talking and self._scheduler.running:
+            sleep(1E-2)
 
     def on_text_to_speech(self, text, animation=None):
         # type: (Union[str, unicode], Optional[str]) -> None

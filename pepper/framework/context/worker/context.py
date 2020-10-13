@@ -46,7 +46,7 @@ class ContextWorker(TopicWorker):
 
     def process(self, event):
         if not event:
-            self.process_scheduled()
+            pass
         elif ObjectDetector.TOPIC == event.metadata.topic:
             self.process_object(event.payload)
         elif FaceDetector.TOPIC == event.metadata.topic:
@@ -55,6 +55,8 @@ class ContextWorker(TopicWorker):
             self.process_transcript(event.payload['hypotheses'])
         elif TTS_TOPIC == event.metadata.topic:
             self.process_utterance(event.payload['text'])
+
+        self.process_scheduled()
 
     def process_scheduled(self):
         # Get People within Conversation Bounds

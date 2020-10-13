@@ -1,18 +1,18 @@
 """Example Application that answers questions posed in natural language using Wikipedia"""
 
-from pepper.app_container import ApplicationContainer
-from pepper.framework.application.application import AbstractApplication
+from pepper.app_container import ApplicationContainer, Application
+from pepper.framework.application.intention import AbstractIntention
+from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
 from pepper.framework.application.statistics import StatisticsComponent
 from pepper.framework.application.text_to_speech import TextToSpeechComponent
-from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
 from pepper.knowledge import Wikipedia  # Class to Query Wikipedia using Natural Language
 
 
-class WikipediaApplication(ApplicationContainer,
-                           AbstractApplication,         # Every Application Inherits from AbstractApplication
-                           StatisticsComponent,         # Displays Performance Statistics in Terminal
-                           SpeechRecognitionComponent,  # Enables Speech Recognition and the self.on_transcript event
-                           TextToSpeechComponent):      # Enables Text to Speech and the self.say method
+class WikipediaIntention(ApplicationContainer,
+                         AbstractIntention,
+                         StatisticsComponent,  # Displays Performance Statistics in Terminal
+                         SpeechRecognitionComponent,  # Enables Speech Recognition and the self.on_transcript event
+                         TextToSpeechComponent):      # Enables Text to Speech and the self.say method
 
     def on_transcript(self, hypotheses, audio):
         """
@@ -51,5 +51,4 @@ class WikipediaApplication(ApplicationContainer,
 
 
 if __name__ == "__main__":
-    application = WikipediaApplication()
-    application.run()
+    Application(WikipediaIntention()).run()

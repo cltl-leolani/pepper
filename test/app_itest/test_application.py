@@ -12,6 +12,7 @@ from pepper import CameraResolution, config
 from pepper.framework.application.application import AbstractApplication
 from pepper.framework.application.context import ContextComponent
 from pepper.framework.application.face_detection import FaceRecognitionComponent
+from pepper.framework.application.intention import AbstractIntention
 from pepper.framework.application.object_detection import ObjectDetectionComponent
 from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
 from pepper.framework.application.text_to_speech import TextToSpeechComponent
@@ -27,7 +28,7 @@ from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeec
 from pepper.framework.backend.container import BackendContainer
 from pepper.framework.infra.config.local import LocalConfigurationContainer
 from pepper.framework.context.container import DefaultContextWorkerContainer, DefaultContextContainer
-from pepper.framework.infra.di_container import singleton
+from pepper.framework.infra.di_container import singleton, DIContainer
 from pepper.framework.infra.event.api import EventBusContainer
 from pepper.framework.infra.event.memory import SynchronousEventBusContainer
 from pepper.framework.infra.resource.threaded import ThreadedResourceContainer
@@ -37,12 +38,12 @@ from pepper.framework.sensor.container import DefaultSensorWorkerContainer
 from pepper.framework.infra.util import Bounds
 from test import util
 
-logger = logging.getLogger("pepper")
-handler = logging.StreamHandler(stream=sys.stdout)
-handler.setFormatter(logging.Formatter(fmt='%(asctime)s %(levelname)-8s %(message)s',
-                                       datefmt='%Y-%m-%d %H:%M:%S'))
-logger.addHandler(handler)
-logger.setLevel(logging.ERROR)
+# logger = logging.getLogger("pepper")
+# handler = logging.StreamHandler(stream=sys.stdout)
+# handler.setFormatter(logging.Formatter(fmt='%(asctime)s %(levelname)-8s %(message)s',
+#                                        datefmt='%Y-%m-%d %H:%M:%S'))
+# logger.addHandler(handler)
+# logger.setLevel(logging.DEBUG)
 
 TEST_IMG = np.zeros((128,))
 TEST_BOUNDS = Bounds(0.0, 0.0, 1.0, 1.0)
@@ -115,14 +116,14 @@ class ApplicationContainer(TestBackendContainer,
     pass
 
 
-class TestApplication(ApplicationContainer, AbstractApplication,
+class TestIntention(ApplicationContainer, AbstractIntention,
                       TextToSpeechComponent,
                       SpeechRecognitionComponent,
                       FaceRecognitionComponent,
                       ObjectDetectionComponent,
                       ContextComponent):
     def __init__(self):
-        super(TestApplication, self).__init__()
+        super(TestIntention, self).__init__()
         self.objects = []
         self.faces = []
         self.faces_new = []
@@ -163,15 +164,23 @@ class TestApplication(ApplicationContainer, AbstractApplication,
         # type: () -> None
         self.chat_exits += 1
 
+
+class TestApplication(AbstractApplication, ApplicationContainer):
+    def __init__(self, intention):
+        super(TestApplication, self).__init__(intention)
+
+
 class ApplicationITest(unittest.TestCase):
     def setUp(self):
         with importlib_resources.path(__package__, "test.config") as test_config:
             LocalConfigurationContainer.load_configuration(str(test_config), [])
-        self.application = TestApplication()
+        self.intention = TestIntention()
+        self.application = TestApplication(self.intention)
 
     def tearDown(self):
         self.application.stop()
         del self.application
+        DIContainer._singletons.clear()
 
         # Try to ensure that the application is stopped
         try:
@@ -184,10 +193,10 @@ class ApplicationITest(unittest.TestCase):
         def handle_audio_event(event):
             mic_events.append(event)
 
-        self.application.event_bus.subscribe(MIC_TOPIC, handle_audio_event)
+        self.intention.event_bus.subscribe(MIC_TOPIC, handle_audio_event)
         self.application.start()
 
-        mic = self.application.backend.microphone
+        mic = self.intention.backend.microphone
         audio_frame = np.random.rand(80).astype(np.int16)
         mic.on_audio(audio_frame)
 
@@ -208,13 +217,13 @@ class ApplicationITest(unittest.TestCase):
         def handle_image_event(event):
             image_events.append(event)
 
-        self.application.event_bus.subscribe(CAM_TOPIC, handle_image_event)
+        self.intention.event_bus.subscribe(CAM_TOPIC, handle_image_event)
         self.application.start()
 
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
         image = AbstractImage(np.zeros((2, 2, 3)), bounds)
 
-        cam = self.application.backend.camera
+        cam = self.intention.backend.camera
         cam.on_image(image)
 
         util.await(lambda: len(image_events) > 0, msg="images")
@@ -234,13 +243,13 @@ class ApplicationITest(unittest.TestCase):
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
         image = AbstractImage(np.zeros((2, 2, 3)), bounds)
 
-        cam = self.application.backend.camera
+        cam = self.intention.backend.camera
         cam.on_image(image)
 
-        util.await(lambda: len(self.application.objects) > 1, msg="objects")
+        util.await(lambda: len(self.intention.objects) > 1, msg="objects")
 
-        self.assertEqual(2, len(self.application.objects))
-        self.assertListEqual(2*["person"], [obj.name for obj in self.application.objects])
+        self.assertEqual(2, len(self.intention.objects))
+        self.assertListEqual(2 * ["person"], [obj.name for obj in self.intention.objects])
 
     def test_face_events(self):
         self.application.start()
@@ -248,13 +257,13 @@ class ApplicationITest(unittest.TestCase):
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
         image = AbstractImage(np.zeros((2, 2, 3)), bounds)
 
-        cam = self.application.backend.camera
+        cam = self.intention.backend.camera
         cam.on_image(image)
 
-        util.await(lambda: len(self.application.faces) > 0, msg="faces")
+        util.await(lambda: len(self.intention.faces) > 0, msg="faces")
 
-        self.assertEqual(1, len(self.application.faces))
-        self.assertEqual(config.HUMAN_UNKNOWN, self.application.faces[0].name)
+        self.assertEqual(1, len(self.intention.faces))
+        self.assertEqual(config.HUMAN_UNKNOWN, self.intention.faces[0].name)
 
     def test_face_new_events(self):
         self.application.start()
@@ -262,13 +271,13 @@ class ApplicationITest(unittest.TestCase):
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
         image = AbstractImage(np.zeros((2, 2, 3)), bounds)
 
-        cam = self.application.backend.camera
+        cam = self.intention.backend.camera
         cam.on_image(image)
 
-        util.await(lambda: len(self.application.faces_new) > 0, msg="faces")
+        util.await(lambda: len(self.intention.faces_new) > 0, msg="faces")
 
-        self.assertEqual(1, len(self.application.faces_new))
-        self.assertEqual(config.HUMAN_UNKNOWN, self.application.faces_new[0].name)
+        self.assertEqual(1, len(self.intention.faces_new))
+        self.assertEqual(config.HUMAN_UNKNOWN, self.intention.faces_new[0].name)
 
     def test_face_known_events(self):
         self.application.start()
@@ -276,53 +285,53 @@ class ApplicationITest(unittest.TestCase):
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
         image = AbstractImage(np.zeros((2, 2, 3)), bounds)
 
-        cam = self.application.backend.camera
+        cam = self.intention.backend.camera
         cam.on_image(image)
 
         try:
-            util.await(lambda: len(self.application.faces_known) > 0, max=5, msg="faces")
-            raise unittest.TestCase.failureException("Unexpected faces: " + str(self.application.faces_known))
+            util.await(lambda: len(self.intention.faces_known) > 0, max=5, msg="faces")
+            raise unittest.TestCase.failureException("Unexpected faces: " + str(self.intention.faces_known))
         except:
             pass
 
     def test_speech_events(self):
         self.application.start()
 
-        mic = self.application.backend.microphone
+        mic = self.intention.backend.microphone
         audio_frame = np.random.rand(80).astype(np.int16)
         mic.on_audio(audio_frame)
 
-        util.await(lambda: len(self.application.hypotheses) > 0, msg="hypotheses")
+        util.await(lambda: len(self.intention.hypotheses) > 0, msg="hypotheses")
 
-        self.assertEqual(1, len(self.application.hypotheses))
-        self.assertEqual("Test one two", self.application.hypotheses[0].transcript)
+        self.assertEqual(1, len(self.intention.hypotheses))
+        self.assertEqual("Test one two", self.intention.hypotheses[0].transcript)
 
     def test_context_on_chat_enter(self):
         self.application.start()
 
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
         image = AbstractImage(np.zeros((2, 2, 3)), bounds)
-        cam = self.application.backend.camera
+        cam = self.intention.backend.camera
         cam.on_image(image)
 
-        util.await(lambda: len(self.application.chat_entries) > 0, msg="chat_enter", max=1000)
+        util.await(lambda: len(self.intention.chat_entries) > 0, msg="chat_enter", max=1000)
 
-        self.assertEqual(1, len(self.application.chat_entries))
-        self.assertEqual(config.HUMAN_UNKNOWN, self.application.chat_entries[0])
+        self.assertEqual(1, len(self.intention.chat_entries))
+        self.assertEqual(config.HUMAN_UNKNOWN, self.intention.chat_entries[0])
 
-        mic = self.application.backend.microphone
+        mic = self.intention.backend.microphone
         audio_frame = np.random.rand(80).astype(np.int16)
         mic.on_audio(audio_frame)
 
-        util.await(lambda: len(self.application.chat_turns) > 0, msg="chat_turn", max=2000)
+        util.await(lambda: len(self.intention.chat_turns) > 0, msg="chat_turn", max=2000)
 
-        self.assertEqual(1, len(self.application.chat_turns))
-        self.assertEqual("Test one two", self.application.chat_turns[0].transcript)
-        self.assertEqual(config.HUMAN_UNKNOWN, self.application.chat_turns[0].chat_speaker)
+        self.assertEqual(1, len(self.intention.chat_turns))
+        self.assertEqual("Test one two", self.intention.chat_turns[0].transcript)
+        self.assertEqual(config.HUMAN_UNKNOWN, self.intention.chat_turns[0].chat_speaker)
 
-        util.await(lambda: self.application.chat_exits > 0, msg="chat_exit", max=1000)
+        util.await(lambda: self.intention.chat_exits > 0, msg="chat_exit", max=1000)
 
-        self.assertEqual(1, self.application.chat_exits)
+        self.assertEqual(1, self.intention.chat_exits)
 
 
 if __name__ == '__main__':

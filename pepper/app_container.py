@@ -2,6 +2,7 @@
 import logging.config
 
 from pepper.brain.long_term_memory import BrainContainer, LongTermMemory
+from pepper.framework.application.application import AbstractApplication
 from pepper.framework.context.container import DefaultContextContainer, DefaultContextWorkerContainer
 from pepper.framework.infra.di_container import singleton
 from pepper.framework.monitoring.container import DefaultMonitoringWorkerContainer
@@ -46,3 +47,7 @@ class ApplicationContainer(backend_container, DefaultMonitoringWorkerContainer,
         log_dir = config.get("log_dir")
 
         return LongTermMemory(url, log_dir)
+
+
+class Application(ApplicationContainer, AbstractApplication):
+    pass

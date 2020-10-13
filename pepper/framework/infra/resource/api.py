@@ -312,8 +312,10 @@ def acquire(lock, blocking=True, timeout=-1):
             # do something with the lock
 
     """
+    result = None
     try:
-        result = lock.acquire(blocking=blocking, timeout=timeout)
+        result = lock.acquire(blocking)
+        # result = lock.acquire(blocking=blocking, timeout=timeout)
         yield result
     finally:
         if result:

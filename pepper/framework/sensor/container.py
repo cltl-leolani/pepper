@@ -61,13 +61,21 @@ class DefaultSensorWorkerContainer(ContextContainer, SensorWorkerContainer, Sens
         return (worker.start(),)
 
     def stop(self):
+        logger.info("Stopping workers")
+
         for worker in self.__workers.queue:
             try:
                 worker.stop()
             except:
                 logger.exception("Failed to stop worker " + worker.name)
-        self.__workers.queue.clear()
+
         super(DefaultSensorWorkerContainer, self).stop()
+
+        for worker in self.__workers.queue:
+            worker.await_stop()
+        self.__workers.queue.clear()
+
+        logger.info("Stopped workers")
 
 
 class DefaultSensorContainer(BackendContainer, SensorContainer, EventBusContainer, ResourceContainer, ConfigurationContainer):

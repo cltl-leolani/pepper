@@ -2,46 +2,43 @@
 
 from time import sleep
 
-from pepper.app_container import ApplicationContainer
-from pepper.framework.application.application import AbstractApplication
-from pepper.framework.application.intention import AbstractIntention
-from pepper.framework.application.text_to_speech import TextToSpeechComponent
+from pepper.app_container import ApplicationContainer, Application
 from pepper.framework.application.face_detection import FaceRecognitionComponent
+from pepper.framework.application.intention import AbstractIntention
 from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
 from pepper.framework.application.statistics import StatisticsComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
 
 
-class MyApplication(ApplicationContainer,
-                    AbstractApplication,            # Main Application, inherits from AbstractApplication
+class BaseIntention(ApplicationContainer,
+                    AbstractIntention,
                     StatisticsComponent,            # Show Performance Statistics
                     FaceRecognitionComponent,       # Face Recognition
                     SpeechRecognitionComponent,     # Speech Recognition
                     TextToSpeechComponent):         # Text to Speech
-
     pass  # That's it for the main application, all logic is implemented in the Intentions
 
 
 # Idle Intention (not in conversation).
 # Inherits from AbstractIntention and MyApplication (specified above)
-class IdleIntention(AbstractIntention, MyApplication):
+class IdleIntention(BaseIntention):
 
     def on_face(self, faces):
         self.log.info(faces)
 
     # Since MyApplication inherits from FaceRecognitionComponent, the on_face_known event, becomes available here
     def on_face_known(self, faces):
-
         # When known face is recognized, switch to TalkIntention (now we're in conversation!)
-        TalkIntention(self.application, faces[0].name)
+        self.change_intention(TalkIntention(faces[0].name))
 
 
 # Talk Intention (in conversation!).
 # Inherits from AbstractIntention and MyApplication (specified above)
-class TalkIntention(AbstractIntention, MyApplication):
+class TalkIntention(BaseIntention):
 
     # Called when Intention is Initialized
-    def __init__(self, application, speaker):
-        super(TalkIntention, self).__init__(application)
+    def __init__(self, speaker):
+        super(TalkIntention, self).__init__()
 
         # Save Speaker, to refer to it later!
         self._speaker = speaker
@@ -65,10 +62,9 @@ class TalkIntention(AbstractIntention, MyApplication):
                 sleep(5)
 
                 # Switch Back to Idle Intention
-                IdleIntention(self.application)
+                self.change_intention(IdleIntention())
 
                 return
-
         else:
 
             # If Human doesn't end the conversation,
@@ -77,6 +73,4 @@ class TalkIntention(AbstractIntention, MyApplication):
 
 
 if __name__ == '__main__':
-    application = MyApplication()
-    IdleIntention(application)
-    application.run()
+    Application(IdleIntention()).run()

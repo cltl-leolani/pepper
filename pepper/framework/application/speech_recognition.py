@@ -16,8 +16,6 @@ class SpeechRecognitionComponent(AbstractComponent):
         # type: () -> None
         super(SpeechRecognitionComponent, self).__init__()
 
-        self._log.info("Initializing SpeechRecognitionComponent")
-
     def start(self):
         self.event_bus.subscribe(AbstractASR.TOPIC, self._on_transcript_handler)
         started_events = self.start_speech_recognition()
@@ -28,11 +26,15 @@ class SpeechRecognitionComponent(AbstractComponent):
         for event in started_events:
             event.wait(timeout=timeout)
 
+        self._log.info("Started SpeechRecognitionComponent")
+
     def stop(self):
         try:
             self.event_bus.unsubscribe(AbstractASR.TOPIC, self._on_transcript_handler)
         finally:
             super(SpeechRecognitionComponent, self).stop()
+
+        self._log.info("Started SpeechRecognitionComponent")
 
     def _on_transcript_handler(self, event):
         payload = event.payload
