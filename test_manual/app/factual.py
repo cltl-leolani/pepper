@@ -1,13 +1,14 @@
 from random import choice
 
-from pepper.app_container import ApplicationContainer
-from pepper.framework.application.application import AbstractApplication
+from pepper.app_container import ApplicationContainer, Application
+from pepper.framework.application.face_detection import FaceRecognitionComponent
 from pepper.framework.application.intention import AbstractIntention
 from pepper.framework.application.object_detection import ObjectDetectionComponent
-from pepper.framework.application.face_detection import FaceRecognitionComponent
-from pepper.framework.application.text_to_speech import TextToSpeechComponent
 from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.monitoring import StatisticsComponent, ContextComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
+from pepper.framework.application.context import ContextComponent
+from pepper.framework.application.statistics import StatisticsComponent
+
 from pepper.knowledge import sentences
 from pepper.responder import *
 
@@ -16,20 +17,15 @@ RESPONDERS = [
 ]
 
 
-class FactCheckingApp(AbstractApplication, ApplicationContainer,
+class FactCheckingIntention(AbstractIntention, ApplicationContainer,
                       StatisticsComponent, ContextComponent,
                       ObjectDetectionComponent, FaceRecognitionComponent,
                       SpeechRecognitionComponent, TextToSpeechComponent):
 
-    def __init__(self, backend):
-        super(FactCheckingApp, self).__init__(backend)
-
-
-class DefaultIntention(AbstractIntention, FactCheckingApp):
     IGNORE_TIMEOUT = 60
 
-    def __init__(self, application):
-        super(DefaultIntention, self).__init__(application)
+    def __init__(self):
+        super(FactCheckingIntention, self).__init__()
         self.response_picker = ResponsePicker(self, RESPONDERS)
 
     def on_chat_enter(self, name):
@@ -41,17 +37,8 @@ class DefaultIntention(AbstractIntention, FactCheckingApp):
         self.context.stop_chat()
 
     def on_chat_turn(self, utterance):
-        responder = self.response_picker.respond(utterance)
+        self.response_picker.respond(utterance)
 
 
 if __name__ == '__main__':
-
-    while True:
-        # Initialize Application
-        application = FactCheckingApp()
-
-        # Initialize Intention
-        DefaultIntention(application)
-
-        # Run Application
-        application.run()
+    Application(FactCheckingIntention()).run()

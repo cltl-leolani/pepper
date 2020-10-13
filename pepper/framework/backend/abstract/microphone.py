@@ -166,7 +166,7 @@ class AbstractMicrophone(object):
             self._muted = False
             if self._mic_lock.locked:
                 self._mic_lock.release()
-            logger.debug("Microphone unmuted")
+            logger.info("Microphone unmuted")
         else:
             self._audio_lock.interrupt_writers()
 
@@ -176,7 +176,7 @@ class AbstractMicrophone(object):
             self._mic_lock.interrupt_readers(False)
             self._muted = True
             self._audio_lock.release()
-            logger.debug("Microphone muted")
+            logger.info("Microphone muted")
         else:
             self._mic_lock.interrupt_readers()
 

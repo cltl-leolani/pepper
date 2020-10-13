@@ -119,7 +119,7 @@ class AbstractTextToSpeech(object):
             logger.debug("Await talking: %s", self._talking_jobs)
             with self._resource_manager.get_write_lock(AUDIO_RESOURCE):
                 try:
-                    logger.debug("Talking: %s", self._talking_jobs)
+                    logger.info("Talking, remaining: %s", self._talking_jobs)
                     self.on_text_to_speech(*self._queue.get(block=False))
                     self._talking_jobs -= 1
                 except Empty:
@@ -128,4 +128,4 @@ class AbstractTextToSpeech(object):
         except:
             logger.exception("Failed to convert text to speech")
 
-        logger.debug("Completed talking")
+        logger.info("debug talking")

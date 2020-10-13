@@ -1,5 +1,3 @@
-import logging
-import sys
 import threading
 import unittest
 from time import sleep
@@ -26,16 +24,16 @@ from pepper.framework.backend.abstract.motion import AbstractMotion
 from pepper.framework.backend.abstract.tablet import AbstractTablet
 from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
 from pepper.framework.backend.container import BackendContainer
-from pepper.framework.infra.config.local import LocalConfigurationContainer
 from pepper.framework.context.container import DefaultContextWorkerContainer, DefaultContextContainer
+from pepper.framework.infra.config.local import LocalConfigurationContainer
 from pepper.framework.infra.di_container import singleton, DIContainer
 from pepper.framework.infra.event.api import EventBusContainer
 from pepper.framework.infra.event.memory import SynchronousEventBusContainer
 from pepper.framework.infra.resource.threaded import ThreadedResourceContainer
+from pepper.framework.infra.util import Bounds
 from pepper.framework.sensor.api import FaceDetector, ObjectDetector, AbstractTranslator, AbstractASR, Object, \
     UtteranceHypothesis, SensorContainer, VAD, Voice
 from pepper.framework.sensor.container import DefaultSensorWorkerContainer
-from pepper.framework.infra.util import Bounds
 from test import util
 
 # logger = logging.getLogger("pepper")

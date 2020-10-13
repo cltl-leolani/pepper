@@ -1,16 +1,16 @@
-from pepper.app_container import ApplicationContainer
-from pepper.framework.backend.abstract.microphone import TOPIC as MIC_TOPIC
-from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
-from pepper.framework.application.application import AbstractApplication
-from pepper.framework.application.object_detection import ObjectDetectionComponent
+from pepper.app_container import ApplicationContainer, Application
 from pepper.framework.application.face_detection import FaceRecognitionComponent
+from pepper.framework.application.intention import AbstractIntention
+from pepper.framework.application.monitoring import MonitoringComponent
+from pepper.framework.application.object_detection import ObjectDetectionComponent
 from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
-from pepper.framework.monitoring import DisplayComponent, StatisticsComponent
+from pepper.framework.backend.abstract.camera import TOPIC as CAM_TOPIC
+from pepper.framework.backend.abstract.microphone import TOPIC as MIC_TOPIC
 
 
-class VerboseApp(ApplicationContainer,
-                 AbstractApplication, DisplayComponent, StatisticsComponent,
-                 SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent):
+class VerboseIntention(ApplicationContainer, AbstractIntention,
+                       MonitoringComponent,
+                       SpeechRecognitionComponent, ObjectDetectionComponent, FaceRecognitionComponent):
 
     def __init__(self):
         self.event_bus.subscribe(MIC_TOPIC, lambda e: self._on_event("on_audio", e))
@@ -36,4 +36,4 @@ class VerboseApp(ApplicationContainer,
 
 
 if __name__ == '__main__':
-    VerboseApp().run()
+    Application(VerboseIntention()).run()

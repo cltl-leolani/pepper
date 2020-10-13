@@ -560,6 +560,7 @@ class Utterance(object):
 class Parser(object):
     POS_TAGGER = None  # Type: POS
     NER_TAGGER = None
+    GRAMMAR = None
     CFG_GRAMMAR_FILE = os.path.join(os.path.dirname(__file__), 'data', 'cfg_new.txt')
 
     def __init__(self, utterance):
@@ -574,8 +575,10 @@ class Parser(object):
             logger.info("Started NER tagger")
 
         with open(Parser.CFG_GRAMMAR_FILE) as cfg_file:
-            self._cfg = cfg_file.read()
-            logger.info("Loaded grammar")
+            if not Parser.GRAMMAR:
+                Parser.GRAMMAR = cfg_file.read()
+                logger.info("Loaded grammar")
+            self._cfg = Parser.GRAMMAR
 
         self._forest, self._constituents = self._parse(utterance)
 
