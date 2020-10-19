@@ -6,7 +6,7 @@ nltk==3.4
 fuzzywuzzy[speedup]
 
 rdflib
-iribaker
+iribaker<0.2
 SPARQLWrapper
 
 playsound
