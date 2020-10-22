@@ -94,8 +94,6 @@ class WolframResponder(Responder):
         for que in self.WEB_CUE:
             # if transcript.lower().startswith(que) or wellformed_query:
             if transcript.find(que.strip()) >= 0 or wellformed_query:
-                print("Web cue: ", que, transcript, transcript.find(que.strip()), wellformed_query)
-
                 transcript = transcript.replace(que, "")
 
                 if wolfram.is_query(transcript):

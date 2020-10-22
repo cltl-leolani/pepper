@@ -22,8 +22,11 @@ Setup
     * bamos/openface
     * GraphDB
     * pepper_tensorflow
-  Data used by these containers is stored in `setup/data` and can be reset by removing all subfolders of that folder.
-4. Make sure there is a GraphDB repository named `leolani`. If  not, run `> ./setup/setup-graphdb-repo.sh`.
+   
+   Data used by these containers is stored in `setup/data` and can be reset by removing all subfolders of that folder.
+4. Make sure there is a GraphDB repository named `leolani`. If  not, run `> ./setup/setup-graphdb-repo.sh`. 
+   If this script fails, you may create the repository manually by accessing ```http://localhost:7200/webapi``` 
+   on your browser. Under ```Repository Management```, use the```POST``` endpoint to upload the ```/setup/repo-config.ttl``` file.
 5. Make sure the ```pepper/``` directory is on the python path, e.g. by invoking python with
      ```> PYTHON_PATH='path/to/pepper' python path/to/app```
    or by adjusting the python path in your IDE.

@@ -13,10 +13,10 @@
           <http://www.ontotext.com/trree/owlim#check-for-inconsistencies> "false";
           <http://www.ontotext.com/trree/owlim#defaultNS> "";
           <http://www.ontotext.com/trree/owlim#disable-sameAs> "false";
-          <http://www.ontotext.com/trree/owlim#enable-context-index> "false";
+          <http://www.ontotext.com/trree/owlim#enable-context-index> "true";
           <http://www.ontotext.com/trree/owlim#enable-literal-index> "true";
           <http://www.ontotext.com/trree/owlim#enable-optimization> "true";
-          <http://www.ontotext.com/trree/owlim#enablePredicateList> "false";
+          <http://www.ontotext.com/trree/owlim#enablePredicateList> "true";
           <http://www.ontotext.com/trree/owlim#entity-id-size> "32";
           <http://www.ontotext.com/trree/owlim#entity-index-size> "200000";
           <http://www.ontotext.com/trree/owlim#fts-memory> "0%";
@@ -32,7 +32,7 @@
           <http://www.ontotext.com/trree/owlim#query-timeout> "0";
           <http://www.ontotext.com/trree/owlim#read-only> "false";
           <http://www.ontotext.com/trree/owlim#repository-type> "file-repository";
-          <http://www.ontotext.com/trree/owlim#ruleset> "owl-horst-optimized";
+          <http://www.ontotext.com/trree/owlim#ruleset> "owl2-rl-optimized";
           <http://www.ontotext.com/trree/owlim#storage-folder> "storage";
           <http://www.ontotext.com/trree/owlim#throw-QueryEvaluationException-on-timeout> "false";
           <http://www.ontotext.com/trree/owlim#transaction-isolation> "true";

@@ -7,7 +7,7 @@ tmp/
 test_manual/news/tmp
 test_manual/news/out
 
-google_cloud_key.json
+config/google_cloud_key.json
 tokens.json
 
 log.txt

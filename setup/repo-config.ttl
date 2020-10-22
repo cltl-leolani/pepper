@@ -23,14 +23,14 @@
             owlim:entity-id-size  "32" ;
             owlim:imports "" ;
             owlim:repository-type "file-repository" ;
-            owlim:ruleset "owl-horst-optimized" ;
+            owlim:ruleset "owl2-rl-optimized" ;
             owlim:storage-folder "storage" ;
 
-            owlim:enable-context-index "false" ;
+            owlim:enable-context-index "true" ;
             owlim:cache-memory "80m" ;
             owlim:tuple-index-memory "80m" ;
 
-            owlim:enablePredicateList "false" ;
+            owlim:enablePredicateList "true" ;
             owlim:predicate-memory "0%" ;
 
             owlim:fts-memory "0%" ;
