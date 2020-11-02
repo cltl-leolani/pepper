@@ -34,9 +34,9 @@ class SubtitlesWorker(TopicWorker):
     def process(self, event):
         # type: (Event) -> None
         if AbstractASR.TOPIC == event.metadata.topic:
-            self.on_utterance(event.payload['text'])
-        elif TTS_TOPIC == event.metadata.topic:
             self.on_transcript(event.payload['hypotheses'])
+        elif TTS_TOPIC == event.metadata.topic:
+            self.on_utterance(event.payload['text'])
 
     def on_utterance(self, text):
         # type: (str) -> None
