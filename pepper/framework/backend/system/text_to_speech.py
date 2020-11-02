@@ -60,15 +60,16 @@ class SystemTextToSpeech(AbstractTextToSpeech):
 
     def _play_sound(self, mp3):
         try:
-            fd, path = tempfile.mkstemp()
-            with fd as out:
-                out.write(mp3)
-            playsound(path)
+            tmp_file = tempfile.NamedTemporaryFile(delete=False)
+            with tmp_file:
+                tmp_file.write(mp3)
+
+            playsound(tmp_file.name)
         except:
             self._log.exception("Failed to write temporary file")
         finally:
-            if os.path.exists(path):
+            if os.path.exists(tmp_file.name):
                 # TODO: Sometimes we need to save all data from an experiment. Comment the line below and pass
-                os.remove(path)
+                os.remove(tmp_file.name)
 
 
