@@ -60,8 +60,8 @@ class SystemTextToSpeech(AbstractTextToSpeech):
 
     def _play_sound(self, mp3):
         try:
-            _, path = tempfile.mkstemp()
-            with open(path, 'wb') as out:
+            fd, path = tempfile.mkstemp()
+            with fd as out:
                 out.write(mp3)
             playsound(path)
         except:
