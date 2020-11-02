@@ -1,4 +1,4 @@
-Setup
+qgit qSetup
 -----
 
 ### Run the application
@@ -17,13 +17,16 @@ Setup
 
     ```> docker build -t cltl/pepper_tensorflow .```
   in that repository.
-2. Download GraphDB binary (`graphdb-free-<version>-dist.zip`) into `setup/graphdb-docker/lib`
+2. Download GraphDB binary (`graphdb-free-<version>-dist.zip`) into `setup/graphdb-docker/lib` and update the graphdb
+version in the `setup/docker-compose.yml` file to the downloaded version. 
 3. Run `> docker-compose up` from the `setup/` folder. This starts
     * bamos/openface
     * GraphDB
     * pepper_tensorflow
    
    Data used by these containers is stored in `setup/data` and can be reset by removing all subfolders of that folder.
+   Depending on your docker setup make sure the docker containers have enough memory
+   and CPU available.
 4. Make sure there is a GraphDB repository named `leolani`. If  not, run `> ./setup/setup-graphdb-repo.sh`. 
    If this script fails, you may create the repository manually by accessing ```http://localhost:7200/webapi``` 
    on your browser. Under ```Repository Management```, use the```POST``` endpoint to upload the ```/setup/repo-config.ttl``` file.
