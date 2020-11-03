@@ -61,6 +61,7 @@ class Context(object):
     def __init__(self, name, friends):
         #type: (str, Iterable[str]) -> None
         self._id = getrandbits(128)
+        self._datetime = datetime.now()
 
         self._name = name
         self._friends = friends
@@ -145,7 +146,7 @@ class Context(object):
         datetime: datetime
             Current Date and Time
         """
-        return datetime.now()
+        return self._datetime
 
     @property
     def location(self):  # Where
@@ -270,6 +271,18 @@ class Context(object):
         """
         for person in people:
             self._people[person.name] = (person, time())
+
+    def set_datetime(self, date):
+        # type: (datetime) -> None
+        """
+        Add date to Context
+
+        Parameters
+        ----------
+        date: date
+            Date when the interaction took place
+        """
+        self._datetime = date
 
     def start_chat(self, speaker):
         # type: (str) -> None
