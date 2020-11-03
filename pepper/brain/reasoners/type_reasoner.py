@@ -1,16 +1,14 @@
-from pepper.brain.utils.helper_functions import read_query, casefold_text
-from pepper.brain.basic_brain import BasicBrain
-
-from pepper import config
-
-from fuzzywuzzy import process
 import requests
+from fuzzywuzzy import process
+
+from pepper.brain.basic_brain import BasicBrain
+from pepper.brain.utils.helper_functions import read_query, casefold_text
 
 
 class TypeReasoner(BasicBrain):
 
-    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False):
-        # type: () -> TypeReasoner
+    def __init__(self, address, log_dir, clear_all=False):
+        # type: (str, str, bool) -> None
         """
         Interact with Triple store
 
@@ -20,7 +18,7 @@ class TypeReasoner(BasicBrain):
             IP address and port of the Triple store
         """
 
-        super(TypeReasoner, self).__init__(address, clear_all, is_submodule=True)
+        super(TypeReasoner, self).__init__(address, log_dir, clear_all, is_submodule=True)
 
     def reason_entity_type(self, item, exact_only=True):
         """

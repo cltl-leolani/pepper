@@ -1,3 +1,4 @@
+import logging
 from .ner import NER
 from .utils.helper_functions import *
 from pepper.language.utils.atoms import UtteranceType
@@ -12,7 +13,7 @@ class Analyzer(object):
     # Load Stanford Named Entity Recognition Server
     NER = None  # type: NER
 
-    LOG = logger.getChild(__name__)
+    LOG = logging.getLogger(__name__)
 
     def __init__(self, chat):
         """

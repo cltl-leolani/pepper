@@ -1,9 +1,16 @@
-from pepper.framework.abstract.motion import AbstractMotion
+from pepper.framework.backend.abstract.motion import AbstractMotion
 from typing import Tuple
+
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
 
 
 class SystemMotion(AbstractMotion):
     """Control Robot Motion (other than speech animation)"""
+
+    def __init__(self, event_bus, resource_manager):
+        # type: (EventBus, ResourceManager) -> None
+        super(SystemMotion, self).__init__(event_bus, resource_manager)
 
     def look(self, direction, speed=1):
         # type: (Tuple[float, float], float) -> None
@@ -17,7 +24,7 @@ class SystemMotion(AbstractMotion):
         speed: float
             Movement Speed [0,1]
         """
-        pass
+        self._log.info("Look at " + str(direction))
 
     def point(self, direction, speed=1):
         # type: (Tuple[float, float], float) -> None
@@ -31,4 +38,4 @@ class SystemMotion(AbstractMotion):
         speed: float
             Movement Speed [0,1]
         """
-        pass
+        self._log.info("Point at " + str(direction))

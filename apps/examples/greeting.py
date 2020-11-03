@@ -1,22 +1,27 @@
 """Example Application that greets known and unknown people"""
 
-from pepper.framework import *
-from pepper import config
-
 from time import time
 
+from pepper.app_container import ApplicationContainer, Application
+from pepper.framework.application.face_detection import FaceRecognitionComponent
+from pepper.framework.application.intention import AbstractIntention
+from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
+from pepper.framework.application.statistics import StatisticsComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
 
-class GreetingApplication(AbstractApplication,          # All Applications inherit from AbstractApplication
-                          FaceRecognitionComponent,     # We need Face Recognition to Greet People by Name
-                          StatisticsComponent,
-                          SpeechRecognitionComponent,
-                          TextToSpeechComponent):       # We need Text to Speech to actually greet people
+
+class GreetingIntention(ApplicationContainer,
+                        AbstractIntention,
+                        FaceRecognitionComponent,     # We need Face Recognition to Greet People by Name
+                        StatisticsComponent,
+                        SpeechRecognitionComponent,
+                        TextToSpeechComponent):       # We need Text to Speech to actually greet people
 
     GREET_TIMEOUT = 15  # Only Greet people once every X seconds
 
-    def __init__(self, backend):
+    def __init__(self):
         """Greets New and Known People"""
-        super(GreetingApplication, self).__init__(backend)
+        super(GreetingIntention, self).__init__()
 
         self.name_time = {}  # Dictionary of <name, time> pairs, to keep track of who is greeted when
 
@@ -58,6 +63,4 @@ class GreetingApplication(AbstractApplication,          # All Applications inher
 
 
 if __name__ == "__main__":
-
-    # Run Application with Backend specified in Global Configuration File
-    GreetingApplication(config.get_backend()).run()
+    Application(GreetingIntention()).run()

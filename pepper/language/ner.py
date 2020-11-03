@@ -1,14 +1,13 @@
-from pepper import logger
 
-from contextlib import contextmanager, closing
-from threading import Thread
-
+import logging
+import os
 import socket
 import subprocess
-import os
-
+from contextlib import contextmanager, closing
+from threading import Thread
 from time import sleep
 
+logger = logging.getLogger(__name__)
 
 class NER(object):
 
@@ -25,7 +24,7 @@ class NER(object):
         self._ner_server_thread.daemon = True
         self._ner_server_thread.start()
 
-        self._log.debug("Booted: ({}:{})".format(self.IP, self._port))
+        self._log.debug("Booted NER: ({}:{})".format(self.IP, self._port))
 
     def tag(self, text):
         with self._connect() as s:
@@ -44,6 +43,7 @@ class NER(object):
             'java', '-cp', os.path.join(NER.ROOT, 'stanford-ner.jar'), 'edu.stanford.nlp.ie.NERServer',
             '-port', str(self._port), '-loadClassifier', os.path.join(NER.ROOT, classifier)],
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        self._log.info("Started NER server")
         with self._ner_server_process.stdout:
             self._log_subprocess_output(self._ner_server_process.stdout)
 

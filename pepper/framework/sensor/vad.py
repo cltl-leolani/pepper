@@ -1,74 +1,17 @@
-from pepper.framework import AbstractMicrophone
+from collections import deque
 
-from webrtcvad import Vad
 import numpy as np
+import webrtcvad
+from typing import Iterable, Optional
 
-from Queue import Queue
-
-from typing import Iterable
-
-
-class Voice(object):
-    """Voice Object (for Voice Activity Detection: VAD)"""
-
-    def __init__(self):
-        # type: () -> None
-        self._queue = Queue()
-        self._frames = []
-
-    @property
-    def frames(self):
-        # type: () -> Iterable[np.ndarray]
-        """
-        Get Voice Frames (chunks of audio)
-
-        Yields
-        -------
-        frames: Iterable of np.ndarray
-        """
-
-        if self._frames:
-            for frame in self._frames:
-                yield frame
-        else:
-            while True:
-                frame = self._queue.get()
-                if frame is None:
-                    break
-                self._frames.append(frame)
-                yield frame
-
-    @property
-    def audio(self):
-        # type: () -> np.ndarray
-        """
-        Get Voice Audio (Concatenated Frames)
-
-        Returns
-        -------
-        audio: np.ndarray
-        """
-
-        return np.concatenate([frame for frame in self.frames])
-
-    def add_frame(self, frame):
-        # type: (np.ndarray) -> None
-        """
-        Add Voice Frame (done by VAD)
-
-        Parameters
-        ----------
-        frame: np.ndarray
-        """
-
-        self._queue.put(frame)
-
-    def __iter__(self):
-        # type: () -> Iterable[np.ndarray]
-        return self.frames
+from pepper.framework.backend.abstract.microphone import AbstractMicrophone
+from pepper.framework.backend.abstract.microphone import MIC_RESOURCE_NAME as MIC_RESOURCE
+from pepper.framework.infra.config.api import ConfigurationManager
+from pepper.framework.infra.resource.api import ResourceManager
+from .api import VAD, Voice
 
 
-class VAD(object):
+class AbstractVAD(VAD):
     """
     Perform Voice Activity Detection on Microphone Input
 
@@ -76,133 +19,134 @@ class VAD(object):
     ----------
     microphone: AbstractMicrophone
     """
-
-    AUDIO_FRAME_MS = 10
-    BUFFER_SIZE = 100
-
     AUDIO_TYPE = np.int16
     AUDIO_TYPE_BYTES = 2
 
-    VOICE_THRESHOLD = 0.6
-    VOICE_WINDOW = 50
-
     MODE = 3
 
-    def __init__(self, microphone):
-        # type: (AbstractMicrophone) -> None
+    def __init__(self, resource_manager, configuration_manager):
+        # type: (ResourceManager, ConfigurationManager) -> None
+        config = configuration_manager.get_config("pepper.framework.sensors.vad.webrtc")
+        self._mic_rate = config.get_int("microphone_sample_rate")
+        self._channels = config.get_int("microphone_channels")
+        self._threshold = config.get_float("threshold")
+        self._buffer_size = config.get_int("buffer_size")
+        self._voice_window = config.get_int("voice_window")
 
-        self._microphone = microphone
-        self._vad = Vad(VAD.MODE)
+        self._resource_manager = resource_manager
+        self._mic_lock = None
 
-        # Voice Activity Detection Frame Size: VAD works in units of 'frames'
-        self._frame_size = VAD.AUDIO_FRAME_MS * self.microphone.rate // 1000
-        self._frame_size_bytes = self._frame_size * VAD.AUDIO_TYPE_BYTES
+        self._input_buffer = self._init_buffer()
 
-        # Audio & Voice Ring-Buffers
-        self._audio_buffer = np.zeros((VAD.BUFFER_SIZE, self._frame_size), VAD.AUDIO_TYPE)
-        self._voice_buffer = np.zeros(VAD.BUFFER_SIZE, np.bool)
-        self._buffer_index = 0
+        # Voice Activity Detection Frame Size: VAD works with chunks of length audio_frame_ms
+        audio_frame_ms = config.get_int("audio_frame_ms")
+        self._vad_frame_size = audio_frame_ms * self._mic_rate // 1000
 
-        self._voice = None
-        self._voice_queue = Queue()
-
-        self._frame_buffer = bytearray()
-
+        self._audio_buffer = deque(maxlen=self._buffer_size)
+        self._activation_window = deque(maxlen=self._voice_window)
         self._activation = 0
 
-        # Subscribe VAD to Microphone on_audio event
-        self.microphone.callbacks += [self._on_audio]
+        self._voice = None
 
-    @property
-    def microphone(self):
-        # type: () -> AbstractMicrophone
-        """
-        VAD Microphone
-        
-        Returns
-        -------
-        microphone: AbstractMicrophone
-        """
-        return self._microphone
+    def _init_buffer(self):
+        return np.empty((0, self._channels), dtype=np.int16)
 
     @property
     def activation(self):
         # type: () -> float
         """
         VAD Activation
-        
+
         Returns
         -------
         activation: float
         """
         return self._activation
 
-    @property
-    def voices(self):
-        # type: () -> Iterable[Voice]
-        """
-        Get Voices from Microphone Stream
+    def on_audio(self, frames, voice_callback):
+        # type: (np.array) -> Iterable[Voice]
+        if not len(frames):
+            return None
 
-        Yields
-        -------
-        voices: Iterable[Voice]
-        """
-        while True:
-            yield self._voice_queue.get()
-
-    def _on_audio(self, audio):
-        # type: (np.ndarray) -> None
-        """
-        (Microphone Callback) Add Audio to VAD
-
-        Parameters
-        ----------
-        audio: np.ndarray
-        """
+        if not self._mic_lock:
+            # As there are audio events, the mic lock should be available
+            self._mic_lock = self._resource_manager.get_read_lock(MIC_RESOURCE)
 
         # Work through Microphone Stream Frame by Frame
-        self._frame_buffer.extend(audio.tobytes())
-        while len(self._frame_buffer) >= self._frame_size_bytes:
-            self._on_frame(np.frombuffer(self._frame_buffer[:self._frame_size_bytes], VAD.AUDIO_TYPE))
-            del self._frame_buffer[:self._frame_size_bytes]
+        # split flat input into channels
+        input_frames = frames.reshape((-1, self._channels))
 
-    def _on_frame(self, frame):
-        # type: (np.ndarray) -> None
+        self._input_buffer = np.concatenate((self._input_buffer, input_frames))
+
+        vad_frame_cnt = self._input_buffer.shape[0] // self._vad_frame_size
+        if vad_frame_cnt == 0:
+            return
+
+        vad_size = vad_frame_cnt * self._vad_frame_size
+        vad_frames = self._input_buffer[:vad_size].reshape((vad_frame_cnt, -1, self._channels))
+
+        for vad_frame in vad_frames:
+            voice = self._on_vad_frame(vad_frame)
+            if voice:
+                voice_callback(voice)
+
+        # Keep the remainder if there is a partially filled VAD frame
+        self._input_buffer = self._input_buffer[vad_size:]
+
+    def _on_vad_frame(self, vad_frame):
+        # type: (np.ndarray) -> Optional[Voice]
         """
         Is-Speech/Is-Not-Speech Logic, called every frame
 
         Parameters
         ----------
-        frame: np.ndarray
+        vad_frame: np.ndarray
         """
-        self._activation = self._calculate_activation(frame)
+        self._activation = self._calculate_activation(vad_frame)
+
+        if not self._mic_lock.locked and not self._mic_lock.acquire(blocking=False):
+            # Don't listen if the lock cannot be obtained and
+            # don't keep audio from before listening was interrupted
+            self._input_buffer = self._init_buffer()
+            return
 
         if not self._voice:
-            if self.activation > VAD.VOICE_THRESHOLD:
+            self._audio_buffer.append(vad_frame)
+            # Only release the lock if there is no voice activity
+            if self._mic_lock.interrupted:
+                self._mic_lock.release()
+                return
 
+            if self._activation >= self._threshold:
                 # Create New Utterance Object
                 self._voice = Voice()
 
                 # Add Buffer Contents to Utterance
-                self._voice.add_frame(self._audio_buffer[self._buffer_index:].ravel())
-                self._voice.add_frame(self._audio_buffer[:self._buffer_index].ravel())
+                # start = max(0, (index + 1 - self._buffer_size) * vad_frame.shape[0])
+                # end = (index + 1) * vad_frame.shape[0]
+
+                audio = np.concatenate(self._audio_buffer).ravel()
+                self._voice.add_frame(audio)
+                self._audio_buffer.clear()
 
                 # Add Utterance to Utterance Queue
-                self._voice_queue.put(self._voice)
+                return self._voice
         else:
             # If Utterance Ongoing: Add Frame to Utterance Object
-            if self.activation > VAD.VOICE_THRESHOLD:
-                self._voice.add_frame(frame)
+            if self.activation >= self._threshold:
+                self._voice.add_frame(vad_frame.ravel())
 
             # Else: Terminate Utterance
             else:
                 self._voice.add_frame(None)
                 self._voice = None
 
-    def _calculate_activation(self, frame):
+        return None
+
+    def _calculate_activation(self, vad_frame):
         # type: (np.ndarray) -> float
         """
-        Calculate Voice Activation
+        Calculate Voice Activation over the VAD window after adding the frame.
 
         Parameters
         ----------
@@ -212,22 +156,26 @@ class VAD(object):
         -------
         activation: float
         """
-        # Update Buffers
-        self._audio_buffer[self._buffer_index] = frame
-        self._voice_buffer[self._buffer_index] = self._vad.is_speech(frame.tobytes(), self.microphone.rate, len(frame))
-        self._buffer_index = (self._buffer_index + 1) % VAD.BUFFER_SIZE
+        self._activation_window.append(float(self._is_speech(vad_frame)))
 
-        # Calculate Activation
-        voice_window = np.arange(self._buffer_index - VAD.VOICE_WINDOW, self._buffer_index) % VAD.BUFFER_SIZE
-        return float(np.mean(self._voice_buffer[voice_window]))
+        return sum(self._activation_window) / len(self._activation_window)
 
-    def __iter__(self):
-        # type: () -> Iterable[Voice]
+    def _is_speech(self, vad_frame):
+        raise NotImplementedError()
+
+
+class WebRtcVAD(AbstractVAD):
+    def __init__(self, resource_manager, configuration_manager):
+        super(WebRtcVAD, self).__init__(resource_manager, configuration_manager)
+
+        self._vad = webrtcvad.Vad(WebRtcVAD.MODE)
+
+    def _is_speech(self, vad_frame):
         """
-        Get Voices from Microphone Stream
-
-        Yields
-        -------
-        voices: Iterable[Voice]
+        The WebRTC VAD only accepts 16 - bit mono PCM audio, sampled at 8000,
+        16000, 32000 or 48000 Hz.A frame must be either 10, 20, or 30 ms in
+        duration.
         """
-        return self.voices
+        mono_frame = vad_frame.sum(axis=1).ravel()
+
+        return self._vad.is_speech(mono_frame.tobytes(), self._mic_rate, len(mono_frame))

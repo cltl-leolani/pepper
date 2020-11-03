@@ -1,9 +1,16 @@
-from pepper.framework.abstract.led import AbstractLed, Led
 from typing import List, Tuple
+
+from pepper.framework.backend.abstract.led import AbstractLed, Led
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
 
 
 class SystemLed(AbstractLed):
     """Control Robot LEDs"""
+
+    def __init__(self, event_bus, resource_manager):
+        # type: (EventBus, ResourceManager) -> None
+        super(SystemLed, self).__init__(event_bus, resource_manager)
 
     def set(self, leds, rgb, duration):
         # type: (List[Led], Tuple[float, float, float], float) -> None
@@ -19,7 +26,7 @@ class SystemLed(AbstractLed):
         duration: float
             How long to take switching this color
         """
-        pass
+        self._log.info("Activate " + str(leds))
 
     def off(self, leds):
         # type: (List[Led]) -> None
@@ -31,4 +38,4 @@ class SystemLed(AbstractLed):
         leds: List[Led]
             Which LEDs are affected
         """
-        pass
+        self._log.info("Deactivate " + str(leds))

@@ -1,38 +1,44 @@
-from pepper.framework.abstract.microphone import AbstractMicrophone
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.backend.abstract.microphone import AbstractMicrophone
 from pepper import NAOqiMicrophoneIndex
 import numpy as np
 
 import qi
 
-from typing import List, Callable, Tuple
+from typing import Tuple
+
+from pepper.framework.infra.resource.api import ResourceManager
 
 
 class NAOqiMicrophone(AbstractMicrophone):
-    """
-    NAOqi Microphone
-
-    Parameters
-    ----------
-    session: qi.Session
-        Qi Application Session
-    index: NAOqiMicrophoneIndex or int
-        Which Microphone to Use
-    callbacks: list of callable
-        Functions to call each time some audio samples are captured
-    """
-
     SERVICE = "ALAudioDevice"
-    RATE = 16000
 
-    def __init__(self, session, index, callbacks=[]):
-        # type: (qi.Session, NAOqiMicrophoneIndex, List[Callable[[np.ndarray], None]]) -> None
+    def __init__(self, session, rate, index, event_bus, resource_manager):
+        # type: (qi.Session, NAOqiMicrophoneIndex, EventBus, ResourceManager) -> None
+        """
+        Initialize NAOqi Microphone
+
+        Parameters
+        ----------
+        session: qi.Session
+            Qi Application Session
+        rate: int
+            Microphone rate
+        index: NAOqiMicrophoneIndex or int
+            Which Microphone to Use
+        event_bus : EventBus
+            EventBus for publishing events
+        resource_manager : ResourceManager
+            Resource manager to manage access to the microphone resource
+        """
+        # TODO Is there a reason only to use rear or front mic?
         super(NAOqiMicrophone, self).__init__(
-            NAOqiMicrophone.RATE, 4 if index == NAOqiMicrophoneIndex.ALL else 1, callbacks)
+            rate, 4 if index == NAOqiMicrophoneIndex.ALL else 1, event_bus, resource_manager)
 
         # Register Service and Subscribe this class as callback
         self._service = session.service(NAOqiMicrophone.SERVICE)
         session.registerService(self.__class__.__name__, self)
-        self._service.setClientPreferences(self.__class__.__name__, self.rate, int(index), 0)
+        self._service.setClientPreferences(self.__class__.__name__, rate, int(index), 0)
         self._service.subscribe(self.__class__.__name__)
 
         self._log.debug("Booted")

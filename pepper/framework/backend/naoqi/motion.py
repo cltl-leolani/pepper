@@ -1,5 +1,7 @@
-from pepper.framework.abstract.motion import AbstractMotion
-from pepper.framework.util import spherical2cartesian
+from pepper.framework.backend.abstract.motion import AbstractMotion
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
+from pepper.framework.infra.util import spherical2cartesian
 
 import qi
 
@@ -27,8 +29,9 @@ class NAOqiMotion(AbstractMotion):
     COMMAND_LIMIT = 2  # The maximum number of commands in the queue to prevent blocking all access to robot motion
     FRAME = 0  # 0 = With Respect to Torso
 
-    def __init__(self, session):
-        # type: (qi.Session) -> None
+    def __init__(self, session, event_bus, resource_manager):
+        # type: (qi.Session, EventBus, ResourceManager) -> None
+        super(NAOqiMotion, self).__init__(event_bus, resource_manager)
 
         # Connect to Motion and Tracker Services
         self._motion = session.service(NAOqiMotion.SERVICE_MOTION)
@@ -46,8 +49,8 @@ class NAOqiMotion(AbstractMotion):
         self._point_thread.daemon = True
         self._point_thread.start()
 
-    def look(self, direction, speed=1):
-        # type: (Tuple[float, float], float) -> None
+    def look(self, event):
+        # type: (Event) -> None
         """
         Look at particular direction
 
@@ -58,6 +61,10 @@ class NAOqiMotion(AbstractMotion):
         speed: float
             Movement Speed [0,1]
         """
+        payload = event.payload
+        direction = payload['direction']
+        speed = payload['speed']
+
         if self._look_queue.qsize() < NAOqiMotion.COMMAND_LIMIT:
             self._look_queue.put((direction, speed))
 

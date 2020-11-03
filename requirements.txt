@@ -6,7 +6,7 @@ nltk==3.4
 fuzzywuzzy[speedup]
 
 rdflib
-iribaker
+iribaker<0.2
 SPARQLWrapper
 
 playsound
@@ -20,8 +20,12 @@ pycountry
 reverse_geocoder
 
 pillow
-opencv-python
+opencv-python==4.2.0.32
 
 tornado==5.1.1
 typing
 pyaudio
+
+configparser
+mock
+importlib_resources

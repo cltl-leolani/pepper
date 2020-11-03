@@ -1,14 +1,18 @@
 """Example Application that answers questions posed in natural language using Wikipedia"""
 
-from pepper.framework import *              # Contains Application Building Blocks
-from pepper.knowledge import Wikipedia      # Class to Query Wikipedia using Natural Language
-from pepper import config                   # Global Configuration File
+from pepper.app_container import ApplicationContainer, Application
+from pepper.framework.application.intention import AbstractIntention
+from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
+from pepper.framework.application.statistics import StatisticsComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
+from pepper.knowledge import Wikipedia  # Class to Query Wikipedia using Natural Language
 
 
-class WikipediaApplication(AbstractApplication,         # Every Application Inherits from AbstractApplication
-                           StatisticsComponent,         # Displays Performance Statistics in Terminal
-                           SpeechRecognitionComponent,  # Enables Speech Recognition and the self.on_transcript event
-                           TextToSpeechComponent):      # Enables Text to Speech and the self.say method
+class WikipediaIntention(ApplicationContainer,
+                         AbstractIntention,
+                         StatisticsComponent,  # Displays Performance Statistics in Terminal
+                         SpeechRecognitionComponent,  # Enables Speech Recognition and the self.on_transcript event
+                         TextToSpeechComponent):      # Enables Text to Speech and the self.say method
 
     def on_transcript(self, hypotheses, audio):
         """
@@ -47,12 +51,4 @@ class WikipediaApplication(AbstractApplication,         # Every Application Inhe
 
 
 if __name__ == "__main__":
-
-    # Get Backend from Global Configuration File
-    backend = config.get_backend()
-
-    # Create Application with given Backend
-    application = WikipediaApplication(backend)
-
-    # Run Application
-    application.run()
+    Application(WikipediaIntention()).run()

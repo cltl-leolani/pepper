@@ -1,11 +1,13 @@
-from pepper.framework.abstract.tablet import AbstractTablet
-from pepper import logger
+import logging
+import re
 
 import qi
 
-import re
+from pepper.framework.backend.abstract.tablet import AbstractTablet
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
 
-from time import sleep
+logger = logging.getLogger(__name__)
 
 
 class NAOqiTablet(AbstractTablet):
@@ -13,8 +15,10 @@ class NAOqiTablet(AbstractTablet):
 
     IMAGE_FORMATS = re.compile("\.(jpeg|jpg|png|gif|bmp)")
 
-    def __init__(self, session):
-        # type: (qi.Session) -> None
+    def __init__(self, session, event_bus, resource_manager):
+        # type: (qi.Session, EventBus, ResourceManager) -> None
+        super(NAOqiTablet, self).__init__(event_bus, resource_manager)
+
         self._session = session
         self._service = self._session.service("ALTabletService")
         self._service.setOnTouchWebviewScaleFactor(1)

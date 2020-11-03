@@ -1,8 +1,14 @@
-from pepper.framework.abstract.tablet import AbstractTablet
+from pepper.framework.backend.abstract.tablet import AbstractTablet
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
 
 
 class SystemTablet(AbstractTablet):
     """Access Robot Tablet to show URLs"""
+
+    def __init__(self, event_bus, resource_manager):
+        # type: (EventBus, ResourceManager) -> None
+        super(SystemTablet, self).__init__(event_bus, resource_manager)
 
     def show(self, url):
         # type: (str) -> None
@@ -14,9 +20,9 @@ class SystemTablet(AbstractTablet):
         url: str
             WebPage/Image URL
         """
-        pass
+        self._log.info("Show URL: " + str(url)[:80])
 
     def hide(self):
         # type: () -> None
         """Hide whatever is shown on tablet"""
-        pass
+        self._log.info("Hide display")

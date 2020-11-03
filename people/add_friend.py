@@ -1,13 +1,12 @@
 from __future__ import print_function
 
-from pepper.framework.sensor.face import OpenFace
-from pepper import config
-
-from scipy.ndimage import imread
-from scipy.misc import imresize
-import numpy as np
-
 import os
+
+import numpy as np
+from scipy.misc import imresize
+from scipy.ndimage import imread
+
+from pepper.framework.sensor.face_detect import OpenFace
 
 
 def add_friend_from_directory(directory, name, max_size=1024):
@@ -40,8 +39,9 @@ def add_friend_from_directory(directory, name, max_size=1024):
             print("\rWarning: Couldn't read {}, skipping file...".format(item))
 
     # Write Data to .bin file
-    with open(os.path.join(config.PEOPLE_FRIENDS_ROOT, "{}.bin".format(name)), 'wb') as bin:
-        bin.write(np.concatenate(vectors))
+    path = os.path.join(os.path.dirname(__file__), "friends", "{}.bin".format(name))
+    with open(path, 'wb') as person_file:
+        person_file.write(np.concatenate(vectors))
 
 
 if __name__ == '__main__':

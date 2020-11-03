@@ -1,5 +1,4 @@
-from pepper.framework.abstract import AbstractImage
-from pepper.framework.util import Bounds, spherical2cartesian
+from pepper.framework.infra.util import Bounds, spherical2cartesian
 from pepper import ObjectDetectionTarget
 
 import numpy as np

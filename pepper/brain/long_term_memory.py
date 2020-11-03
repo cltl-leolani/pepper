@@ -1,17 +1,22 @@
-from pepper.brain.utils.helper_functions import read_query, casefold_text
-from pepper.brain.reasoners import LocationReasoner, ThoughtGenerator, TypeReasoner
-from pepper.brain.infrastructure import Thoughts
-from pepper.brain.basic_brain import BasicBrain
-
 from pepper.brain.LTM_question_processing import create_query
 from pepper.brain.LTM_statement_processing import model_graphs
+from pepper.brain.basic_brain import BasicBrain
+from pepper.brain.infrastructure import Thoughts
+from pepper.brain.reasoners import LocationReasoner, ThoughtGenerator, TypeReasoner
+from pepper.brain.utils.helper_functions import read_query, casefold_text
+from pepper.framework.infra.di_container import DIContainer
 
-from pepper import config
+
+class BrainContainer(DIContainer):
+    @property
+    def brain(self):
+        # type: () -> LongTermMemory
+        raise NotImplementedError("Brain not configured")
 
 
 class LongTermMemory(BasicBrain):
-    def __init__(self, address=config.BRAIN_URL_LOCAL, clear_all=False):
-        # type: (str, bool) -> None
+    def __init__(self, address, log_dir, clear_all=False):
+        # type: (str, str, bool) -> None
         """
         Interact with Triple store
 
@@ -21,13 +26,13 @@ class LongTermMemory(BasicBrain):
             IP address and port of the Triple store
         """
 
-        super(LongTermMemory, self).__init__(address, clear_all)
+        super(LongTermMemory, self).__init__(address, log_dir, clear_all)
 
         self.myself = None
         self.query_prefixes = read_query('prefixes')  # USED ONLY WHEN QUERYING
-        self.thought_generator = ThoughtGenerator()
-        self.location_reasoner = LocationReasoner()
-        self.type_reasoner = TypeReasoner()
+        self.thought_generator = ThoughtGenerator(address, log_dir)
+        self.location_reasoner = LocationReasoner(address, log_dir)
+        self.type_reasoner = TypeReasoner(address, log_dir)
 
         self.set_location_label = self.location_reasoner.set_location_label
         self.reason_location = self.location_reasoner.reason_location

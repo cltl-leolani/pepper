@@ -1,12 +1,13 @@
-from pepper.framework.abstract import AbstractCamera, AbstractImage
-from pepper.framework.util import Scheduler, Bounds
-from pepper import CameraResolution
-
-import numpy as np
-import cv2
-
 from time import time, sleep
-from typing import List, Callable
+
+import cv2
+import numpy as np
+
+from pepper import CameraResolution
+from pepper.framework.backend.abstract.camera import AbstractCamera, AbstractImage
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
+from pepper.framework.infra.util import Scheduler, Bounds
 
 
 class SystemImage(AbstractImage):
@@ -29,36 +30,51 @@ class SystemImage(AbstractImage):
 
 class SystemCamera(AbstractCamera):
     """
-    System Camera
+    Initialize System Camera.
 
     Parameters
     ----------
-    resolution: pepper.framework.CameraResolution
+    resolution: CameraResolution
+        NAOqi Camera Resolution
     rate: int
-    callbacks: list of callable
+        NAOqi Camera Rate
+    event_bus: EventBus
+        Event bus of the application
+    resource_manager: ResourceManager
+        Resource manager of the application
     index: int
+        Which System Camera to use
     """
-
-    def __init__(self, resolution, rate, callbacks=[], index=0):
-        # type: (CameraResolution, int, List[Callable[[AbstractImage], None]], int) -> None
-        super(SystemCamera, self).__init__(resolution, rate, callbacks)
+    def __init__(self, resolution, rate, event_bus, resource_manager, index=0):
+        # type: (CameraResolution, int, EventBus, ResourceManager, int) -> None
+        super(SystemCamera, self).__init__(resolution, rate, event_bus, resource_manager)
 
         # Get Camera and request resolution
         self._camera = cv2.VideoCapture(index)
 
-        if not self.resolution == CameraResolution.NATIVE:
-            self._camera.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
-            self._camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
+        if not self._resolution == CameraResolution.NATIVE:
+            self._camera.set(cv2.CAP_PROP_FRAME_WIDTH, self._width)
+            self._camera.set(cv2.CAP_PROP_FRAME_HEIGHT, self._height)
 
         # Check if camera is working
         if not self._camera.isOpened():
             raise RuntimeError("{} could not be opened".format(self.__class__.__name__))
 
+    def start(self):
+        super(SystemCamera, self).start()
+
         # Run Image acquisition in Thread
         self._scheduler = Scheduler(self._run, name="SystemCameraThread")
         self._scheduler.start()
 
-        self._log.debug("Booted")
+
+        self._log.debug("Started SystemCamera")
+
+    def stop(self):
+        try:
+            self._scheduler.stop()
+        finally:
+            super(SystemCamera, self).stop()
 
     def _run(self):
         t0 = time()
@@ -75,7 +91,7 @@ class SystemCamera(AbstractCamera):
         if status:
             if self._running:
                 # Resize Image and Convert to RGB
-                image = cv2.resize(image, (self.width, self.height))
+                image = cv2.resize(image, (self._width, self._height))
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
                 # Call On Image Event
@@ -85,4 +101,4 @@ class SystemCamera(AbstractCamera):
             raise RuntimeError("{} could not fetch image".format(self.__class__.__name__))
 
         # Maintain frame rate
-        sleep(max(0, 1. / self.rate - (time() - t0)))
+        sleep(max(0, 1. / self._rate - (time() - t0)))

@@ -1,13 +1,13 @@
-from .responder import Responder, ResponderType
-
-from pepper.framework import *
-from pepper.language import Utterance
-from pepper.knowledge import animations, QnA
-from pepper import config
+from random import choice
 
 from typing import Optional, Union, Tuple, Callable
 
-from random import choice
+from pepper.framework.application.brain import BrainComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
+from pepper.knowledge import animations
+from pepper.language import Utterance
+from .responder import Responder, ResponderType
+from ..framework.application.intention import AbstractIntention
 
 
 class VisionResponder(Responder):
@@ -66,10 +66,10 @@ class VisionResponder(Responder):
 
     @property
     def requirements(self):
-        return [AbstractApplication, TextToSpeechComponent]
+        return [AbstractIntention, TextToSpeechComponent]
 
-    def respond(self, utterance, app):
-        # type: (Utterance, Union[AbstractApplication, TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
+    def respond(self, utterance, intention):
+        # type: (Utterance, Union[AbstractIntention, TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
         objects = [obj.name for obj in utterance.chat.context.objects]
         people = [p.name for p in utterance.chat.context.people]
@@ -79,23 +79,23 @@ class VisionResponder(Responder):
         # Enumerate Currently Visible Objects
         if utterance.transcript.lower() in self.SEE_OBJECT:
             if objects:
-                return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._objects_to_sequence(objects)))
+                return 1, lambda: intention.say("{} {}".format(choice(self.I_SEE), self._objects_to_sequence(objects)))
             else:
-                return 0.5, lambda: app.say(choice(self.NO_OBJECT))
+                return 0.5, lambda: intention.say(choice(self.NO_OBJECT))
 
         # Enumerate Currently Visible People
         elif utterance.transcript.lower() in self.SEE_PERSON:
             if people:
-                return 1, lambda: app.say("{} {}".format(choice(self.I_SEE), self._people_to_sentence(people)))
+                return 1, lambda: intention.say("{} {}".format(choice(self.I_SEE), self._people_to_sentence(people)))
             else:
-                return 0.5, lambda: app.say(choice(self.NO_PEOPLE))
+                return 0.5, lambda: intention.say(choice(self.NO_PEOPLE))
 
         # Enumerate All Observed People
         elif utterance.transcript.lower() in self.SEE_PERSON_ALL:
             if all_people:
-                return 1, lambda: app.say("{} {}".format(choice(self.I_SAW), self._people_to_sentence(all_people)))
+                return 1, lambda: intention.say("{} {}".format(choice(self.I_SAW), self._people_to_sentence(all_people)))
             else:
-                return 0.5, lambda: app.say(choice(self.NO_PEOPLE))
+                return 0.5, lambda: intention.say(choice(self.NO_PEOPLE))
 
         # Respond to Individual Object Queries
         else:
@@ -103,16 +103,15 @@ class VisionResponder(Responder):
                 if cue in utterance.transcript.lower():
                     for obj in utterance.context.objects:
                         if obj.name.lower() in utterance.transcript.lower():
-                            return 1.0, lambda: self._point_to_objects(app, obj)
+                            return 1.0, lambda: self._point_to_objects(intention, obj)
 
-                    return 1.0, lambda: app.say("I cannot see {}".format(self._insert_a_an(utterance.tokens[-1])))
+                    return 1.0, lambda: intention.say("I cannot see {}".format(self._insert_a_an(utterance.tokens[-1])))
 
-    def _point_to_objects(self, app, obj):
-        app.say("I can see {}".format(self._insert_a_an(obj.name)))
-        app.motion.point(obj.direction, speed=0.2)
-        app.motion.look(obj.direction, speed=0.1)
-        app.say("There it is!!")
-
+    def _point_to_objects(self, intention, obj):
+        intention.say("I can see {}".format(self._insert_a_an(obj.name)))
+        intention.point(obj.direction, speed=0.2)
+        intention.look(obj.direction, speed=0.1)
+        intention.say("There it is!!")
 
     @staticmethod
     def _insert_a_an(word):
@@ -168,15 +167,15 @@ class PreviousUtteranceResponder(Responder):
     def requirements(self):
         return [TextToSpeechComponent]
 
-    def respond(self, utterance, app):
+    def respond(self, utterance, intention):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
         for cue in self.CUE:
             if cue in utterance.transcript.lower():
                 for u in utterance.chat.utterances[:-1][::-1]:
                     if u.me and not u.transcript.startswith(self.REPEAT):
-                        return 1.0, lambda: app.say(text="{} {}".format(self.REPEAT, u.transcript),
-                                                    animation=animations.EXPLAIN)
-                return 1.0, lambda: app.say("I didn't say anything yet...")
+                        return 1.0, lambda: intention.say(text="{} {}".format(self.REPEAT, u.transcript),
+                                                          animation=animations.EXPLAIN)
+                return 1.0, lambda: intention.say("I didn't say anything yet...")
 
 
 class LocationResponder(Responder):
@@ -221,23 +220,23 @@ class LocationResponder(Responder):
     def requirements(self):
         return [TextToSpeechComponent, BrainComponent]
 
-    def respond(self, utterance, app):
+    def respond(self, utterance, intention):
         # type: (Utterance, Union[TextToSpeechComponent, BrainComponent]) -> Optional[Tuple[float, Callable]]
         # Respond where we are
         if utterance.transcript.lower() in self.CUE_FULL:
-            return 1, lambda: app.say(self._location_to_text(utterance.chat.context.location))
+            return 1, lambda: intention.say(self._location_to_text(utterance.chat.context.location))
 
         # Guess where we are
         if utterance.transcript.lower() in self.CUE_GUESS_LOCATION:
             if utterance.context.location.label == utterance.context.location.UNKNOWN:
-                guess = app.brain.reason_location(utterance.context)
+                guess = intention.brain.reason_location(utterance.context)
                 if guess:
                     utterance.context.location.label = guess
-                    app.brain.set_location_label(guess)
-                    return 1, lambda: app.say("{} {}".format(choice(self.ANSWER_GUESS),
-                                                             self._location_to_text(utterance.context.location)))
+                    intention.brain.set_location_label(guess)
+                    return 1, lambda: intention.say("{} {}".format(choice(self.ANSWER_GUESS),
+                                                                   self._location_to_text(utterance.context.location)))
                 else:
-                    return 1, lambda: app.say("{}!".format(choice(self.ANSWER_FAILED_GUESS)))
+                    return 1, lambda: intention.say("{}!".format(choice(self.ANSWER_FAILED_GUESS)))
 
         # Set name for where we are
         else:
@@ -245,8 +244,8 @@ class LocationResponder(Responder):
                 if utterance.transcript.lower().startswith(cue):
                     location = utterance.transcript.lower().replace(cue, "").strip().title()
                     utterance.context.location.label = location
-                    app.brain.set_location_label(location)
-                    return 1, lambda: app.say("Aha, so {}".format(self._location_to_text(utterance.context.location)))
+                    intention.brain.set_location_label(location)
+                    return 1, lambda: intention.say("Aha, so {}".format(self._location_to_text(utterance.context.location)))
 
     @staticmethod
     def _location_to_text(location):
@@ -272,14 +271,14 @@ class TimeResponder(Responder):
     def requirements(self):
         return [TextToSpeechComponent]
 
-    def respond(self, utterance, app):
+    def respond(self, utterance, intention):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
         for date in self.DATE:
             if date in utterance.transcript.lower():
                 dt = utterance.context.datetime
 
-                return 1, lambda: app.say("Today is {}, {} {}, {}!".format(
+                return 1, lambda: intention.say("Today is {}, {} {}, {}!".format(
                     self.DAYS[dt.weekday()], self.MONTHS[dt.month-1], dt.day, dt.year
                 ))
 
@@ -314,10 +313,10 @@ class IdentityResponder(Responder):
     def requirements(self):
         return [TextToSpeechComponent]
 
-    def respond(self, utterance, app):
+    def respond(self, utterance, intention):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
             if utterance.transcript.lower() in self.CUE_ME:
-                return 1.0, lambda: app.say("{} {}!".format(choice(self.ANSWER_ME), config.NAME))
+                return 1.0, lambda: intention.say("{} {}!".format(choice(self.ANSWER_ME), utterance.chat.context.own_name))
 
             if utterance.transcript.lower() in self.CUE_YOU:
-                return 1.0, lambda: app.say("{} {}!".format(choice(self.ANSWER_YOU), utterance.chat.speaker))
+                return 1.0, lambda: intention.say("{} {}!".format(choice(self.ANSWER_YOU), utterance.chat.speaker))

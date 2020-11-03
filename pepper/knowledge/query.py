@@ -2,32 +2,30 @@
 Answers to Simple Questions using Fuzzy Matching!
 """
 
-from pepper.knowledge.sentences import *
-from pepper import config
+import datetime
+from random import choice
+from time import strftime
 
 from fuzzywuzzy import fuzz
 
-from random import choice
-from time import strftime
-import datetime
-import os
+from pepper.knowledge.sentences import *
 
 
 class QnA:
 
     QNA_DYNAMIC = {
-        "I'm doing": lambda: choice(HAPPY),
-        "What time is it?": lambda: strftime("It is currently %H:%M."),
-        "What is the time?": lambda: strftime("It is currently %H:%M."),
-        "day is it?": lambda: strftime("It is %A today."),
-        "month is it?": lambda: strftime("It is %B today."),
-        "How many friends?": lambda: "I have {} friends".format(len(config.PEOPLE_FRIENDS_NAMES)),
-        "Who are your friends?": lambda: "My friends are {}. I like my friends!".format(
-            ", ".join(config.PEOPLE_FRIENDS_NAMES)),
-        "How many people did you meet?": lambda: "I met {} people today!".format(len(os.listdir(config.PEOPLE_NEW_ROOT)) - 1),
-        "Who did you meet?": lambda: "I met {}!".format(
-            ", ".join(name.replace(".bin", "") for name in os.listdir(config.PEOPLE_NEW_ROOT) if name != "NEW.bin")),
-        "Tell me a joke!": lambda: choice(JOKE)
+        "I'm doing": lambda context: choice(HAPPY),
+        "What time is it?": lambda context: strftime("It is currently %H:%M."),
+        "What is the time?": lambda context: strftime("It is currently %H:%M."),
+        "day is it?": lambda context: strftime("It is %A today."),
+        "month is it?": lambda context: strftime("It is %B today."),
+        "How many friends?": lambda context: "I have {} friends".format(len(context.friends)),
+        "Who are your friends?": lambda context: "My friends are {}. I like my friends!".format(
+            ", ".join(context.friends)),
+        "How many people did you meet?": lambda context: "I met {} people today!".format(len(context.all_people()) - 1),
+        "Who did you meet?": lambda context: "I met {}!".format(
+            ", ".join(p.name for p in context.all_people())),
+        "Tell me a joke!": lambda context: choice(JOKE)
     }
 
     QNA_STATIC = {
@@ -95,12 +93,14 @@ class QnA:
 
     }
 
-    def query(self, query):
+    def query(self, query, context):
         """
         Parameters
         ----------
         query: str
             Question to Ask
+        context : Context
+            The context of the query
 
         Returns
         -------
@@ -121,7 +121,7 @@ class QnA:
         for Q, A in self.QNA_DYNAMIC.items():
             r = fuzz.partial_ratio(query, Q)
             if r > ratio:
-                answer = A()
+                answer = A(context)
                 ratio = r
 
         if ratio > 90:

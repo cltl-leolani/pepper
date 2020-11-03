@@ -1,67 +1,93 @@
-from pepper.framework.abstract import AbstractBackend
-from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech
-from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech,\
-    NAOqiMotion, NAOqiLed, NAOqiTablet
-from pepper import config, CameraResolution
+import logging
 
-from naoqi import ALProxy
 import qi
+from naoqi import ALProxy
+from typing import Callable
+
+from pepper import CameraResolution, NAOqiMicrophoneIndex
+from pepper.framework.backend.abstract.backend import AbstractBackend
+from pepper.framework.backend.container import BackendContainer
+from pepper.framework.backend.naoqi import NAOqiCamera, NAOqiMicrophone, NAOqiTextToSpeech, \
+    NAOqiMotion, NAOqiLed, NAOqiTablet
+from pepper.framework.backend.system import SystemCamera, SystemMicrophone, SystemTextToSpeech
+from pepper.framework.infra.config.api import ConfigurationManager, ConfigurationContainer
+from pepper.framework.infra.di_container import singleton
+from pepper.framework.infra.event.api import EventBusContainer, EventBus
+from pepper.framework.infra.resource.api import ResourceContainer, ResourceManager
+from pepper.framework.sensor.api import SensorContainer
+from pepper.framework.sensor.asr import AbstractTranslator
+
+logger = logging.getLogger(__name__)
+
+
+class NAOqiBackendContainer(BackendContainer, SensorContainer, EventBusContainer, ResourceContainer, ConfigurationContainer):
+    logger.info("Initialized NAOqiBackendContainer")
+
+    @property
+    @singleton
+    def backend(self):
+        return NAOqiBackend(self.translator, self.event_bus, self.resource_manager, self.config_manager)
 
 
 class NAOqiBackend(AbstractBackend):
-    """
-    Initialize NAOqi Backend
+    def __init__(self, translator_factory, event_bus, resource_manager, configuration_manager):
+        # type: (Callable[[str, str], AbstractTranslator], EventBus, ResourceManager, ConfigurationManager) -> None
+        """
+        Initialize the NAOqi Backend.
 
-    Parameters
-    ----------
-    url: str
-        NAOqi Robot URL
-    camera_resolution: CameraResolution
-        NAOqi Camera Resolution
-    camera_rate: int
-        NAOqi Camera Rate
-    microphone_index: int
-        NAOqi Microphone Index
-    language: str
-        NAOqi Language
-    use_system_camera: bool
-        Use System Camera instead of NAOqi Camera
-    use_system_microphone: bool
-        Use System Microphone instead of NAOqi Microphone
-    use_system_text_to_speech: bool
-        Use System TextToSpeech instead of NAOqi TextToSpeech
+        Parameters
+        ----------
+        translator_factory : Callable[[str, str], AbstractTranslator]
+            Callable that provides an :class:`AbstractTranslator` based on internal and application language
+        event_bus :
+        resource_manager :
+        configuration_mananger :
 
-    See Also
-    --------
-    http://doc.aldebaran.com/2-5/index_dev_guide.html
-    """
-    def __init__(self, url=config.NAOQI_URL,
-                 camera_resolution=config.CAMERA_RESOLUTION, camera_rate=config.CAMERA_FRAME_RATE,
-                 microphone_index=config.NAOQI_MICROPHONE_INDEX, language=config.APPLICATION_LANGUAGE,
-                 use_system_camera=config.NAOQI_USE_SYSTEM_CAMERA,
-                 use_system_microphone=config.NAOQI_USE_SYSTEM_MICROPHONE,
-                 use_system_text_to_speech=config.NAOQI_USE_SYSTEM_TEXT_TO_SPEECH):
-        # type: (str, CameraResolution, int, int, str, bool, bool, bool) -> None
+        See Also
+        --------
+        http://doc.aldebaran.com/2-5/index_dev_guide.html
+        """
+        config = configuration_manager.get_config("pepper.framework.backend.naoqi")
+        ip = config.get("ip")
+        port = config.get_int("port")
+        application_language = config.get("application_language")
+        internal_language = config.get("internal_language")
+        camera_resolution = config.get_enum("camera_resolution", CameraResolution)
+        camera_frame_rate = config.get_int("camera_frame_rate")
+        microphone_index = config.get_enum("microphone_index", NAOqiMicrophoneIndex)
+        microphone_rate = config.get_int("microphone_sample_rate")
+        microphone_channels = config.get_int("microphone_channels")
+        speech_speed = config.get_int("speech_speed")
+        use_system_camera = config.get_boolean("use_system_camera")
+        use_system_microphone = config.get_boolean("use_system_microphone")
+        use_system_text_to_speech = config.get_boolean("use_system_text_to_speech")
 
-        self._url = url
+        self._url = config.get("url")
 
         # Create Session with NAOqi Robot
         self._session = self.create_session(self._url)
 
         # System Camera Override
-        if use_system_camera: camera = SystemCamera(camera_resolution, camera_rate)
-        else: camera = NAOqiCamera(self.session, camera_resolution, camera_rate)
+        if use_system_camera:
+            camera = SystemCamera(camera_resolution, camera_frame_rate, event_bus, resource_manager)
+        else:
+            camera = NAOqiCamera(self.session, camera_resolution, camera_frame_rate, event_bus)
 
         # System Microphone Override
-        if use_system_microphone: microphone = SystemMicrophone(16000, 1)
-        else: microphone = NAOqiMicrophone(self.session, microphone_index)
+        if use_system_microphone:
+            microphone = SystemMicrophone(microphone_rate, microphone_channels, event_bus, resource_manager)
+        else:
+            microphone = NAOqiMicrophone(self.session, microphone_rate, microphone_index, event_bus, resource_manager)
 
         # System Text To Speech Override
-        if use_system_text_to_speech: text_to_speech = SystemTextToSpeech(language)
-        else: text_to_speech = NAOqiTextToSpeech(self.session, language)
+        if use_system_text_to_speech:
+            translator = translator_factory(internal_language[:2], application_language[:2])
+            text_to_speech = SystemTextToSpeech(translator, application_language, event_bus, resource_manager)
+        else:
+            text_to_speech = NAOqiTextToSpeech(self.session, application_language, speech_speed, event_bus, resource_manager)
 
         # Set Default Awareness Behaviour
-        self._awareness = ALProxy("ALBasicAwareness", config.NAOQI_IP, config.NAOQI_PORT)
+        self._awareness = ALProxy("ALBasicAwareness", ip, port)
         self._awareness.setEngagementMode("SemiEngaged")
         self._awareness.setStimulusDetectionEnabled("People", True)
         self._awareness.setStimulusDetectionEnabled("Movement", True)
@@ -69,19 +95,9 @@ class NAOqiBackend(AbstractBackend):
         self._awareness.setEnabled(True)
 
         super(NAOqiBackend, self).__init__(camera, microphone, text_to_speech,
-                                           NAOqiMotion(self.session), NAOqiLed(self.session), NAOqiTablet(self.session))
-
-    @property
-    def url(self):
-        # type: () -> str
-        """
-        Pepper/Nao Robot URL
-
-        Returns
-        -------
-        url: str
-        """
-        return self._url
+                                           NAOqiMotion(self.session, event_bus, resource_manager),
+                                           NAOqiLed(self.session, event_bus, resource_manager),
+                                           NAOqiTablet(self.session, event_bus, resource_manager))
 
     @property
     def session(self):

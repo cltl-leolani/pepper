@@ -1,19 +1,19 @@
-from pepper.framework import *
-from pepper import logger
-
-from pepper.language import Utterance
-from pepper.language.generation.thoughts_phrasing import phrase_thoughts
-from pepper.language.generation.reply import reply_to_question
-
-from .responder import Responder, ResponderType
-from pepper.language import UtteranceType
-
-from pepper.knowledge import sentences, animations
+import logging
+import re
 from random import choice
 
-import re
-
 from typing import Optional, Union, Tuple, Callable
+
+from pepper.framework.application.brain import BrainComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
+from pepper.knowledge import sentences, animations
+from pepper.language import Utterance
+from pepper.language import UtteranceType
+from pepper.language.generation.reply import reply_to_question
+from pepper.language.generation.thoughts_phrasing import phrase_thoughts
+from .responder import Responder, ResponderType
+
+logger = logging.getLogger(__name__)
 
 
 class BrainResponder(Responder):

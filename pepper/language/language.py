@@ -1,26 +1,25 @@
 from __future__ import unicode_literals
 
-from pepper.language.pos import POS
-from pepper.language.ner import NER
-from pepper.language.analyzer import Analyzer
-from pepper.language.utils.atoms import UtteranceType
-from pepper.brain.utils.helper_functions import casefold_text
-from pepper.brain.infrastructure import RdfBuilder, Triple, Perspective
-
-from pepper import logger, config
-from nltk import pos_tag
-
-from nltk import CFG, RecursiveDescentParser, edit_distance
-
-from collections import Counter
-
-from random import getrandbits
-from datetime import datetime
-import enum
 import json
+import logging
 import os
+from collections import Counter
+from datetime import datetime
+from random import getrandbits
 
+import enum
+from nltk import CFG, RecursiveDescentParser, edit_distance
+from nltk import pos_tag
 from typing import List, Optional
+
+from pepper.brain.infrastructure import RdfBuilder, Triple, Perspective
+from pepper.brain.utils.helper_functions import casefold_text
+from pepper.language.analyzer import Analyzer
+from pepper.language.ner import NER
+from pepper.language.pos import POS
+from pepper.language.utils.atoms import UtteranceType
+
+logger = logging.getLogger(__name__)
 
 
 class Time(enum.Enum):
@@ -152,7 +151,6 @@ class Chat(object):
 
 
 class Utterance(object):
-
     def __init__(self, chat, hypotheses, me, turn):
         # type: (Chat, List[UtteranceHypothesis], bool, int) -> Utterance
         """
@@ -429,7 +427,7 @@ class Utterance(object):
                 transcript = []
 
                 for word in hypothesis.transcript.split():
-                    name = Utterance._get_closest_name(word)
+                    name = Utterance._get_closest_name(word, self.context.friends)
 
                     if name:
                         names.append(name)
@@ -452,7 +450,7 @@ class Utterance(object):
         return hypotheses
 
     @staticmethod
-    def _get_closest_name(word, names=config.PEOPLE_FRIENDS_NAMES, max_name_distance=2):
+    def _get_closest_name(word, names, max_name_distance=2):
         # type: (str, List[str], int) -> str
         if word[0].isupper() and names:
             name, distance = sorted([(name, edit_distance(name, word)) for name in names], key=lambda key: key[1])[0]
@@ -555,27 +553,32 @@ class Utterance(object):
         return tokens
 
     def __repr__(self):
-        author = config.NAME if self.me else self.chat.speaker
+        author = self.chat.context.own_name if self.me else self.chat.speaker
         return '{:>10s}: "{}"'.format(author, self.transcript)
 
 
 class Parser(object):
     POS_TAGGER = None  # Type: POS
     NER_TAGGER = None
+    GRAMMAR = None
     CFG_GRAMMAR_FILE = os.path.join(os.path.dirname(__file__), 'data', 'cfg_new.txt')
 
     def __init__(self, utterance):
+        self._log = logger.getChild(self.__class__.__name__)
 
         if not Parser.POS_TAGGER:
             Parser.POS_TAGGER = POS()
+            logger.info("Started POS tagger")
 
         if not Parser.NER_TAGGER:
             Parser.NER_TAGGER = NER()
+            logger.info("Started NER tagger")
 
         with open(Parser.CFG_GRAMMAR_FILE) as cfg_file:
-            self._cfg = cfg_file.read()
-
-        self._log = logger.getChild(self.__class__.__name__)
+            if not Parser.GRAMMAR:
+                Parser.GRAMMAR = cfg_file.read()
+                logger.info("Loaded grammar")
+            self._cfg = Parser.GRAMMAR
 
         self._forest, self._constituents = self._parse(utterance)
 
@@ -588,10 +591,11 @@ class Parser(object):
         return self._constituents
 
     def _parse(self, utterance):
-        '''
+        """
         :param utterance: an Utterance object, typically last one in the Chat
         :return: parsed syntax tree and a dictionary of syntactic realizations
-        '''
+        """
+        self._log.debug("Start parsing")
         tokenized_sentence = utterance.tokens
         pos = self.POS_TAGGER.tag(tokenized_sentence)  # standford
         alternative_pos = pos_tag(tokenized_sentence)  # nltk
@@ -687,6 +691,5 @@ class Parser(object):
                 s_r[el]['raw'] = s_r[el]['raw'].strip()
 
             return forest, s_r
-
         except:
             return [], {}

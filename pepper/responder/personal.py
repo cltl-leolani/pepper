@@ -1,12 +1,11 @@
-from .responder import Responder, ResponderType
-
-from pepper.framework import *
-from pepper.language import Utterance
-from pepper.knowledge import animations, QnA
+from random import choice
 
 from typing import Optional, Union, Tuple, Callable
 
-from random import choice
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
+from pepper.knowledge import QnA
+from pepper.language import Utterance
+from .responder import Responder, ResponderType
 
 
 class QnAResponder(Responder):
@@ -36,7 +35,7 @@ class QnAResponder(Responder):
     def respond(self, utterance, app):
         # type: (Utterance, Union[TextToSpeechComponent]) -> Optional[Tuple[float, Callable]]
 
-        result = self._qna.query(utterance.transcript)
+        result = self._qna.query(utterance.transcript, utterance.context)
 
         if result:
             score, answer = result

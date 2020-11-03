@@ -1,12 +1,15 @@
 from __future__ import unicode_literals
 
-from pepper import config, logger
+import logging
 
-from google.cloud import speech, translate_v2
 import numpy as np
-
+from google.cloud import speech, translate_v2
 from typing import List, Tuple, Iterable, Union
 
+# TODO extract interfaces to .api
+from pepper.framework.infra.config.api import ConfigurationManager
+
+logger = logging.getLogger(__name__)
 
 class UtteranceHypothesis(object):
     """
@@ -19,6 +22,7 @@ class UtteranceHypothesis(object):
     confidence: float
         Utterance Hypothesis Confidence
     """
+
     def __init__(self, transcript, confidence):
         # type: (str, float) -> None
 
@@ -74,6 +78,7 @@ class AbstractTranslator(object):
     target: str
         Two Character Target Language Code
     """
+
     def __init__(self, source, target):
         # type: (str, str) -> None
         self._source = source
@@ -133,16 +138,10 @@ class GoogleTranslator(AbstractTranslator):
     target: str
         Two Character Target Language Code
     """
+
     def __init__(self, source, target):
         # type: (str, str) -> None
         super(GoogleTranslator, self).__init__(source, target)
-
-        if source != target:
-            self._translate = lambda text: translate_v2.Client(target_language=self.target).translate(
-                text, source_language=self.source, target_language=self.target)['translatedText']
-        else:
-            # String Identity Function
-            self._translate = lambda text: text
 
     def translate(self, text):
         # type: (str) -> str
@@ -158,7 +157,13 @@ class GoogleTranslator(AbstractTranslator):
         translated_text: str
             Translated Text
         """
-        return self._translate(text)
+        if self.source == self.target:
+            return text
+
+        client = translate_v2.Client(target_language=self.target)
+        translation = client.translate(text, source_language=self.source, target_language=self.target)
+
+        return translation['translatedText']
 
 
 class AbstractASR(object):
@@ -171,9 +176,11 @@ class AbstractASR(object):
         Language Code <LC> & Region Code <RC> -> "LC-RC"
     """
 
+    TOPIC = "pepper.framework.sensor.api.asr.topic"
+
     MAX_ALTERNATIVES = 10
 
-    def __init__(self, language=config.APPLICATION_LANGUAGE):
+    def __init__(self, language):
         # type: (str) -> None
         self._language = language
         self._log = logger.getChild("{} ({})".format(self.__class__.__name__, self.language))
@@ -224,10 +231,15 @@ class BaseGoogleASR(AbstractASR, GoogleTranslator):
         Words or Phrases that ASR should be extra sensitive to
     """
 
-    def __init__(self, language=config.APPLICATION_LANGUAGE, sample_rate=config.MICROPHONE_SAMPLE_RATE, hints=()):
-        # type: (str, int, Iterable[str]) -> None
-        AbstractASR.__init__(self, language)
-        GoogleTranslator.__init__(self, config.APPLICATION_LANGUAGE[:2], config.INTERNAL_LANGUAGE[:2])
+    def __init__(self, configuration_manager, language=None, hints=()):
+        # type: (ConfigurationManager, str, Iterable[str]) -> None
+        config = configuration_manager.get_config("pepper.framework.sensors.asr")
+        application_language = language if language else config.get("application_language")
+        internal_language = config.get("internal_language")
+        sample_rate = config.get_int("microphone_sample_rate")
+
+        AbstractASR.__init__(self, application_language)
+        GoogleTranslator.__init__(self, application_language[:2], internal_language[:2])
 
         self._client = speech.SpeechClient()
         self._config = speech.types.RecognitionConfig(
@@ -240,7 +252,7 @@ class BaseGoogleASR(AbstractASR, GoogleTranslator):
 
             # The Language & Region
             # Tip: use en-GB for better understanding of 'academic English'
-            language_code=language,
+            language_code=application_language,
 
             # The maximum number of hypotheses to generate per speech recognition
             max_alternatives=self.MAX_ALTERNATIVES,
@@ -284,9 +296,9 @@ class StreamedGoogleASR(BaseGoogleASR):
         Words or Phrases that ASR should be extra sensitive to
     """
 
-    def __init__(self, language=config.APPLICATION_LANGUAGE, sample_rate=config.MICROPHONE_SAMPLE_RATE, hints=()):
-        # type: (str, int, Iterable[str]) -> None
-        super(StreamedGoogleASR, self).__init__(language, sample_rate, hints)
+    def __init__(self, configuration_mananger, language=None, hints=()):
+        # type: (ConfigurationManager, str, Iterable[str]) -> None
+        super(StreamedGoogleASR, self).__init__(configuration_mananger, language, hints)
 
         # String Containing Live Hypothesis -> used for debugging
         # Don't use the contents of this string for any important logic, because:
@@ -346,7 +358,7 @@ class StreamedGoogleASR(BaseGoogleASR):
             try:
                 return self._transcribe(audio)
             except:
-                self._log.error("ASR Transcription Error (try {})".format(i+1))
+                self._log.exception("ASR Transcription Error (try {})".format(i + 1))
 
         return []  # Return an empty list if ASR transcription fails
 
@@ -358,7 +370,7 @@ class StreamedGoogleASR(BaseGoogleASR):
         Instead of a single Block of Audio, this function takes an Iterable of Audio frames.
         One frame is processed at a time while the audio is being generated by the speaker.
         This provides a faster ASR than the synchronous version, and a live representation of the utterance.
-        TODO: this breaks the abstract specification, is there a neater way to do this?
+        TODO: this breaks the abstsract specification, is there a neater way to do this?
 
         Parameters
         ----------
@@ -374,31 +386,17 @@ class StreamedGoogleASR(BaseGoogleASR):
 
         # Iterate over API Responses generated by each chunk of speech
         for response in self._client.streaming_recognize(self._streaming_config, self._request(audio)):
-
             live = ""  # Reset Live Speech
-
             for result in response.results:
-
                 # If ASR is done processing a whole Utterance
                 if result.is_final:
-
-                    # Iterate over alternatives (a.k.a. hypotheses)
                     for alternative in result.alternatives:
-
-                        # Add current alternative to hypotheses
-                        hypotheses.append(UtteranceHypothesis(
-
-                            # (Possibly translate) Speech transcript
-                            self.translate(alternative.transcript),
-
-                            # Add Hypothesis Confidence
-                            alternative.confidence
-                        ))
+                        # (Possibly translate) Speech transcript
+                        transcript = self.translate(alternative.transcript)
+                        hypotheses.append(UtteranceHypothesis(transcript, alternative.confidence))
 
                 # If not Final (a.k.a. speech is still going on)
                 elif result.alternatives:
-
-                    # Add Transcript of first hypothesis to live string
                     live += result.alternatives[0].transcript
 
             # Update current live string (to be accessible through StreamedGoogleASR.live)
@@ -415,14 +413,9 @@ class StreamedGoogleASR(BaseGoogleASR):
         Parameters
         ----------
         audio: Iterable[np.ndarray]
-
-        Yields
-        ------
-        request: speech.types.StreamingRecognizeRequest
         """
-        for frame in audio:
-            yield speech.types.StreamingRecognizeRequest(audio_content=frame.tobytes())
-
+        return (speech.types.StreamingRecognizeRequest(audio_content=frame.tobytes())
+                for frame in audio)
 
 class SynchronousGoogleASR(BaseGoogleASR):
     """
@@ -440,9 +433,9 @@ class SynchronousGoogleASR(BaseGoogleASR):
         Words or Phrases that ASR should be extra sensitive to
     """
 
-    def __init__(self, language=config.APPLICATION_LANGUAGE, sample_rate=config.MICROPHONE_SAMPLE_RATE, hints=()):
+    def __init__(self, configuration_manager, language=None, hints=()):
         # type: (str, int, Iterable[str]) -> None
-        super(SynchronousGoogleASR, self).__init__(language, sample_rate, hints)
+        super(SynchronousGoogleASR, self).__init__(configuration_manager, language, hints)
 
     def transcribe(self, audio):
         # type: (np.ndarray) -> List[UtteranceHypothesis]

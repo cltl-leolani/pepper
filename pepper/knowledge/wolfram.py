@@ -2,8 +2,6 @@
 Query the Wolfram Alpha API using Natural Language.
 """
 
-from pepper import config
-
 import requests
 
 
@@ -19,19 +17,19 @@ class Wolfram:
 
     TOO_BROAD = "Information about "
 
-    def __init__(self):
+    def __init__(self, app_id):
         """
         Interact with Wolfram Spoken Results API
 
         Parameters
         ----------
-        appid: str
+        app_id: str
             Wolfram Application Identifier
         """
-        self.appid = config.TOKENS['wolfram']
+        self._app_id = app_id
 
     def is_query(self, query):
-        return requests.get(self.API_QUERY.format(self.appid, query.replace(u' ', u'+'))).text
+        return requests.get(self.API_QUERY.format(self._app_id, query.replace(u' ', u'+'))).text
 
     def query(self, query):
         """
@@ -48,7 +46,7 @@ class Wolfram:
             Answer to Question or None if no answer could be found
         """
 
-        result = requests.get(self.API_SPOKEN.format(self.appid, query.replace(u' ', u'+'))).text
+        result = requests.get(self.API_SPOKEN.format(self._app_id, query.replace(u' ', u'+'))).text
         if any([result.startswith(error) for error in self.ERRORS]):
             if result.startswith(self.TOO_BROAD):
                 topic = result.replace(self.TOO_BROAD, "")

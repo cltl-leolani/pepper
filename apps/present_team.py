@@ -1,13 +1,22 @@
-from pepper.framework import *
-from pepper.responder import *
-from pepper.knowledge import sentences, animations
-from pepper.language import Utterance
-from pepper.language.generation.reply import reply_to_question
-from pepper import config
-
-from threading import Thread
 from random import choice
-from time import time
+from time import time, sleep
+
+from pepper.app_container import ApplicationContainer, Application
+from pepper.framework.application.brain import BrainComponent
+from pepper.framework.application.context import ContextComponent
+from pepper.framework.application.display import DisplayComponent
+from pepper.framework.application.face_detection import FaceRecognitionComponent
+from pepper.framework.application.intention import AbstractIntention
+from pepper.framework.application.motion import MotionComponent
+from pepper.framework.application.object_detection import ObjectDetectionComponent
+from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
+from pepper.framework.application.statistics import StatisticsComponent
+from pepper.framework.application.subtitles import SubtitlesComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
+from pepper.framework.sensor.api import UtteranceHypothesis
+from pepper.knowledge import sentences, animations
+from pepper.language.generation.reply import reply_to_question
+from pepper.responder import *
 
 SPEAKER_NAME_THIRD = "Dear guest"
 SPEAKER_NAME = "Dear guest"
@@ -31,9 +40,6 @@ TOPIC_QUESTION = "How do you think humans and robots will work together?"
 TOPIC_ANSWER = "Do you have a question for me?"
 MIN_ANSWER_LENGTH = 4
 
-# Override Speech Speed for added clarity!
-config.NAOQI_SPEECH_SPEED = 80
-
 RESPONDERS = [
     BrainResponder(),
     VisionResponder(), PreviousUtteranceResponder(), IdentityResponder(), LocationResponder(), TimeResponder(),
@@ -43,27 +49,31 @@ RESPONDERS = [
 ]
 
 
-class PresentTeamApp(AbstractApplication, StatisticsComponent,
-                     SubtitlesComponent,
-                     BrainComponent, ContextComponent,
+class PresentTeamIntention(ApplicationContainer,
+                     AbstractIntention, StatisticsComponent,
+                     SubtitlesComponent, ContextComponent,
                      ObjectDetectionComponent, FaceRecognitionComponent,
-                     SpeechRecognitionComponent, TextToSpeechComponent):
+                     SpeechRecognitionComponent, TextToSpeechComponent,
+                     BrainComponent,
+                     MotionComponent, DisplayComponent):
     SUBTITLES_URL = "https://bramkraai.github.io/subtitle?text={}"
 
-    def __init__(self, backend):
-        super(PresentTeamApp, self).__init__(backend)
+    def __init__(self):
+        super(PresentTeamIntention, self).__init__()
 
-        self.tablet.show(IMAGE_VU)
+    def start(self):
+        super(PresentTeamIntention, self).start()
+        self.show_on_display(IMAGE_VU)
 
     def say(self, text, animation=None, block=True):
-        super(PresentTeamApp, self).say(text, animation, block)
+        super(PresentTeamIntention, self).say(text, animation, block)
         sleep(1.5)
 
     def show_text(self, text):
-        self.backend.tablet.show(self.SUBTITLES_URL.format(text))
+        self.show_on_display(self.SUBTITLES_URL.format(text))
 
 
-class WaitForStartCueIntention(AbstractIntention, PresentTeamApp):
+class WaitForStartCueIntention(PresentTeamIntention):
     START_CUE_TEXT = [
         "hello",
         "hallo",
@@ -82,14 +92,17 @@ class WaitForStartCueIntention(AbstractIntention, PresentTeamApp):
 
     GREET_TIMEOUT = 15  # Only Greet people once every X seconds
 
-    def __init__(self, application):
+    def __init__(self):
         """Greets New and Known People"""
         self.name_time = {}  # Dictionary of <name, time> pairs, to keep track of who is greeted when
 
-        super(WaitForStartCueIntention, self).__init__(application)
+        super(WaitForStartCueIntention, self).__init__()
 
         # Initialize Response Picker
         self.response_picker = ResponsePicker(self, RESPONDERS)
+
+    def start(self):
+        super(WaitForStartCueIntention, self).start()
 
         # Start Chat with Default Speaker
         self.context.start_chat(DEFAULT_SPEAKER)
@@ -133,15 +146,15 @@ class WaitForStartCueIntention(AbstractIntention, PresentTeamApp):
         if self.is_greeting_appropriate("new"):
             self.say("I see a new person!, Hello stranger!")
 
-        # Before was like this
-        # if any([on_face_new(self, face) for face in faces]):
-        #         #     self.say("Ah, I can see {}! Let me begin!".format(SPEAKER_NAME_THIRD))
-        #         #     IntroductionIntention(self.application)
+        # # Before was like this
+        # if any([self.on_face_new([face]) for face in faces]):
+        #     self.say("Ah, I can see {}! Let me begin!".format(SPEAKER_NAME_THIRD))
+        #     self.change_intention(IntroductionIntention())
 
         # Changed to this
         if len(faces) == 0:
             self.say("Ah, I can see {}! Let me begin!".format(SPEAKER_NAME_THIRD))
-            IntroductionIntention(self.application)
+            self.change_intention(IntroductionIntention())
 
     def on_chat_turn(self, utterance):
 
@@ -149,19 +162,20 @@ class WaitForStartCueIntention(AbstractIntention, PresentTeamApp):
         transcript = utterance.transcript.lower()
         if any([cue in transcript for cue in self.START_CUE_TEXT]):
             self.say("Oh, {}!".format(choice(sentences.HAPPY)), animation=animations.HAPPY)
-            IntroductionIntention(self.application)
+            self.change_intention(IntroductionIntention())
             return
 
 
-class IntroductionIntention(AbstractIntention, PresentTeamApp):
-    def __init__(self, application):
-        super(IntroductionIntention, self).__init__(application)
+class IntroductionIntention(PresentTeamIntention):
+    def __init__(self):
+        super(IntroductionIntention, self).__init__()
 
-        # Start Chat with Main Speaker
-        self.context.start_chat(SPEAKER_NAME)
-
+    def start(self):
         # Start Speech
-        Thread(target=self.speech).start()
+        super(IntroductionIntention, self).start()
+
+        self.context.start_chat(SPEAKER_NAME)
+        self.speech()
 
     def speech(self):
 
@@ -173,17 +187,17 @@ class IntroductionIntention(AbstractIntention, PresentTeamApp):
         self.say(r"I am lio-lawhni... My name means \\vct=50\\ Voice of an Angel \\vct=100\\. in Hawaiian.",
                  animations.I)
         self.say("I am built by students from the VU that come from all over the world. ", animations.ONCE_UPON_A_TIME)
-        self.tablet.show(IMAGE_SELENE)
+        self.show_on_display(IMAGE_SELENE)
         self.say("Selene, from Mexico, designed my brain and thoughts!", animations.TABLET)
-        self.tablet.show(IMAGE_LENKA)
+        self.show_on_display(IMAGE_LENKA)
         self.say("Lenka, from Serbia, taught me to understand language", animations.TABLET)
-        self.tablet.show(IMAGE_BRAM)
+        self.show_on_display(IMAGE_BRAM)
         self.say("Bram, from the Netherlands, programmed me to perceive the world around me.", animations.TABLET)
         self.tablet.show(IMAGE_PIEK)
         self.say(
             "Peek, from the Netherlands, and I, from France and Japan, work on identity, reference and perspective in language!",
             animations.TABLET)
-        self.tablet.show(IMAGE_VU)
+        self.show_on_display(IMAGE_VU)
 
         sleep(2.5)
 
@@ -209,7 +223,7 @@ class IntroductionIntention(AbstractIntention, PresentTeamApp):
         sleep(2.5)
 
         # Move to Topic QnA
-        TopicQuestionIntention(self.application)
+        self.change_intention(TopicQuestionIntention())
 
     def topic_in_brain(self):
         self.answer_brain_query("what is " + TOPIC_QUERY + " about")
@@ -228,14 +242,17 @@ class IntroductionIntention(AbstractIntention, PresentTeamApp):
 
 
 # 2.3 - Topic Question
-class TopicQuestionIntention(AbstractIntention, PresentTeamApp):
-    def __init__(self, application):
-        super(TopicQuestionIntention, self).__init__(application)
+class TopicQuestionIntention(PresentTeamIntention):
+    def __init__(self):
+        super(TopicQuestionIntention, self).__init__()
 
         # Initialize Response Picker
         self.response_picker = ResponsePicker(self, RESPONDERS)
 
         self._retried = False
+
+    def start(self):
+        super(TopicQuestionIntention, self).start()
 
         # Start Chat with Speaker if not already running
         if not self.context.chatting:
@@ -260,19 +277,22 @@ class TopicQuestionIntention(AbstractIntention, PresentTeamApp):
         else:  # If a decent response can be formed
             # -> Thank Speaker and Move on to TopicAnswerIntention
             self.say("Thank you for your answer!", animations.HAPPY)
-            self.tablet.show(IMAGE_VU)
-            TopicAnswerIntention(self.application)
+            self.show_on_display(IMAGE_VU)
+            self.change_intention(TopicAnswerIntention())
 
 
 # 2.4 - Topic Answer
-class TopicAnswerIntention(AbstractIntention, PresentTeamApp):
-    def __init__(self, application):
-        super(TopicAnswerIntention, self).__init__(application)
+class TopicAnswerIntention(PresentTeamIntention):
+    def __init__(self):
+        super(TopicAnswerIntention, self).__init__()
 
         # Initialize Response Picker
         self.response_picker = ResponsePicker(self, RESPONDERS)
 
         self._retried = False
+
+    def start(self):
+        super(TopicAnswerIntention, self).start()
 
         # Start Chat with Speaker if not already running
         if not self.context.chatting:
@@ -295,22 +315,25 @@ class TopicAnswerIntention(AbstractIntention, PresentTeamApp):
         else:  # If a decent response can be formed
             # -> Thank Speaker and Move on to OutroIntention
             self.say("Thank you!", animations.HAPPY)
-            self.tablet.show(IMAGE_VU)
-            OutroIntention(self.application)
+            self.show_on_display(IMAGE_VU)
+            self.change_intention(OutroIntention())
 
 
-class OutroIntention(AbstractIntention, PresentTeamApp):
-    def __init__(self, application):
-        super(OutroIntention, self).__init__(application)
+class OutroIntention(PresentTeamIntention):
+    def __init__(self):
+        super(OutroIntention, self).__init__()
 
         # Initialize Response Picker
         self.response_picker = ResponsePicker(self, RESPONDERS)
+
+    def start(self):
+        super(OutroIntention, self).start()
 
         # Start Chat with Speaker if not already running
         if not self.context.chatting:
             self.context.start_chat(SPEAKER_NAME)
 
-        Thread(target=self.speech).start()
+        self.speech()
 
     def speech(self):
         # 5.1 - Wish all a fruitful discussion
@@ -329,14 +352,14 @@ class OutroIntention(AbstractIntention, PresentTeamApp):
         self.say("You may make a selfie with me! I love pictures!", animations.HAPPY)
 
         # Switch to Default Intention
-        DefaultIntention(self.application)
+        self.change_intention(DefaultIntention())
 
 
-class DefaultIntention(AbstractIntention, PresentTeamApp):
+class DefaultIntention(PresentTeamIntention):
     IGNORE_TIMEOUT = 60
 
-    def __init__(self, application):
-        super(DefaultIntention, self).__init__(application)
+    def __init__(self):
+        super(DefaultIntention, self).__init__()
 
         self._ignored_people = {}
         self.response_picker = ResponsePicker(self, RESPONDERS)
@@ -361,11 +384,4 @@ class DefaultIntention(AbstractIntention, PresentTeamApp):
 
 
 if __name__ == '__main__':
-    # Initialize Application
-    application = PresentTeamApp(config.get_backend())
-
-    # Initialize Intention
-    WaitForStartCueIntention(application)
-
-    # Run Application
-    application.run()
+    Application(PresentTeamIntention()).run()

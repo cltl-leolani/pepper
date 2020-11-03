@@ -1,6 +1,13 @@
-from pepper.framework import *
+from pepper.app_container import ApplicationContainer, Application
+from pepper.framework.application.context import ContextComponent
+from pepper.framework.application.face_detection import FaceRecognitionComponent
+from pepper.framework.application.intention import AbstractIntention
+from pepper.framework.application.monitoring import MonitoringComponent
+from pepper.framework.application.object_detection import ObjectDetectionComponent
+from pepper.framework.application.speech_recognition import SpeechRecognitionComponent
+from pepper.framework.application.statistics import StatisticsComponent
+from pepper.framework.application.text_to_speech import TextToSpeechComponent
 from pepper.knowledge import animations
-from pepper import config
 
 """
 HOWTO
@@ -12,18 +19,21 @@ HOWTO
 """
 
 
-class BroaderMindApp(AbstractApplication,
-                     StatisticsComponent,           # Show Performance Statistics in Terminal
-                     DisplayComponent,              # Display what Robot (or Computer) sees in browser
-                     SceneComponent,                # Scene (dependency of DisplayComponent)
-                     ContextComponent,              # Context (dependency of DisplayComponent)
-                     ObjectDetectionComponent,      # Object Detection (dependency of DisplayComponent)
-                     FaceRecognitionComponent,      # Face Recognition (dependency of DisplayComponent)
-                     SpeechRecognitionComponent,    # Speech Recognition Component (dependency)
-                     TextToSpeechComponent):        # Text to Speech (dependency)
+class BroaderMindIntention(ApplicationContainer,
+                           AbstractIntention,
+                           StatisticsComponent,  # Show Performance Statistics in Terminal
+                           MonitoringComponent,  # Display what Robot (or Computer) sees in browser
+                           ContextComponent,  # Context (dependency of MonitoringComponent)
+                           ObjectDetectionComponent,  # Object Detection (dependency of MonitoringComponent)
+                           FaceRecognitionComponent,  # Face Recognition (dependency of MonitoringComponent)
+                           SpeechRecognitionComponent,  # Speech Recognition Component (dependency)
+                           TextToSpeechComponent):        # Text to Speech (dependency)
 
-    def __init__(self, backend):
-        super(BroaderMindApp, self).__init__(backend)
+    def __init__(self):
+        super(BroaderMindIntention, self).__init__()
+
+    def start(self):
+        super(BroaderMindIntention, self).start()
 
         self.context.start_chat("Human")
 
@@ -34,4 +44,4 @@ class BroaderMindApp(AbstractApplication,
 
 
 if __name__ == '__main__':
-    BroaderMindApp(config.get_backend()).run()
+    Application(BroaderMindIntention()).run()

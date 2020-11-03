@@ -1,9 +1,9 @@
-from pepper.framework.abstract.microphone import AbstractMicrophone
+from pepper.framework.backend.abstract.microphone import AbstractMicrophone
+from pepper.framework.infra.event.api import EventBus
+from pepper.framework.infra.resource.api import ResourceManager
 
 import pyaudio
 import numpy as np
-
-from typing import List, Callable
 
 
 class SystemMicrophone(AbstractMicrophone):
@@ -16,19 +16,19 @@ class SystemMicrophone(AbstractMicrophone):
         Samples per Second
     channels: int
         Number of Channels
-    callbacks: list of callable
-        Functions to call each time some audio samples are captured
+    event_bus: EventBus
+        EventBus to publish audio events
     """
 
-    def __init__(self, rate, channels, callbacks=[]):
-        # type: (int, int, List[Callable[[np.ndarray], None]]) -> None
-        super(SystemMicrophone, self).__init__(rate, channels, callbacks)
+    def __init__(self, rate, channels, event_bus, resource_manager):
+        # type: (int, int, EventBus, ResourceManager) -> None
+        super(SystemMicrophone, self).__init__(rate, channels, event_bus, resource_manager)
 
         # Open Microphone Stream
         self._pyaudio = pyaudio.PyAudio()
         self._microphone = self._pyaudio.open(rate, channels, pyaudio.paInt16, input=True, stream_callback=self._stream)
 
-        self._log.debug("Booted")
+        self._log.info("Booted Microphone")
 
     def _stream(self, in_data, frame_count, time_info, status):
         """
