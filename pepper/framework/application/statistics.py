@@ -16,7 +16,7 @@ class StatisticsComponent(AbstractComponent):
     def __init__(self):
         # type: () -> None
         super(StatisticsComponent, self).__init__()
-        self._log.info("Initializing StatisticsComponent")
+        self._log.debug("Initializing StatisticsComponent")
 
         config = self.config_manager.get_config("pepper.framework.component.statistics")
         cam_rate = config.get_int("camera_frame_rate")
@@ -67,4 +67,4 @@ class StatisticsComponent(AbstractComponent):
         # TODO: Bit Much?
         schedule = Scheduler(worker, 0.1)
         schedule.start()
-        self._log.info("Started StatisticsComponent worker")
+        self._log.debug("Initializing StatisticsComponent worker")

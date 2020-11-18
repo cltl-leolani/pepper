@@ -1,5 +1,5 @@
-from SPARQLWrapper import SPARQLWrapper, JSON
 import requests
+from SPARQLWrapper import SPARQLWrapper, JSON
 
 
 class StoreConnector(object):

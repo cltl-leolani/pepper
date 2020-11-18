@@ -6,7 +6,7 @@ class SubtitlesComponent(AbstractComponent):
         # type: () -> None
         super(SubtitlesComponent, self).__init__()
 
-        self._log.info("Initializing SubtitlesComponent")
+        self._log.debug("Initializing SubtitlesComponent")
 
     def start(self):
         started_events = self.start_subtitles()

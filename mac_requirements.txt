@@ -7,7 +7,7 @@ fuzzywuzzy
 python-Levenshtein
 
 rdflib
-iribaker
+iribaker<0.2
 SPARQLWrapper
 
 PyObjC

@@ -1,4 +1,4 @@
-qgit qSetup
+git Setup
 -----
 
 ### Run the application

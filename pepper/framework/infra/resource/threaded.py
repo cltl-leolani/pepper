@@ -53,7 +53,7 @@ class ThreadedResourceManager(ResourceManager):
         with self._registry_lock:
             if not self.has_resource(name):
                 self._resources[name] = True
-                logger.info("Registered resource: %s from thread %s", name, threading.current_thread().name)
+                logger.debug("Registered resource: %s from thread %s", name, threading.current_thread().name)
             else:
                 raise ValueError("Resource already provided: " + name)
 
@@ -72,7 +72,7 @@ class ThreadedResourceManager(ResourceManager):
                 if lock:
                     lock.writer_release()
 
-        logger.info("Unregistered resource: " + name)
+        logger.debug("Unregistered resource: " + name)
 
     def _acquire_lock(self, force, name, timeout):
         if force or name not in self._locks:

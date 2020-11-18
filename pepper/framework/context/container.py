@@ -50,7 +50,7 @@ class DefaultContextWorkerContainer(ContextWorkerContainer, ContextContainer,
         return (worker.start(),)
 
     def stop(self):
-        logger.info("Stopping workers")
+        logger.debug("Stopping workers")
 
         for worker in self.__workers.queue:
             try:
@@ -64,4 +64,4 @@ class DefaultContextWorkerContainer(ContextWorkerContainer, ContextContainer,
             worker.await_stop()
         self.__workers.queue.clear()
 
-        logger.info("Stopped workers")
+        logger.debug("Stopped workers")

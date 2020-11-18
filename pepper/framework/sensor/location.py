@@ -27,6 +27,7 @@ class Location(object):
             self._region = loc['region']
             self._city = loc['city']
         except:
+            self._log.exception("Failed to get location information")
             self._country = self.UNKNOWN
             self._region = self.UNKNOWN
             self._city = self.UNKNOWN
@@ -103,8 +104,7 @@ class Location(object):
         """
         self._label = value
 
-    @staticmethod
-    def _get_lat_lon():
+    def _get_lat_lon(self):
         # type: () -> Optional[Tuple[float, float]]
         """
         Get Latitude & Longitude from GPS
@@ -123,7 +123,7 @@ class Location(object):
             else:
                 raise Exception()
         except:  # TODO: Add Support for (at least) Windows
-            print("Couldn't get GPS Coordinates")
+            self._log.exception("Failed to get latitude and longitude")
             return None
 
     def __repr__(self):

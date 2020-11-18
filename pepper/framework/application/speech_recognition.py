@@ -26,7 +26,7 @@ class SpeechRecognitionComponent(AbstractComponent):
         for event in started_events:
             event.wait(timeout=timeout)
 
-        self._log.info("Started SpeechRecognitionComponent")
+        self._log.debug("Initializing SpeechRecognitionComponent")
 
     def stop(self):
         try:
@@ -34,7 +34,7 @@ class SpeechRecognitionComponent(AbstractComponent):
         finally:
             super(SpeechRecognitionComponent, self).stop()
 
-        self._log.info("Started SpeechRecognitionComponent")
+        self._log.debug("Initializing SpeechRecognitionComponent")
 
     def _on_transcript_handler(self, event):
         payload = event.payload

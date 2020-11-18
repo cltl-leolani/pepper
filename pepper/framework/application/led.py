@@ -1,4 +1,3 @@
-from enum import Enum
 from typing import List, Tuple
 
 from pepper.framework.application.component import AbstractComponent
@@ -9,11 +8,12 @@ from pepper.framework.infra.event.api import Event
 
 class LedComponent(AbstractComponent):
     """Control Robot LEDs"""
+
     def __init__(self):
         # type: () -> None
         super(LedComponent, self).__init__()
 
-        self._log.info("Initializing LedComponent")
+        self._log.debug("Initializing LedComponent")
 
     def activate_led(self, leds, rgb, duration):
         # type: (List[Led], Tuple[float, float, float], float) -> None
@@ -44,4 +44,3 @@ class LedComponent(AbstractComponent):
         """
         event = Event({'activate': False, 'leds': leds}, None)
         self.event_bus.publish(TOPIC, event)
-

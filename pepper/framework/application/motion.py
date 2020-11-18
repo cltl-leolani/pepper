@@ -13,7 +13,7 @@ class MotionComponent(AbstractComponent):
         # type: () -> None
         super(MotionComponent, self).__init__()
 
-        self._log.info("Initializing MotionComponent")
+        self._log.debug("Initializing MotionComponent")
 
     def look(self, direction, speed=1):
         # type: (Tuple[float, float], float) -> None

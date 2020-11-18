@@ -9,7 +9,7 @@ class ContextComponent(AbstractComponent):
         # type: () -> None
         super(ContextComponent, self).__init__()
 
-        self._log.info("Initializing ContextComponent")
+        self._log.debug("Initializing ContextComponent")
 
     def start(self):
         self.event_bus.subscribe(TOPIC_ON_CHAT_ENTER, self.__on_chat_enter_handler)

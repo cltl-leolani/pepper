@@ -15,7 +15,7 @@ class FaceRecognitionComponent(AbstractComponent):
         # type: () -> None
         super(FaceRecognitionComponent, self).__init__()
 
-        self._log.info("Initializing ObjectDetectionComponent")
+        self._log.debug("Initializing ObjectDetectionComponent")
 
     def start(self):
         self.event_bus.subscribe(FaceDetector.TOPIC, self._on_face_handler)

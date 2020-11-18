@@ -1,7 +1,5 @@
-from pepper.brain.utils.helper_functions import read_query, sigmoid
 from pepper.brain.basic_brain import BasicBrain
-
-from pepper import config
+from pepper.brain.utils.helper_functions import read_query, sigmoid
 
 
 class TrustCalculator(BasicBrain):
@@ -87,28 +85,32 @@ class TrustCalculator(BasicBrain):
         friends = self.get_my_friends()
         num_friends = float(len(friends))
 
-        best_friends = self.get_best_friends()
-        max_chats = float(best_friends[0][1]) if best_friends else 0
+        if num_friends > 0:
 
-        num_claims = float(self.count_statements())
-        mean_novelty = num_claims / num_friends if num_friends > 0 else num_claims
+            best_friends = self.get_best_friends()
+            max_chats = float(best_friends[0][1]) if best_friends else 0
 
-        num_conflicts = float(len(self.get_conflicts()))
-        mean_conflicts = num_conflicts / num_friends if num_friends > 0 else num_conflicts
+            if max_chats > 0:
 
-        for friend in friends:
-            # Form actor
-            actor = self._rdf_builder.fill_entity(friend, ['Instance', 'Source', 'Actor', 'person'], 'LF')
+                num_claims = float(self.count_statements())
+                mean_novelty = num_claims / num_friends if num_friends > 0 else num_claims
 
-            # Compute trust
-            trust_in_friend = self.compute_trust(friend, max_chats, mean_novelty, mean_conflicts)
-            trust = self._rdf_builder.fill_literal(trust_in_friend, datatype=self.namespaces['XML']['float'])
+                num_conflicts = float(len(self.get_conflicts()))
+                mean_conflicts = num_conflicts / num_friends if num_friends > 0 else num_conflicts
 
-            # Structure knowledge
-            self.interaction_graph.add((actor.id, self.namespaces['N2MU']['hasTrustworthinessLevel'], trust))
+                for friend in friends:
+                    # Form actor
+                    actor = self._rdf_builder.fill_entity(friend, ['Instance', 'Source', 'Actor', 'person'], 'LF')
 
-            # Finish process of uploading new knowledge to the triple store
-            data = self._serialize(self._brain_log)
-            code = self._upload_to_brain(data)
+                    # Compute trust
+                    trust_in_friend = self.compute_trust(friend, max_chats, mean_novelty, mean_conflicts)
+                    trust = self._rdf_builder.fill_literal(trust_in_friend, datatype=self.namespaces['XML']['float'])
+
+                    # Structure knowledge
+                    self.interaction_graph.add((actor.id, self.namespaces['N2MU']['hasTrustworthinessLevel'], trust))
+
+                    # Finish process of uploading new knowledge to the triple store
+                    data = self._serialize(self._brain_log)
+                    code = self._upload_to_brain(data)
 
         self._log.info("Computed trust for all known agents")

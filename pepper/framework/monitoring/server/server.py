@@ -45,13 +45,13 @@ class MonitoringServer(tornado.web.Application):
         """Start WebServer"""
         self.listen(self.PORT)
         webbrowser.open("http://localhost:{}".format(self.PORT))
-        logger.info("Starting tornado server on %s", self.PORT)
+        logger.debug("Starting tornado server on %s", self.PORT)
         tornado.ioloop.IOLoop.instance().start()
-        logger.info("Stopped tornado server on %s", self.PORT)
+        logger.debug("Stopped tornado server on %s", self.PORT)
 
     def stop(self):
         tornado.ioloop.IOLoop.instance().stop()
-        logger.info("Stopped tornado server")
+        logger.debug("Stopped tornado server")
 
     def update(self, json):
         # type: (str) -> None

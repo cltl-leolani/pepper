@@ -11,13 +11,10 @@ SPARQLWrapper
 
 playsound
 webrtcvad
+
 google-cloud-speech
 google-cloud-TextToSpeech
 google-cloud-translate
-
-requests
-pycountry
-reverse_geocoder
 
 pillow
 opencv-python==4.2.0.32
@@ -25,6 +22,9 @@ opencv-python==4.2.0.32
 tornado==5.1.1
 typing
 pyaudio
+
+pycountry
+reverse_geocoder
 
 configparser
 mock

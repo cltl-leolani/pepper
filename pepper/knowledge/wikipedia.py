@@ -67,8 +67,7 @@ class Wikipedia:
                             return None
         return None
 
-    @staticmethod
-    def _query(query):
+    def _query(self, query):
         query_websafe = urllib.quote(query)
 
         try:
@@ -92,6 +91,7 @@ class Wikipedia:
                 else:
                     return query, extract, url
         except:
+            self._log.exception("Failed to query Wikipedia")
             return
 
     @staticmethod

@@ -1,11 +1,12 @@
 from datetime import date
 from random import choice, sample, randint, uniform
 
+from pepper.api import UtteranceType
 from pepper.brain import RdfBuilder
 from pepper.framework.context import Context
 from pepper.framework.sensor.api import Face, UtteranceHypothesis
 from pepper.framework.sensor.obj import Object
-from pepper.language import Chat, Utterance, UtteranceType
+from pepper.language import Chat, Utterance
 
 places = ['Forest', 'Playground', 'Monastery', 'House', 'University', 'Hotel', 'Office']
 friends = ['Piek', 'Lenka', 'Bram', 'Suzana', 'Selene', 'Lea', 'Thomas', 'Jaap', 'Tae']

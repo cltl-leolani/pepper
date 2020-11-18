@@ -1,9 +1,8 @@
+import requests
+
 from pepper.brain.utils.helper_functions import read_query, casefold_text
 from pepper.brain.long_term_memory import LongTermMemory
-
-from pepper.brain.LTM_statement_processing import _link_entity, _create_claim_graph
-
-import requests
+from pepper.brain.LTM_statement_processing import _link_entity, create_claim_graph
 
 
 class FameAwareMemory(LongTermMemory):
@@ -39,6 +38,7 @@ class FameAwareMemory(LongTermMemory):
                 r = requests.get(url, params={'format': 'json', 'query': query}, timeout=3)
                 data = r.json() if r.status_code != 500 else None
             except:
+                self._log.exception("Failed to query Wikidata")
                 data = None
 
             # break if we have a hit
@@ -72,7 +72,7 @@ class FameAwareMemory(LongTermMemory):
                     # TODO: special logic for alternative labels
 
                 # Add claim to the dataset
-                _create_claim_graph(self, s, p, o)
+                create_claim_graph(self, s, p, o)
 
             # Finish process of uploading new knowledge to the triple store
             data = self._serialize(self._brain_log)

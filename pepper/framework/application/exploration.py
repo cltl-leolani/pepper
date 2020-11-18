@@ -6,7 +6,7 @@ class ExplorationComponent(AbstractComponent):
         # type: () -> None
         super(ExplorationComponent, self).__init__()
 
-        self._log.info("Initializing ExplorationComponent")
+        self._log.debug("Initializing ExplorationComponent")
 
     def start(self):
         started_events = self.start_exploration_worker()

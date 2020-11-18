@@ -62,7 +62,7 @@ class TopicWorker(Thread):
 
     def start(self):
         # type: () -> threading.Event
-        logger.info("Starting topic worker %s", self.name)
+        logger.debug("Starting topic worker %s", self.name)
 
         super(TopicWorker, self).start()
 
@@ -78,7 +78,7 @@ class TopicWorker(Thread):
 
         self._running = False
         self._stop_event = threading.Event()
-        logger.info("Stopping topic worker %s", self.name)
+        logger.debug("Stopping topic worker %s", self.name)
 
     def await_stop(self):
         if not self._stop_event:
@@ -95,7 +95,7 @@ class TopicWorker(Thread):
 
         self._started.set()
 
-        logger.info("Started topic worker %s", self.name)
+        logger.debug("Started topic worker %s", self.name)
 
         while self._running:
             self.__process_event()
@@ -104,7 +104,7 @@ class TopicWorker(Thread):
 
         if self._stop_event:
             self._stop_event.set()
-        logger.info("Stopped topic worker %s", self.name)
+        logger.debug("Stopped topic worker %s", self.name)
 
     def __process_event(self):
         try:

@@ -11,7 +11,7 @@ class DisplayComponent(AbstractComponent):
     def __init__(self):
         super(DisplayComponent, self).__init__()
 
-        self._log.info("Initializing DisplayComponent")
+        self._log.debug("Initializing DisplayComponent")
 
     def show_on_display(self, url):
         # type: (Union[str, unicode]) -> None

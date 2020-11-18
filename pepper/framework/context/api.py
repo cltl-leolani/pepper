@@ -457,6 +457,7 @@ class ObjectObservations:
         try:
             observation_area = observation.image_bounds.area
         except:
+            self._log.exception("Failed to compute observation area")
             observation_area = 0
 
         if observation_area > self.OBSERVATION_BOUNDS_AREA_THRESHOLD:

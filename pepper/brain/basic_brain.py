@@ -5,7 +5,6 @@ from datetime import datetime
 from pepper.brain.infrastructure import StoreConnector, RdfBuilder
 from pepper.brain.utils.helper_functions import read_query
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -21,7 +20,7 @@ class BasicBrain(object):
     _NOT_TO_ASK_PREDICATES = ['faceID', 'name']
 
     def __init__(self, address, log_dir, clear_all=False, is_submodule=False):
-        # type: (str, bool) -> None
+        # type: (str, str, bool, bool) -> None
         """
         Interact with Triple store
 
@@ -56,7 +55,7 @@ class BasicBrain(object):
         :param data: serialized data as string
         :return: response status
         """
-        self._log.info("Posting triples")
+        self._log.debug("Posting triples")
 
         return self._connection.upload(data)
 

@@ -6,7 +6,7 @@ class MonitoringComponent(AbstractComponent):
         # type: () -> None
         super(MonitoringComponent, self).__init__()
 
-        self._log.info("Initializing MonitoringComponent")
+        self._log.debug("Initializing MonitoringComponent")
 
     def start(self):
         started_events = self.start_monitoring()

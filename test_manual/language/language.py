@@ -1,3 +1,4 @@
+from pepper.api import UtteranceType
 from pepper.brain import LongTermMemory
 from pepper.framework.context import Context
 from pepper.framework.sensor.api import UtteranceHypothesis
@@ -174,7 +175,7 @@ def test_with_triples(path):
     '''
     chat = Chat("Lenka", fake_context())
     brain = LongTermMemory()
-        # clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
+    # clear_all=True)  # WARNING! this deletes everything in the brain, must only be used for testing
 
     index = 0
     correct = 0
@@ -199,7 +200,7 @@ def test_with_triples(path):
         correct += t
         incorrect += (3 - t)
 
-        if chat.last_utterance.type == language.UtteranceType.QUESTION:
+        if chat.last_utterance.type == UtteranceType.QUESTION:
             brain_response = brain.query_brain(chat.last_utterance)
             # reply = reply_to_question(brain_response)
             # print(reply)

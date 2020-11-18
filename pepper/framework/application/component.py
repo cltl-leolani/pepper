@@ -36,7 +36,7 @@ class AbstractComponent(MonitoringWorkerContainer, BackendContainer,
         super(AbstractComponent, self).__init__()
 
         self._log = logger.getChild(self.__class__.__name__)
-        self._log.info("Initializing")
+        self._log.debug("Initializing")
 
     def start(self):
         pass

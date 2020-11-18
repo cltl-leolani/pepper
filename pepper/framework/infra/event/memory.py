@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class SynchronousEventBusContainer(EventBusContainer):
 
-    logger.info("Initialized SynchronousEventBusContainer")
+    logger.debug("Initialized SynchronousEventBusContainer")
 
     @property
     @singleton
@@ -30,7 +30,7 @@ class SynchronousEventBus(EventBus):
         with self._topic_lock:
             self.__get_handlers(topic).append(handler)
 
-        logger.info("Subscribed %s to topic %s", self.__format_name(handler), topic)
+        logger.debug("Subscribed %s to topic %s", self.__format_name(handler), topic)
 
     def unsubscribe(self, topic, handler):
         with self._topic_lock:
@@ -39,10 +39,10 @@ class SynchronousEventBus(EventBus):
                     self.__get_handlers(topic).remove(handler)
                 except ValueError as e:
                     raise ValueError("Failed to unregister " + self.__format_name(handler), e)
-                logger.info("Unsubscribed %s from topic %s", self.__format_name(handler), topic)
+                logger.debug("Unsubscribed %s from topic %s", self.__format_name(handler), topic)
             else:
                 self.__get_handlers(topic).clear()
-                logger.info("Unsubscribed handlers from topic %s", topic)
+                logger.debug("Unsubscribed handlers from topic %s", topic)
 
     @property
     def topics(self):

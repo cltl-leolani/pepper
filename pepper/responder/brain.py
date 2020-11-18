@@ -1,17 +1,19 @@
 import logging
 import re
+import sys
+import traceback
 from random import choice
 
 from typing import Optional, Union, Tuple, Callable
 
+from pepper.api import UtteranceType
 from pepper.framework.application.brain import BrainComponent
 from pepper.framework.application.text_to_speech import TextToSpeechComponent
 from pepper.knowledge import sentences, animations
 from pepper.language import Utterance
-from pepper.language import UtteranceType
 from pepper.language.generation.reply import reply_to_question
 from pepper.language.generation.thoughts_phrasing import phrase_thoughts
-from .responder import Responder, ResponderType
+from pepper.responder.responder import Responder, ResponderType
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +47,8 @@ class BrainResponder(Responder):
                     reply = reply_to_question(brain_response_question)
                     self._log.info("REPLY to question: {}".format(reply))
                 else:
-                    brain_response_statement = app.brain.update(utterance, reason_types=True)  # Searches for types in dbpedia
+                    brain_response_statement = app.brain.update(utterance,
+                                                                reason_types=True)  # Search for types in brain and LOD
                     reply = phrase_thoughts(brain_response_statement, True, True, True)
                     self._log.info("REPLY to statement: {}".format(reply))
 
@@ -55,12 +58,15 @@ class BrainResponder(Responder):
                     return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
                 elif brain_response_statement:
                     # Thank Human for the Data!
-                    return 1.0, lambda: app.say("{} {}".format(choice([choice(sentences.THANK), choice(sentences.HAPPY)]),
-                                                               choice(sentences.PARSED_KNOWLEDGE)), animations.HAPPY)
+                    return 1.0, lambda: app.say(
+                        "{} {}".format(choice([choice(sentences.THANK), choice(sentences.HAPPY)]),
+                                       choice(sentences.PARSED_KNOWLEDGE)), animations.HAPPY)
                 elif brain_response_question:
                     # Apologize to human for not knowing
                     return 1.0, lambda: app.say("{} {}".format(choice(sentences.SORRY),
                                                                choice(sentences.NO_ANSWER)), animations.ASHAMED)
 
         except Exception as e:
+            print(traceback.format_exc())
+            print("I FOUND AN ERROR! {}\n\t\t\t{}".format(e, sys.exc_info()[0]))
             self._log.error(e)

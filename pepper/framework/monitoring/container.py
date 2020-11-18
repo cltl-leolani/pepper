@@ -47,7 +47,7 @@ class DefaultMonitoringWorkerContainer(MonitoringWorkerContainer, ContextContain
         return server
 
     def stop(self):
-        logger.info("Stopping workers")
+        logger.debug("Stopping workers")
 
         try:
             DefaultMonitoringWorkerContainer.__worker.stop()
@@ -56,4 +56,4 @@ class DefaultMonitoringWorkerContainer(MonitoringWorkerContainer, ContextContain
 
         DefaultMonitoringWorkerContainer.__worker.await_stop()
 
-        logger.info("Stopped workers")
+        logger.debug("Stopped workers")

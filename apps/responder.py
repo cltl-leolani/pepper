@@ -46,7 +46,7 @@ class ResponderIntention(ApplicationContainer,
                          AbstractIntention, StatisticsComponent,
                          # SubtitlesComponent,  # TODO: (un)comment to turn tablet subtitles On/Off
                          MonitoringComponent,  # TODO: (un)comment to turn Web View On/Off
-                         # WikipediaResponder, # WolframResponder,   # TODO: (un)comment to turn factual responder On/Off
+                         # WikipediaResponder, # WolframResponder,   # TODO:(un)comment to turn factual responder On/Off
                          ExplorationComponent,  # TODO: (un)comment to turn exploration On/Off
                          ContextComponent,
                          ObjectDetectionComponent, FaceRecognitionComponent,

@@ -1,7 +1,6 @@
-import logging
-from .ner import NER
-from .utils.helper_functions import *
-from pepper.language.utils.atoms import UtteranceType
+from pepper.api import UtteranceType, Emotion
+from pepper.language.ner import NER
+from pepper.language.utils.helper_functions import *
 
 
 class Analyzer(object):
@@ -57,12 +56,16 @@ class Analyzer(object):
         for tree in forest:
             sentence_type = tree[0].label()
 
-            if sentence_type == 'S':
-                return StatementAnalyzer.analyze(chat)
-            elif sentence_type == 'Q':
-                return QuestionAnalyzer.analyze(chat)
-            else:
-                Analyzer.LOG.warning("Error: {}".format(sentence_type))
+            try:
+                if sentence_type == 'S':
+                    return StatementAnalyzer.analyze(chat)
+                elif sentence_type == 'Q':
+                    return QuestionAnalyzer.analyze(chat)
+                else:
+                    Analyzer.LOG.warning("Error: {}".format(sentence_type))
+
+            except Exception:
+                Analyzer.LOG.warning("Couldn't parse input")
 
     @property
     def chat(self):
@@ -101,7 +104,7 @@ class Analyzer(object):
         perspective: dict or None
         """
 
-        return None
+        return self._perspective
 
     def fix_predicate(self, predicate):
         """
@@ -431,6 +434,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         sentiment = 0
         certainty = 1
         polarity = 1
+        emotion = Emotion.NEUTRAL
 
         for word in predicate.split('-'):
             word = lemmatize(word)  # with a pos tag ?
@@ -449,7 +453,7 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         if utterance_info['neg']:
             polarity = -1
 
-        perspective = {'sentiment': sentiment, 'certainty': certainty, 'polarity': polarity}
+        perspective = {'sentiment': sentiment, 'certainty': certainty, 'polarity': polarity, 'emotion': emotion}
         return perspective
 
     @staticmethod
@@ -459,9 +463,21 @@ class GeneralStatementAnalyzer(StatementAnalyzer):
         :param triple: S,P,C triple
         :return: True if the triple has all three elements, False otherwise
         """
-        # TODO - PERSPECTIVE
         for el in ['predicate', 'subject', 'complement']:
             if not triple[el] or not len(triple[el]):
+                LOG.warning("Cannot find {} in statement".format(el))
+                return False
+        return True
+
+    @staticmethod
+    def check_perspective_completeness(perspective):
+        """
+        This function checks whether an extracted perspective is complete
+        :param perspective: sentiment, certainty, polarity, emotion perspective
+        :return: True if the perspective has all four elements, False otherwise
+        """
+        for el in ['sentiment', 'certainty', 'polarity', 'emotion']:
+            if not perspective[el] or not len(perspective[el]):
                 LOG.warning("Cannot find {} in statement".format(el))
                 return False
         return True
@@ -777,7 +793,7 @@ class VerbQuestionAnalyzer(QuestionAnalyzer):
 
         elif get_pos_in_tree(structure_tree, first_word).startswith('V') and get_pos_in_tree(structure_tree,
                                                                                              triple[
-                                                                                                       'predicate']) == 'MD':
+                                                                                                 'predicate']) == 'MD':
             for word in triple['complement'].split('-'):
                 label = get_pos_in_tree(structure_tree, word)
                 if label in ['IN', 'TO', 'MD'] or label.startswith('V'):

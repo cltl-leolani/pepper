@@ -45,7 +45,7 @@ class Scheduler(Thread):
 
     def run(self):
         self._running = True
-        logger.info("Started %s thread", self.name)
+        logger.debug("Started %s thread", self.name)
         while self._running:
             try:
                 self._target(*self._args, **self._kwargs)
@@ -59,7 +59,7 @@ class Scheduler(Thread):
 
     def stop(self, timeout=None):
         self._running = False
-        logger.info("Stopped %s thread", self.name)
+        logger.debug("Stopped %s thread", self.name)
 
 
 class Mailbox(object):

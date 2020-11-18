@@ -128,4 +128,3 @@ class AbstractTextToSpeech(object):
         except:
             logger.exception("Failed to convert text to speech")
 
-        logger.info("debug talking")

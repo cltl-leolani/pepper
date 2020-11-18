@@ -5,8 +5,8 @@ from iribaker import to_iri
 from rdflib import Dataset, Namespace, OWL
 from rdflib import URIRef, Literal
 
-from pepper.brain.infrastructure import Predicate, Entity, Triple, Provenance
 from pepper.brain.utils.helper_functions import casefold_text
+from pepper.brain.infrastructure import Predicate, Entity, Triple, Provenance
 
 logger = logging.getLogger(__name__)
 
@@ -165,9 +165,9 @@ class RdfBuilder(object):
                 # this was just a char
                 fixed_types.append(types.split('.')[-1])
                 break
-            elif "article" in el or "prep" in el or "adj" in el or "verb" in el:
+            elif "article" in el or "prep" in el or "adj" in el or "verb" in el or "numeral" in el or "adv" in el or "modal" in el:
                 pass
-            elif "deictic" in el or "article:definite" in el:
+            elif "deictic" in el or "article:definite" in el or "pronoun" in el:
                 # need to corefer
                 pass
             elif '.' in el:

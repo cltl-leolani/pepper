@@ -1,5 +1,6 @@
 from random import choice
 
+from pepper.api import UtteranceType
 from pepper.brain import LongTermMemory
 from pepper.framework.context import Context
 from pepper.framework.sensor.api import Face, Object, UtteranceHypothesis
@@ -67,7 +68,7 @@ def test():
         chat.last_utterance.analyze()
 
         if chat.last_utterance.triple is not None:
-            if chat.last_utterance.type == language.UtteranceType.QUESTION:
+            if chat.last_utterance.type == UtteranceType.QUESTION:
                 brain_response = brain.query_brain(chat.last_utterance)
                 reply = reply_to_question(brain_response)
             else:

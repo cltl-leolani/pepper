@@ -16,8 +16,7 @@ class LocationReasoner(BasicBrain):
 
         super(LocationReasoner, self).__init__(address, log_dir, clear_all, is_submodule=True)
 
-    @staticmethod
-    def _measure_detection_overlap(detections_1, detections_2):
+    def _measure_detection_overlap(self, detections_1, detections_2):
         if detections_1 == detections_2:
             return 1.0
         else:
@@ -26,6 +25,7 @@ class LocationReasoner(BasicBrain):
                 overlap = float(2 * len(overlap)) / float(len(detections_1) + len(detections_2))
                 return float(overlap)
             except:
+                self._log.exception("Failed to measure detections overlap")
                 return 0.0
 
     def _fill_episodic_memory_(self, raw_episode):

@@ -130,8 +130,7 @@ class TypeReasoner(BasicBrain):
 
         return r['classes'][0] if r['classes'] else None, r['description'].split('.')[0] if r['description'] else None
 
-    @staticmethod
-    def _exact_match_wikidata(item):
+    def _exact_match_wikidata(self, item):
         """
         Query wikidata for information on this item to get it's semantic type and description.
         :param item:
@@ -149,6 +148,7 @@ class TypeReasoner(BasicBrain):
                 r = requests.get(url, params={'format': 'json', 'query': query}, timeout=3)
                 data = r.json() if r.status_code != 500 else None
             except:
+                self._log.warning("Failed to query Wikidata")
                 data = None
 
             # break if we have a hit

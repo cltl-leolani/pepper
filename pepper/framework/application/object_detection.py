@@ -18,7 +18,7 @@ class ObjectDetectionComponent(AbstractComponent):
         config = self.config_manager.get_config("pepper.framework.component.object")
         self._targets = config.get_enum("targets", ObjectDetectionTarget, multi=True)
 
-        self._log.info("Initializing ObjectDetectionComponent")
+        self._log.debug("Initializing ObjectDetectionComponent")
 
     def start(self):
         self.event_bus.subscribe(ObjectDetector.TOPIC, self._on_object_handler)
