@@ -1,0 +1,525 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.framework.infra.resource.threaded module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.infra.di_container module" href="pepper.framework.infra.di_container.html" />
+    <link rel="prev" title="pepper.framework.infra.resource.api module" href="pepper.framework.infra.resource.api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pepper.api.html">pepper.api package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#abstract">Abstract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#backend">Backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#sensor">Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#component">Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.application.html">pepper.framework.application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.context.html">pepper.framework.context package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.infra.html">pepper.framework.infra package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.config.html">pepper.framework.infra.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.event.html">pepper.framework.infra.event package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pepper.framework.infra.resource.html">pepper.framework.infra.resource package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.di_container.html">pepper.framework.infra.di_container module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.topic_worker.html">pepper.framework.infra.topic_worker module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.util.html">pepper.framework.infra.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.monitoring.html">pepper.framework.monitoring package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.app_container.html">pepper.app_container module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="pepper.html">pepper package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.html">pepper.framework package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.infra.html">pepper.framework.infra package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.infra.resource.html">pepper.framework.infra.resource package</a> &raquo;</li>
+        
+      <li>pepper.framework.infra.resource.threaded module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pepper.framework.infra.resource.threaded.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.framework.infra.resource.threaded">
+<span id="pepper-framework-infra-resource-threaded-module"></span><h1>pepper.framework.infra.resource.threaded module<a class="headerlink" href="#module-pepper.framework.infra.resource.threaded" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedReadLock">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.framework.infra.resource.threaded.</code><code class="sig-name descname">ThreadedReadLock</code><span class="sig-paren">(</span><em class="sig-param">rw_lock</em>, <em class="sig-param">resource_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedReadLock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedReadLock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.ReadLock" title="pepper.framework.infra.resource.api.ReadLock"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.infra.resource.api.ReadLock</span></code></a></p>
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedReadLock.acquire">
+<code class="sig-name descname">acquire</code><span class="sig-paren">(</span><em class="sig-param">blocking=True</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedReadLock.acquire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedReadLock.acquire" title="Permalink to this definition">¶</a></dt>
+<dd><p>Acquire the lock. By defaults blocks and waits forever.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>blocking</strong> (<em>bool</em>) – Block until lock is obtained or return immediately</p></li>
+<li><p><strong>timeout</strong> (<em>float</em><em> or </em><em>None</em>) – Wait at most the specified <cite>timeout</cite> in seconds to acquire the lock
+if the specified timeout is positive, otherwise wait indefinitely.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Signal if the lock was acquired</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.LockTimeoutError" title="pepper.framework.infra.resource.api.LockTimeoutError"><strong>LockTimeoutError</strong></a> – if the lock wasn’t acquired within <cite>timeout</cite> seconds.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedReadLock.interrupt_writers">
+<code class="sig-name descname">interrupt_writers</code><span class="sig-paren">(</span><em class="sig-param">interrupt=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedReadLock.interrupt_writers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedReadLock.interrupt_writers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the interrupted flag on the lock to signal the current owner that
+the lock should be released.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedReadLock.interrupted">
+<em class="property">property </em><code class="sig-name descname">interrupted</code><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedReadLock.interrupted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signals that the lock should be released by the current owner.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Whether the lock should be released by the current owner.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedReadLock.locked">
+<em class="property">property </em><code class="sig-name descname">locked</code><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedReadLock.locked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the lock is held by someone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Signal if the lock is held by someone.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedReadLock.release">
+<code class="sig-name descname">release</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedReadLock.release"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedReadLock.release" title="Permalink to this definition">¶</a></dt>
+<dd><p>Release the lock.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedResourceContainer">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.framework.infra.resource.threaded.</code><code class="sig-name descname">ThreadedResourceContainer</code><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedResourceContainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedResourceContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.ResourceContainer" title="pepper.framework.infra.resource.api.ResourceContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.infra.resource.api.ResourceContainer</span></code></a></p>
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedResourceContainer.resource_manager">
+<em class="property">property </em><code class="sig-name descname">resource_manager</code><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedResourceContainer.resource_manager" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedResourceManager">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.framework.infra.resource.threaded.</code><code class="sig-name descname">ThreadedResourceManager</code><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedResourceManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedResourceManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.ResourceManager" title="pepper.framework.infra.resource.api.ResourceManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.infra.resource.api.ResourceManager</span></code></a></p>
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedResourceManager.get_lock">
+<code class="sig-name descname">get_lock</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">blocking=True</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedResourceManager.get_lock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedResourceManager.get_lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain a <code class="xref py py-class docutils literal notranslate"><span class="pre">Lock</span></code> for the given resource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>blocking</strong> (<em>bool</em>) – Block until the resource is available or return immediately</p></li>
+<li><p><strong>timeout</strong> (<em>float</em><em> or </em><em>None</em>) – Wait at most the specified <cite>timeout</cite> in seconds until the resource
+is available if the specified timeout is positive, otherwise wait
+indefinitely.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The lock.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Lock</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedResourceManager.get_read_lock">
+<code class="sig-name descname">get_read_lock</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">blocking=True</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedResourceManager.get_read_lock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedResourceManager.get_read_lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain a <code class="xref py py-class docutils literal notranslate"><span class="pre">ReadLock</span></code> for the given resource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>blocking</strong> (<em>bool</em>) – Block until the resource is available or return immediately</p></li>
+<li><p><strong>timeout</strong> (<em>float</em><em> or </em><em>None</em>) – Wait at most the specified <cite>timeout</cite> in seconds until the resource
+is available if the specified timeout is positive, otherwise wait
+indefinitely.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The lock.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Lock</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedResourceManager.get_write_lock">
+<code class="sig-name descname">get_write_lock</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">blocking=True</em>, <em class="sig-param">timeout=None</em>, <em class="sig-param">writer_interrupts=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedResourceManager.get_write_lock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedResourceManager.get_write_lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain a <code class="xref py py-class docutils literal notranslate"><span class="pre">WriteLock</span></code> for the given resource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>blocking</strong> (<em>bool</em>) – Block until the resource is available or return immediately</p></li>
+<li><p><strong>timeout</strong> (<em>float</em><em> or </em><em>None</em>) – Wait at most the specified <cite>timeout</cite> in seconds until the resource
+is available if the specified timeout is positive, otherwise wait
+indefinitely.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The lock.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Lock</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedResourceManager.provide_resource">
+<code class="sig-name descname">provide_resource</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedResourceManager.provide_resource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedResourceManager.provide_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register the resource with the given <cite>name</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The name of the resource.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if there is already a resource registered with the given name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedResourceManager.resources">
+<em class="property">property </em><code class="sig-name descname">resources</code><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedResourceManager.resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all currently registered resource names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A collection of the registered resource names.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Iterable[(str)]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedResourceManager.retract_resource">
+<code class="sig-name descname">retract_resource</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">force=True</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedResourceManager.retract_resource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedResourceManager.retract_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unregister the resource with the given <cite>name</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the resource.</p></li>
+<li><p><strong>force</strong> (<em>bool</em>) – Immediately retract the resource or block until all users released
+the released the resource.</p></li>
+<li><p><strong>timeout</strong> (<em>float</em><em> or </em><em>None</em>) – Wait at most the specified <cite>timeout</cite> in seconds until the resource
+is released if the specified timeout is positive, otherwise wait
+indefinitely.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedWriteLock">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.framework.infra.resource.threaded.</code><code class="sig-name descname">ThreadedWriteLock</code><span class="sig-paren">(</span><em class="sig-param">lock</em>, <em class="sig-param">resource_name</em>, <em class="sig-param">writer_interrupts=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedWriteLock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedWriteLock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.WriteLock" title="pepper.framework.infra.resource.api.WriteLock"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.infra.resource.api.WriteLock</span></code></a></p>
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedWriteLock.acquire">
+<code class="sig-name descname">acquire</code><span class="sig-paren">(</span><em class="sig-param">blocking=True</em>, <em class="sig-param">timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedWriteLock.acquire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedWriteLock.acquire" title="Permalink to this definition">¶</a></dt>
+<dd><p>Acquire the lock. By defaults blocks and waits forever.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>blocking</strong> (<em>bool</em>) – Block until lock is obtained or return immediately</p></li>
+<li><p><strong>timeout</strong> (<em>float</em><em> or </em><em>None</em>) – Wait at most the specified <cite>timeout</cite> in seconds to acquire the lock
+if the specified timeout is positive, otherwise wait indefinitely.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Signal if the lock was acquired</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference internal" href="pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.LockTimeoutError" title="pepper.framework.infra.resource.api.LockTimeoutError"><strong>LockTimeoutError</strong></a> – if the lock wasn’t acquired within <cite>timeout</cite> seconds.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedWriteLock.interrupt_readers">
+<code class="sig-name descname">interrupt_readers</code><span class="sig-paren">(</span><em class="sig-param">interrupt=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedWriteLock.interrupt_readers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedWriteLock.interrupt_readers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the interrupted flag on the lock to signal the current owner that
+the lock should be released.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedWriteLock.interrupted">
+<em class="property">property </em><code class="sig-name descname">interrupted</code><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedWriteLock.interrupted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signals that the lock should be released by the current owner.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Whether the lock should be released by the current owner.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedWriteLock.locked">
+<em class="property">property </em><code class="sig-name descname">locked</code><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedWriteLock.locked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the lock is held by someone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Signal if the lock is held by someone.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.resource.threaded.ThreadedWriteLock.release">
+<code class="sig-name descname">release</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/resource/threaded.html#ThreadedWriteLock.release"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.resource.threaded.ThreadedWriteLock.release" title="Permalink to this definition">¶</a></dt>
+<dd><p>Release the lock.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.framework.infra.di_container.html" class="btn btn-neutral float-right" title="pepper.framework.infra.di_container module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.framework.infra.resource.api.html" class="btn btn-neutral float-left" title="pepper.framework.infra.resource.api module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

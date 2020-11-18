@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.framework.infra.event.api module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.infra.event.memory module" href="pepper.framework.infra.event.memory.html" />
+    <link rel="prev" title="pepper.framework.infra.event package" href="pepper.framework.infra.event.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pepper.api.html">pepper.api package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#abstract">Abstract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#backend">Backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#sensor">Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#component">Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.application.html">pepper.framework.application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.context.html">pepper.framework.context package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.infra.html">pepper.framework.infra package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.config.html">pepper.framework.infra.config package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pepper.framework.infra.event.html">pepper.framework.infra.event package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.resource.html">pepper.framework.infra.resource package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.di_container.html">pepper.framework.infra.di_container module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.topic_worker.html">pepper.framework.infra.topic_worker module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.util.html">pepper.framework.infra.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.monitoring.html">pepper.framework.monitoring package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.app_container.html">pepper.app_container module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="pepper.html">pepper package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.html">pepper.framework package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.infra.html">pepper.framework.infra package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.infra.event.html">pepper.framework.infra.event package</a> &raquo;</li>
+        
+      <li>pepper.framework.infra.event.api module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pepper.framework.infra.event.api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.framework.infra.event.api">
+<span id="pepper-framework-infra-event-api-module"></span><h1>pepper.framework.infra.event.api module<a class="headerlink" href="#module-pepper.framework.infra.event.api" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.framework.infra.event.api.Event">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.framework.infra.event.api.</code><code class="sig-name descname">Event</code><span class="sig-paren">(</span><em class="sig-param">payload</em>, <em class="sig-param">metadata=None</em>, <em class="sig-param">id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/event/api.html#Event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.event.api.Event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pepper.framework.infra.event.api.Event.metadata">
+<em class="property">property </em><code class="sig-name descname">metadata</code><a class="headerlink" href="#pepper.framework.infra.event.api.Event.metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.event.api.Event.payload">
+<em class="property">property </em><code class="sig-name descname">payload</code><a class="headerlink" href="#pepper.framework.infra.event.api.Event.payload" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.event.api.Event.with_topic">
+<code class="sig-name descname">with_topic</code><span class="sig-paren">(</span><em class="sig-param">topic</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/event/api.html#Event.with_topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.event.api.Event.with_topic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.framework.infra.event.api.EventBus">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.framework.infra.event.api.</code><code class="sig-name descname">EventBus</code><a class="reference internal" href="_modules/pepper/framework/infra/event/api.html#EventBus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.event.api.EventBus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Supports publishing of and subscribing to events based on topics.</p>
+<p>Events published to a topic are delivered to all subscribers in the order
+of their arrival. Publishing and invocation of the subscribed handler
+can be asynchronous. Subscribers receive only events that arrive after they
+subscribed to a topic.</p>
+<dl class="method">
+<dt id="pepper.framework.infra.event.api.EventBus.has_topic">
+<em class="property">property </em><code class="sig-name descname">has_topic</code><a class="headerlink" href="#pepper.framework.infra.event.api.EventBus.has_topic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.event.api.EventBus.publish">
+<code class="sig-name descname">publish</code><span class="sig-paren">(</span><em class="sig-param">topic</em>, <em class="sig-param">event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/event/api.html#EventBus.publish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.event.api.EventBus.publish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.event.api.EventBus.subscribe">
+<code class="sig-name descname">subscribe</code><span class="sig-paren">(</span><em class="sig-param">topic</em>, <em class="sig-param">handler</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/event/api.html#EventBus.subscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.event.api.EventBus.subscribe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.event.api.EventBus.topics">
+<em class="property">property </em><code class="sig-name descname">topics</code><a class="headerlink" href="#pepper.framework.infra.event.api.EventBus.topics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.event.api.EventBus.unsubscribe">
+<code class="sig-name descname">unsubscribe</code><span class="sig-paren">(</span><em class="sig-param">topic</em>, <em class="sig-param">handler=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/event/api.html#EventBus.unsubscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.event.api.EventBus.unsubscribe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.framework.infra.event.api.EventBusContainer">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.framework.infra.event.api.</code><code class="sig-name descname">EventBusContainer</code><a class="reference internal" href="_modules/pepper/framework/infra/event/api.html#EventBusContainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.event.api.EventBusContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.framework.infra.di_container.html#pepper.framework.infra.di_container.DIContainer" title="pepper.framework.infra.di_container.DIContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.infra.di_container.DIContainer</span></code></a></p>
+<dl class="method">
+<dt id="pepper.framework.infra.event.api.EventBusContainer.event_bus">
+<em class="property">property </em><code class="sig-name descname">event_bus</code><a class="headerlink" href="#pepper.framework.infra.event.api.EventBusContainer.event_bus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.framework.infra.event.api.EventMetadata">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.framework.infra.event.api.</code><code class="sig-name descname">EventMetadata</code><span class="sig-paren">(</span><em class="sig-param">timestamp=None</em>, <em class="sig-param">offset=None</em>, <em class="sig-param">topic=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/event/api.html#EventMetadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.event.api.EventMetadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pepper.framework.infra.event.api.EventMetadata.offset">
+<em class="property">property </em><code class="sig-name descname">offset</code><a class="headerlink" href="#pepper.framework.infra.event.api.EventMetadata.offset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.event.api.EventMetadata.timestamp">
+<em class="property">property </em><code class="sig-name descname">timestamp</code><a class="headerlink" href="#pepper.framework.infra.event.api.EventMetadata.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.event.api.EventMetadata.topic">
+<em class="property">property </em><code class="sig-name descname">topic</code><a class="headerlink" href="#pepper.framework.infra.event.api.EventMetadata.topic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.event.api.EventMetadata.with_">
+<code class="sig-name descname">with_</code><span class="sig-paren">(</span><em class="sig-param">timestamp=None</em>, <em class="sig-param">offset=None</em>, <em class="sig-param">topic=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/event/api.html#EventMetadata.with_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.event.api.EventMetadata.with_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pepper.framework.infra.event.api.TopicError">
+<em class="property">exception </em><code class="sig-prename descclassname">pepper.framework.infra.event.api.</code><code class="sig-name descname">TopicError</code><a class="reference internal" href="_modules/pepper/framework/infra/event/api.html#TopicError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.event.api.TopicError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.framework.infra.event.memory.html" class="btn btn-neutral float-right" title="pepper.framework.infra.event.memory module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.framework.infra.event.html" class="btn btn-neutral float-left" title="pepper.framework.infra.event package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

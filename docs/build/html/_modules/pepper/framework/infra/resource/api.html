@@ -1,0 +1,525 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.framework.infra.resource.api &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../../index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pepper.html">pepper package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../../../pepper.html">pepper</a> &raquo;</li>
+        
+      <li>pepper.framework.infra.resource.api</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pepper.framework.infra.resource.api</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span>
+
+<span class="kn">from</span> <span class="nn">pepper.framework.infra.di_container</span> <span class="kn">import</span> <span class="n">DIContainer</span>
+
+
+<div class="viewcode-block" id="LockTimeoutError"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.LockTimeoutError">[docs]</a><span class="k">class</span> <span class="nc">LockTimeoutError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised if an operation runs into a timeout constraint.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ResourceContainer"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.ResourceContainer">[docs]</a><span class="k">class</span> <span class="nc">ResourceContainer</span><span class="p">(</span><span class="n">DIContainer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :class:`~pepper.framework.infra.di_container.DIContainer` providing a :class:`.ResourceManager` instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">resource_manager</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; ResourceManager</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ResourceManager"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.ResourceManager">[docs]</a><span class="k">class</span> <span class="nc">ResourceManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ResourceManager manages resources available in the system.</span>
+
+<span class="sd">    Resources can be registered by name and different Locks can be obtained</span>
+<span class="sd">    to synchronize access to the registered resources.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ResourceManager.get_lock"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.ResourceManager.get_lock">[docs]</a>    <span class="k">def</span> <span class="nf">get_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># type: (str, bool, float) -&gt; Lock</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtain a :class:`Lock` for the given resource.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        blocking : bool</span>
+<span class="sd">            Block until the resource is available or return immediately</span>
+<span class="sd">        timeout : float or None</span>
+<span class="sd">            Wait at most the specified `timeout` in seconds until the resource</span>
+<span class="sd">            is available if the specified timeout is positive, otherwise wait</span>
+<span class="sd">            indefinitely.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`Lock`</span>
+<span class="sd">            The lock.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ResourceManager.get_read_lock"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.ResourceManager.get_read_lock">[docs]</a>    <span class="k">def</span> <span class="nf">get_read_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># type: (str, bool, float) -&gt; ReadLock</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtain a :class:`ReadLock` for the given resource.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        blocking : bool</span>
+<span class="sd">            Block until the resource is available or return immediately</span>
+<span class="sd">        timeout : float or None</span>
+<span class="sd">            Wait at most the specified `timeout` in seconds until the resource</span>
+<span class="sd">            is available if the specified timeout is positive, otherwise wait</span>
+<span class="sd">            indefinitely.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`Lock`</span>
+<span class="sd">            The lock.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ResourceManager.get_write_lock"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.ResourceManager.get_write_lock">[docs]</a>    <span class="k">def</span> <span class="nf">get_write_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># type: (str, bool, float) -&gt; WriteLock</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtain a :class:`WriteLock` for the given resource.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        blocking : bool</span>
+<span class="sd">            Block until the resource is available or return immediately</span>
+<span class="sd">        timeout : float or None</span>
+<span class="sd">            Wait at most the specified `timeout` in seconds until the resource</span>
+<span class="sd">            is available if the specified timeout is positive, otherwise wait</span>
+<span class="sd">            indefinitely.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`Lock`</span>
+<span class="sd">            The lock.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ResourceManager.provide_resource"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.ResourceManager.provide_resource">[docs]</a>    <span class="k">def</span> <span class="nf">provide_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Register the resource with the given `name`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the resource.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        :class:`ValueError`</span>
+<span class="sd">            if there is already a resource registered with the given name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ResourceManager.retract_resource"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.ResourceManager.retract_resource">[docs]</a>    <span class="k">def</span> <span class="nf">retract_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># type: (str, bool, float) -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unregister the resource with the given `name`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the resource.</span>
+<span class="sd">        force : bool</span>
+<span class="sd">            Immediately retract the resource or block until all users released</span>
+<span class="sd">            the released the resource.</span>
+<span class="sd">        timeout : float or None</span>
+<span class="sd">            Wait at most the specified `timeout` in seconds until the resource</span>
+<span class="sd">            is released if the specified timeout is positive, otherwise wait</span>
+<span class="sd">            indefinitely.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">resources</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Iterable[(str)]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve all currently registered resource names.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Iterable[(str)]</span>
+<span class="sd">            A collection of the registered resource names.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ResourceManager.has_resource"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.ResourceManager.has_resource">[docs]</a>    <span class="k">def</span> <span class="nf">has_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; bool</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if a resource with the given `name` is registered in the</span>
+<span class="sd">        ResourceManager.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the resource.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            Whether a resource with the given `name` is registered or not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">resources</span></div></div>
+
+
+<div class="viewcode-block" id="Lock"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.Lock">[docs]</a><span class="k">class</span> <span class="nc">Lock</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Lock</span>
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        lock = resource_manager.get_lock(&quot;resource-identifier&quot;)</span>
+<span class="sd">        with lock:  # blocks waiting for lock acquisition</span>
+<span class="sd">            # do something with the lock</span>
+
+<span class="sd">    Note: This lock is not *re-entrant*. Repeated calls after already</span>
+<span class="sd">    acquired will block.</span>
+<span class="sd">    This is an exclusive lock. For a read/write lock, see :class:`WriteLock`</span>
+<span class="sd">    and :class:`ReadLock`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Lock.acquire"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.Lock.acquire">[docs]</a>    <span class="k">def</span> <span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># type: (bool, float) -&gt; bool</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Acquire the lock. By defaults blocks and waits forever.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        blocking : bool</span>
+<span class="sd">            Block until lock is obtained or return immediately</span>
+<span class="sd">        timeout : float or None</span>
+<span class="sd">            Wait at most the specified `timeout` in seconds to acquire the lock</span>
+<span class="sd">            if the specified timeout is positive, otherwise wait indefinitely.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            Signal if the lock was acquired</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        :class:`LockTimeoutError`</span>
+<span class="sd">            if the lock wasn&#39;t acquired within `timeout` seconds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">locked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; bool</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if the lock is held by someone.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            Signal if the lock is held by someone.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Lock.release"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.Lock.release">[docs]</a>    <span class="k">def</span> <span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Release the lock.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">interrupted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; bool</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Signals that the lock should be released by the current owner.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            Whether the lock should be released by the current owner.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">release</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="WriteLock"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.WriteLock">[docs]</a><span class="k">class</span> <span class="nc">WriteLock</span><span class="p">(</span><span class="n">Lock</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write Lock</span>
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        lock = resource_manager.get_write_lock(&quot;resource-identifier&quot;)</span>
+<span class="sd">        with lock:  # blocks waiting for lock acquisition</span>
+<span class="sd">            # do something with the lock</span>
+
+<span class="sd">    The write lock can not be acquired if the resource is held by any readers</span>
+<span class="sd">    or writers.</span>
+<span class="sd">    Note: This lock is not *re-entrant*. Repeated calls after already</span>
+<span class="sd">    acquired will block.</span>
+<span class="sd">    This is the write-side of a shared lock.  See :class:`Lock` for a</span>
+<span class="sd">    standard exclusive lock and :class:`ReadLock` for the read-side of a</span>
+<span class="sd">    shared lock.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="WriteLock.interrupt_readers"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.WriteLock.interrupt_readers">[docs]</a>    <span class="k">def</span> <span class="nf">interrupt_readers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the interrupted flag on the lock to signal the current owner that</span>
+<span class="sd">        the lock should be released.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="ReadLock"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.ReadLock">[docs]</a><span class="k">class</span> <span class="nc">ReadLock</span><span class="p">(</span><span class="n">Lock</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read Lock</span>
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        lock = resource_manager.get_read_lock(&quot;resource-identifier&quot;)</span>
+<span class="sd">        with lock:  # blocks waiting for outstanding writers</span>
+<span class="sd">            # do something with the lock</span>
+
+<span class="sd">    The read lock blocks if the resource is held by any writers, but multiple</span>
+<span class="sd">    readers may hold the lock.</span>
+<span class="sd">    Note: This lock is not *re-entrant*. Repeated calls after already</span>
+<span class="sd">    acquired will block.</span>
+<span class="sd">    This is the read-side of a shared lock.  See :class:`Lock` for a</span>
+<span class="sd">    standard exclusive lock and :class:`WriteLock` for the write-side of a</span>
+<span class="sd">    shared lock.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ReadLock.interrupt_writers"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.ReadLock.interrupt_writers">[docs]</a>    <span class="k">def</span> <span class="nf">interrupt_writers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interrupt</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the interrupted flag on the lock to signal the current owner that</span>
+<span class="sd">        the lock should be released.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="acquire"><a class="viewcode-back" href="../../../../../pepper.framework.infra.resource.api.html#pepper.framework.infra.resource.api.acquire">[docs]</a><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">acquire</span><span class="p">(</span><span class="n">lock</span><span class="p">,</span> <span class="n">blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A context manager to enable usage of `timeout` and `blocking` arguments</span>
+<span class="sd">     in `with` blocks.</span>
+
+<span class="sd">    Example usage:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        lock = resource_manager.get_write_lock(&quot;resource-identifier&quot;)</span>
+<span class="sd">        with acquire(lock, blocking=True, timeout=10):  # blocks waiting for lock acquisition with timeout</span>
+<span class="sd">            # do something with the lock</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="n">blocking</span><span class="p">)</span>
+        <span class="c1"># result = lock.acquire(blocking=blocking, timeout=timeout)</span>
+        <span class="k">yield</span> <span class="n">result</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

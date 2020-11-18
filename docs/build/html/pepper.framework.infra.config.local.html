@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pepper.framework.infra.config.local module &mdash; CLTL/Pepper 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pepper.framework.infra.event package" href="pepper.framework.infra.event.html" />
+    <link rel="prev" title="pepper.framework.infra.config.api module" href="pepper.framework.infra.config.api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> CLTL/Pepper
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pepper.html">pepper package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pepper.api.html">pepper.api package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.brain.html">pepper.brain package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="pepper.framework.html">pepper.framework package</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#abstract">Abstract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#backend">Backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#sensor">Sensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.html#component">Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.application.html">pepper.framework.application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.backend.html">pepper.framework.backend package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.context.html">pepper.framework.context package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pepper.framework.infra.html">pepper.framework.infra package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="pepper.framework.infra.config.html">pepper.framework.infra.config package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.event.html">pepper.framework.infra.event package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.resource.html">pepper.framework.infra.resource package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.di_container.html">pepper.framework.infra.di_container module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.topic_worker.html">pepper.framework.infra.topic_worker module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pepper.framework.infra.util.html">pepper.framework.infra.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.monitoring.html">pepper.framework.monitoring package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pepper.framework.sensor.html">pepper.framework.sensor package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.knowledge.html">pepper.knowledge package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.language.html">pepper.language package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.responder.html">pepper.responder package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.app_container.html">pepper.app_container module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pepper.config.html">pepper.config module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CLTL/Pepper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="pepper.html">pepper package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.html">pepper.framework package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.infra.html">pepper.framework.infra package</a> &raquo;</li>
+        
+          <li><a href="pepper.framework.infra.config.html">pepper.framework.infra.config package</a> &raquo;</li>
+        
+      <li>pepper.framework.infra.config.local module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pepper.framework.infra.config.local.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-pepper.framework.infra.config.local">
+<span id="pepper-framework-infra-config-local-module"></span><h1>pepper.framework.infra.config.local module<a class="headerlink" href="#module-pepper.framework.infra.config.local" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pepper.framework.infra.config.local.LocalConfig">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.framework.infra.config.local.</code><code class="sig-name descname">LocalConfig</code><span class="sig-paren">(</span><em class="sig-param">parser</em>, <em class="sig-param">section</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/config/local.html#LocalConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.config.local.LocalConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.framework.infra.config.api.html#pepper.framework.infra.config.api.Configuration" title="pepper.framework.infra.config.api.Configuration"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.infra.config.api.Configuration</span></code></a></p>
+<dl class="method">
+<dt id="pepper.framework.infra.config.local.LocalConfig.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">multi=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/config/local.html#LocalConfig.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.config.local.LocalConfig.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a configuration value as String for the specified key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – The key for the configuration value to be retrieved.</p></li>
+<li><p><strong>multi</strong> (<em>bool</em>) – Retrieve a list of values if True, else a single value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The configuration value, or a list of value if multi is True</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str or Iterable[str]</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If there is no value configured for the specified key.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.config.local.LocalConfig.get_boolean">
+<code class="sig-name descname">get_boolean</code><span class="sig-paren">(</span><em class="sig-param">key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/config/local.html#LocalConfig.get_boolean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.config.local.LocalConfig.get_boolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convenience method which coerces the configuration value for the
+specified key to a Boolean value. Note that the accepted values for the
+option are “1”, “yes”, “true”, and “on”, which cause this method to
+return True, and “0”, “no”, “false”, and “off”, which cause it to
+return False. These string values are checked in a case-insensitive
+manner. Any other value will cause it to raise ValueError.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – The key for the configuration value to be retrieved.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The configuration value as boolean</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the requested value cannot be coerced into a boolean
+    value.</p></li>
+<li><p><strong>KeyError</strong> – If there is no value configured for the provided key.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.config.local.LocalConfig.get_enum">
+<code class="sig-name descname">get_enum</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">type</em>, <em class="sig-param">multi=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/config/local.html#LocalConfig.get_enum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.config.local.LocalConfig.get_enum" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convenience method which coerces the configuration value for the
+specified key to an <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code> instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – The key for the configuration value to be retrieved.</p></li>
+<li><p><strong>type</strong> – The type of <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code> to be resolved from the
+configuration value.</p></li>
+<li><p><strong>multi</strong> (<em>bool</em>) – Retrieve a list of values if True</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The configuration value as <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code> instance, or a list
+of values if multi is True</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Enum or Iterable[Enum]</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the requested value cannot be coerced into an Enum instance for
+    the specified Enum type.</p></li>
+<li><p><strong>KeyError</strong> – If there is no value configured for the provided key.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.config.local.LocalConfig.get_float">
+<code class="sig-name descname">get_float</code><span class="sig-paren">(</span><em class="sig-param">key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/config/local.html#LocalConfig.get_float"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.config.local.LocalConfig.get_float" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convenience method which coerces the configuration value for the
+specified key to a floating point number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – The key for the configuration value to be retrieved.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The configuration value as float</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the requested value cannot be coerced into a floating point
+    value.</p></li>
+<li><p><strong>KeyError</strong> – If there is no value configured for the provided key.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.config.local.LocalConfig.get_int">
+<code class="sig-name descname">get_int</code><span class="sig-paren">(</span><em class="sig-param">key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/config/local.html#LocalConfig.get_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.config.local.LocalConfig.get_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>A convenience method which coerces the configuration value for the
+specified key to an integer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – The key for the configuration value to be retrieved</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The configuration value as int</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the requested value cannot be coerced into a int value.</p></li>
+<li><p><strong>KeyError</strong> – If there is no value configured for the specified key.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.framework.infra.config.local.LocalConfigurationContainer">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.framework.infra.config.local.</code><code class="sig-name descname">LocalConfigurationContainer</code><a class="reference internal" href="_modules/pepper/framework/infra/config/local.html#LocalConfigurationContainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.config.local.LocalConfigurationContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.framework.infra.config.api.html#pepper.framework.infra.config.api.ConfigurationContainer" title="pepper.framework.infra.config.api.ConfigurationContainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.infra.config.api.ConfigurationContainer</span></code></a></p>
+<dl class="method">
+<dt id="pepper.framework.infra.config.local.LocalConfigurationContainer.config_manager">
+<em class="property">property </em><code class="sig-name descname">config_manager</code><a class="headerlink" href="#pepper.framework.infra.config.local.LocalConfigurationContainer.config_manager" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.config.local.LocalConfigurationContainer.get_config">
+<em class="property">static </em><code class="sig-name descname">get_config</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/config/local.html#LocalConfigurationContainer.get_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.config.local.LocalConfigurationContainer.get_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pepper.framework.infra.config.local.LocalConfigurationContainer.load_configuration">
+<em class="property">static </em><code class="sig-name descname">load_configuration</code><span class="sig-paren">(</span><em class="sig-param">config_file='config/default.config', additional_config_files=['config/pepper.config', 'config/credentials.config']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/config/local.html#LocalConfigurationContainer.load_configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.config.local.LocalConfigurationContainer.load_configuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pepper.framework.infra.config.local.LocalConfigurationManager">
+<em class="property">class </em><code class="sig-prename descclassname">pepper.framework.infra.config.local.</code><code class="sig-name descname">LocalConfigurationManager</code><span class="sig-paren">(</span><em class="sig-param">config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/config/local.html#LocalConfigurationManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.config.local.LocalConfigurationManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pepper.framework.infra.config.api.html#pepper.framework.infra.config.api.ConfigurationManager" title="pepper.framework.infra.config.api.ConfigurationManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">pepper.framework.infra.config.api.ConfigurationManager</span></code></a></p>
+<dl class="method">
+<dt id="pepper.framework.infra.config.local.LocalConfigurationManager.get_config">
+<code class="sig-name descname">get_config</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pepper/framework/infra/config/local.html#LocalConfigurationManager.get_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pepper.framework.infra.config.local.LocalConfigurationManager.get_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the <code class="xref py py-class docutils literal notranslate"><span class="pre">Configuration</span></code> for the specified name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name identifying the configuration.</p></li>
+<li><p><strong>callback</strong> (<em>Callable</em><em>[</em><em>(</em><a class="reference internal" href="pepper.framework.infra.config.api.html#pepper.framework.infra.config.api.Configuration" title="pepper.framework.infra.config.api.Configuration"><em>Configuration</em></a><em>)</em><em>, </em><em>None</em><em>]</em>) – Callback function that is called on configuration changes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The Configuration for the provided configuration name.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Configuration</span></code></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If there is not Configuration with the given name</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pepper.framework.infra.event.html" class="btn btn-neutral float-right" title="pepper.framework.infra.event package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pepper.framework.infra.config.api.html" class="btn btn-neutral float-left" title="pepper.framework.infra.config.api module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2018, CLTL
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
