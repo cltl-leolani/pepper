@@ -28,8 +28,8 @@ I assume that you are doing everything in the directory where this `README.md` i
 
 1. Start from a python3.7.9 environment (highly recommended)
 2. Copy `credentials.config` and `google_cloud_key.json` into `config/` directory. Ask the authors if you have problems with this. `credentials.config` is for wolfram and `google_cloud_key.json` is for google APIs.
-3. Install portaudio by running
-    > `sudo apt-get install portaudio19-dev`
+3. Install portaudio and java by running
+    > `sudo apt-get install portaudio19-dev default-jdk` 
 4. Install the required python modules by running 
     > `pip install -r requirements.txt`.
 5. Clone the repo pepper_tensorflow by running 
@@ -61,57 +61,37 @@ I assume that you are doing everything in the directory where this `README.md` i
     For example,
     > `PYTHONPATH="." python apps/examples/greeting.py`   
 
-12. Start any applications in `pepper/apps/..`
+12. Start other applications in `pepper/apps/`
+
+    For example,
+    > `PYTHONPATH="." python apps/hmk.py `   
+
 
 13. Start/Stop Docker by running `cd setup && docker-compose start/stop && cd ..` when stopping/restarting the application.
 
 
-## Pepper Troubleshooting
-> No Pepper-laptop connection can be established
-
-1. Make sure Pepper and the laptop are on the same network
-2. Verify Pepper has access to network (by pressing belly-button)
-3. Make sure ```ip``` and ```port``` are set correctly in the ```[pepper.framework.backend.naoqi]``` section of ```config/pepper.config``` or ```config/default.config```
-
-> Pepper cannot connect to network
-
-1. Connect Pepper to network using ethernet cable
-2. Press belly-button to obtain IP and update ```ip``` in the ```[pepper.framework.backend.naoqi]``` section of ```config/pepper.config``` accordingly
-3. Go to robot web page (by entering IP in browser)
-4. Go to network settings and connect to wifi
-    - If unlisted, reboot robot (and wifi). Make sure wifi is online before robot is.
-5. Shutdown robot, remove ethernet cable, and boot again. It now should work...
-
-> Problems with speech audio
-
-1. Start an application with StatisticsComponent and look at the STT (Speech to Text) activity
-2. If no signal (i.e ```STT [..........]```):
-     ```use_system_microphone``` is set to false  in the ```[pepper.framework.backend.naoqi]``` section of ```config/default.config``` and not overriden from ```config/pepper.config```
-    2. Make sure external mic, if used, is switched on and sensitive enough (use OS settings)
-    3. Make sure Pepper mic, if used, is not broken?
-3. If signal is low (i.e ```STT [|||.......]``` is below ```[pepper.framework.sensors.vad.webrtc] -> threshold```):
-    1. Make sure you talk loud enough (noisy fans in Peppers head make it difficult)
-    2. Make sure you talk in the right microphone (i.e. ```[pepper.framework.backend.naoqi] -> use_system_microphone```)
-    3. Make sure the external mics volume is high enough!
-4. If signal is too high (i.e. ```STT [||||||||||]```) all the time:
-    1. Peppers own mics cannot handle very loud/noisy environments, like fairs
-    2. Use a microphone attached to the laptop, instead!
-        - don't forget to override ```[pepper.framework.backend.naoqi] -> use_system_microphone``` in ```config/pepper.config``` and set it to ```True```
-5. Microphone should process audio at 16 kHz  (i.e. Statistics: ```Mic 16.0 kHz```), if not:
-    1. Override ```cam_resolution``` and/or ```cam_frame_rate``` in the ```[DEFAULT]``` section of ```config/pepper.config``` with lower values in order to meet performance requirements
-
-
-
 ## Usage
 
-
+See [How to start](#how-to-start)
 
 ## Examples
 
+See number 11 and number 12 in [How to start](#how-to-start)
 
 ## TODOs
 
-a lot
+1. Web GUI is not working. Some kind of threading error. Fix this.
+2. Make Mac and Ubuntu have the same dependencies, or at least document them both thoroughly.
+3. Better documentation
+4. Clean code
+5. Minimize the dependencies
+6. Integrate [cltl-face-all](https://github.com/leolani/cltl-face-all)
+7. Make docker easy.
+8. Replace wolfram alpha, if possible
+9. Run google APIs locally, if possible
+10. Add tests
+
+
 
 
 ## Contributing
