@@ -90,8 +90,7 @@ See number 11 and number 12 in [How to start](#how-to-start)
 8. Replace wolfram alpha, if possible
 9. Run google APIs locally, if possible
 10. Add tests
-
-
+11. Package pepper into a python module so that it can run in any paths and environments.
 
 
 ## Contributing
