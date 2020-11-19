@@ -49,7 +49,7 @@ class NER(object):
 
     def _log_subprocess_output(self, pipe):
         for line in iter(pipe.readline, b''):
-            self._log.debug(line.replace('\n', ''))
+            self._log.debug(line.decode('utf-8').replace('\n', ''))
 
     def _find_free_port(self):
         with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
