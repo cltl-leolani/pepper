@@ -19,14 +19,14 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = u'CLTL/Pepper'
-copyright = u'2018, CLTL'
+project = u'Leolani/Pepper'
+copyright = u'2020, CLTL'
 author = u'CLTL'
 
 # The short X.Y version
-version = u'1.0'
+version = u'2.0'
 # The full version, including alpha/beta/rc tags
-release = u'1.0.0'
+release = u'2.0.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -105,7 +105,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'CLTLPepperdoc'
+htmlhelp_basename = 'LeolaniPepperdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -132,8 +132,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'CLTLPepper.tex', u'CLTL/Pepper Documentation',
-     u'CLTL', 'manual'),
+    (master_doc, 'LeolaniPepper.tex', u'Leolani/Pepper Documentation',
+     u'Leolani', 'manual'),
 ]
 
 
@@ -142,7 +142,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'cltlpepper', u'CLTL/Pepper Documentation',
+    (master_doc, 'leolanipepper', u'Leolani/Pepper Documentation',
      [author], 1)
 ]
 
@@ -153,8 +153,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'CLTLPepper', u'CLTL/Pepper Documentation',
-     author, 'CLTLPepper', 'One line description of project.',
+    (master_doc, 'LeolaniPepper', u'Leolani/Pepper Documentation',
+     author, 'LeolaniPepper', 'One line description of project.',
      'Miscellaneous'),
 ]
 
