@@ -14,4 +14,4 @@ if __name__ == "__main__":
     for elem in experience:
         x = brain.get_thoughts_on_entity(elem, reason_types=True)
 
-        print('\t\t\tFINAL SAY: ' + phrase_thoughts(x, proactive=True, persist=True))
+        print(('\t\t\tFINAL SAY: ' + phrase_thoughts(x, proactive=True, persist=True)))

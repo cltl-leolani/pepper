@@ -85,7 +85,7 @@ class ThreadedResourceManager(ResourceManager):
 
     @property
     def resources(self):
-        return self._resources.viewkeys()
+        return self._resources.keys()
 
     def _init_lock(self, name, factory):
         with self._registry_lock:

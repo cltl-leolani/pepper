@@ -112,13 +112,13 @@ class QnA:
         answer = None
 
         # Fuzzily try to find best matching query
-        for Q, A in self.QNA_STATIC.items():
+        for Q, A in list(self.QNA_STATIC.items()):
             r = fuzz.partial_ratio(query, Q)
             if r > ratio:
                 answer = A
                 ratio = r
 
-        for Q, A in self.QNA_DYNAMIC.items():
+        for Q, A in list(self.QNA_DYNAMIC.items()):
             r = fuzz.partial_ratio(query, Q)
             if r > ratio:
                 answer = A(context)

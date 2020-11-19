@@ -76,9 +76,9 @@ def test():
                 # reply = reply_to_statement(brain_response, chat.speaker, brain)
                 reply = phrase_thoughts(brain_response, True, True)
 
-            print(chat.last_utterance)
+            print((chat.last_utterance))
             chat.last_utterance.triple.casefold(format='triple')
-            print(chat.last_utterance.triple)
+            print((chat.last_utterance.triple))
             print(reply)
 
     return

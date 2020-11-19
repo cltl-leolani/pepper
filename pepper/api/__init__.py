@@ -1,1 +1,1 @@
-from discrete import *
+from .discrete import *

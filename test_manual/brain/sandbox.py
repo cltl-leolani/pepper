@@ -39,7 +39,7 @@ if __name__ == "__main__":
         print(say)
 
         for x in range(10):
-            print(phrase_thoughts(x, True, True))
+            print((phrase_thoughts(x, True, True)))
 
     # for x in range(10):
     #     say = ''

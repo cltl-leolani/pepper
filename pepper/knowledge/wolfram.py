@@ -6,8 +6,8 @@ import requests
 
 
 class Wolfram:
-    API_SPOKEN = ur"https://api.wolframalpha.com/v1/spoken?appid={}&i={}"
-    API_QUERY = ur"http://www.wolframalpha.com/queryrecognizer/query.jsp?&appid={}&mode=Voice&i={}"
+    API_SPOKEN = r"https://api.wolframalpha.com/v1/spoken?appid={}&i={}"
+    API_QUERY = r"http://www.wolframalpha.com/queryrecognizer/query.jsp?&appid={}&mode=Voice&i={}"
 
     ERRORS = [
         "Wolfram Alpha did not understand your input",
@@ -29,7 +29,7 @@ class Wolfram:
         self._app_id = app_id
 
     def is_query(self, query):
-        return requests.get(self.API_QUERY.format(self._app_id, query.replace(u' ', u'+'))).text
+        return requests.get(self.API_QUERY.format(self._app_id, query.replace(' ', '+'))).text
 
     def query(self, query):
         """
@@ -46,7 +46,7 @@ class Wolfram:
             Answer to Question or None if no answer could be found
         """
 
-        result = requests.get(self.API_SPOKEN.format(self._app_id, query.replace(u' ', u'+'))).text
+        result = requests.get(self.API_SPOKEN.format(self._app_id, query.replace(' ', '+'))).text
         if any([result.startswith(error) for error in self.ERRORS]):
             if result.startswith(self.TOO_BROAD):
                 topic = result.replace(self.TOO_BROAD, "")

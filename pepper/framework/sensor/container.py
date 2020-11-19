@@ -1,6 +1,6 @@
 import logging
 import threading
-from Queue import Queue
+from queue import Queue
 from typing import Iterable
 
 from pepper.framework.backend.container import BackendContainer

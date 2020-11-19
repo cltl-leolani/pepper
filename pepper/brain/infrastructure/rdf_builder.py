@@ -198,7 +198,7 @@ class RdfBuilder(object):
             Representing the URI of the resource
 
         """
-        if namespace in self.namespaces.keys():
+        if namespace in list(self.namespaces.keys()):
             uri = URIRef(to_iri(self.namespaces[namespace] + resource_name))
         else:
             uri = URIRef(to_iri('{}:{}'.format(namespace, resource_name)))

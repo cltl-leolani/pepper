@@ -1,6 +1,6 @@
 import json
 import logging
-from Queue import Empty
+from queue import Empty
 from threading import Thread, Lock
 from time import sleep
 

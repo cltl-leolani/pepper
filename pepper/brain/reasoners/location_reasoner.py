@@ -102,7 +102,7 @@ class LocationReasoner(BasicBrain):
                 location_memory[casefold_text(item.name, format='triple')] = temp
 
         # Merge giving priority to brain elements
-        for cat, ids in location_memory.items():
+        for cat, ids in list(location_memory.items()):
             all_ids = ids['brain_ids'][:]
             all_ids.extend(ids['local_ids'])
             ids['ids'] = all_ids

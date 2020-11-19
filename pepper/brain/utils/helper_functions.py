@@ -32,7 +32,7 @@ def is_proper_noun(types):
 
 def casefold_text(text, format='triple'):
     if format == 'triple':
-        if isinstance(text, basestring):
+        if isinstance(text, str):
             for sign in string.punctuation:
                 text = text.replace(sign, "-")
 
@@ -41,7 +41,7 @@ def casefold_text(text, format='triple'):
         return re.sub('-+', '-', text)
 
     elif format == 'natural':
-        return text.lower().replace("-", " ").strip() if isinstance(text, basestring) else text
+        return text.lower().replace("-", " ").strip() if isinstance(text, str) else text
 
     else:
         return text
@@ -59,7 +59,7 @@ def casefold_capsule(capsule, format='triple'):
     -------
 
     """
-    for k, v in capsule.items():
+    for k, v in list(capsule.items()):
         if isinstance(v, dict):
             capsule[k] = casefold_capsule(v, format=format)
         else:

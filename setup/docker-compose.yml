@@ -5,7 +5,7 @@ services:
     build:
       context: ./graphdb-docker
       args:
-        version: "9.4.1"
+        version: "9.3.1"
         graphdb_parent: "/opt/graphdb"
     ports:
         - "7200:7200"

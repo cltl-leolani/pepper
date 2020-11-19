@@ -1,15 +1,15 @@
-from __future__ import unicode_literals
+
 
 import json
 import logging
 import os
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 from nltk import pos_tag
 from nltk import tree as ntree
 from nltk.stem import WordNetLemmatizer
 
-import wordnet_utils as wu
+from . import wordnet_utils as wu
 
 LOG = logging.getLogger(__name__)
 
@@ -339,8 +339,8 @@ def dbp_query(q, base_url, format="application/json"):
         "fname": ""
     }
 
-    querypart = urllib.urlencode(params)
-    response = urllib.urlopen(base_url, querypart).read()
+    querypart = urllib.parse.urlencode(params)
+    response = urllib.request.urlopen(base_url, querypart).read()
     return json.loads(response)
 
 

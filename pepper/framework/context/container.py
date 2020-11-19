@@ -1,7 +1,7 @@
 import logging
 import os
 import threading
-from Queue import Queue
+from queue import Queue
 from typing import Iterable, Any
 
 from pepper.framework.infra.config.api import ConfigurationContainer

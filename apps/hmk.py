@@ -1,5 +1,5 @@
 import re
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from random import choice
 from time import time, sleep
 
@@ -62,7 +62,7 @@ class HMKIntention(ApplicationContainer, AbstractIntention,
         sleep(1.5)
 
     def show_text(self, text):
-        text_websafe = urllib.quote(''.join([i for i in re.sub(r'\\\\\S+\\\\', "", text) if ord(i) < 128]))
+        text_websafe = urllib.parse.quote(''.join([i for i in re.sub(r'\\\\\S+\\\\', "", text) if ord(i) < 128]))
         self.show_on_display(self.SUBTITLES_URL.format(text_websafe))
 
 
@@ -311,7 +311,7 @@ class DefaultIntention(HMKIntention):
         self.response_picker = ResponsePicker(self, RESPONDERS)
 
     def on_chat_enter(self, name):
-        self._ignored_people = {n: t for n, t in self._ignored_people.items() if time() - t < self.IGNORE_TIMEOUT}
+        self._ignored_people = {n: t for n, t in list(self._ignored_people.items()) if time() - t < self.IGNORE_TIMEOUT}
 
         if name not in self._ignored_people:
             self.context.start_chat(name)

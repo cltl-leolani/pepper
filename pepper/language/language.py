@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 import json
 import logging
@@ -453,7 +453,7 @@ class Utterance(object):
                 max_freq = max(names.values())
 
                 for hypothesis in hypotheses:
-                    for name in names.keys():
+                    for name in list(names.keys()):
                         if name in hypothesis.transcript:
                             hypothesis.confidence *= float(names[name]) / float(max_freq)
 
