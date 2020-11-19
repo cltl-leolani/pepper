@@ -58,27 +58,27 @@ class DisplayITest(unittest.TestCase):
     def setUp(self):
         self.intention = TestIntention()
         self.appliation = TestApplication(self.intention)
-        self.appliation.start()
+        self.appliation._start()
 
     def tearDown(self):
-        self.appliation.stop()
+        self.appliation._stop()
         del self.appliation
         DIContainer._singletons.clear()
 
     def test_show(self):
         self.intention.show_on_display("test://url")
 
-        util.await(lambda: self.intention.backend.tablet.display, msg="point event")
+        util.await_predicate(lambda: self.intention.backend.tablet.display, msg="point event")
 
         self.assertEqual("test://url", self.intention.backend.tablet.display)
 
 
     def test_hide(self):
         self.intention.show_on_display("test://url")
-        util.await(lambda: self.intention.backend.tablet.display, msg="point event")
+        util.await_predicate(lambda: self.intention.backend.tablet.display, msg="point event")
 
         self.intention.hide_display()
-        util.await(lambda: not self.intention.backend.tablet.display, msg="point event")
+        util.await_predicate(lambda: not self.intention.backend.tablet.display, msg="point event")
 
         self.assertIsNone(self.intention.backend.tablet.display)
 

@@ -66,24 +66,24 @@ class MotionITest(unittest.TestCase):
     def setUp(self):
         self.intention = TestIntention()
         self.application = TestApplication(self.intention)
-        self.application.start()
+        self.application._start()
 
     def tearDown(self):
-        self.application.stop()
+        self.application._stop()
         del self.application
         DIContainer._singletons.clear()
 
     def test_point(self):
         self.intention.point((1.0, 2.0), 3.0)
 
-        util.await(lambda: len(self.intention.backend.motion.points) > 0, msg="point event")
+        util.await_predicate(lambda: len(self.intention.backend.motion.points) > 0, msg="point event")
 
         points = self.intention.backend.motion.points
         self.assertEqual(1, len(points))
         np.testing.assert_array_equal((1.0, 2.0), points[0])
 
         try:
-            util.await(lambda: len(self.intention.backend.motion.points) > 1, max=5)
+            util.await_predicate(lambda: len(self.intention.backend.motion.points) > 1, max=5)
         except unittest.TestCase.failureException:
             # Expect no more audio events
             pass
@@ -91,14 +91,14 @@ class MotionITest(unittest.TestCase):
     def test_look(self):
         self.intention.look((1.0, 2.0), 3.0)
 
-        util.await(lambda: len(self.intention.backend.motion.looks) > 0, msg="point event")
+        util.await_predicate(lambda: len(self.intention.backend.motion.looks) > 0, msg="point event")
 
         looks = self.intention.backend.motion.looks
         self.assertEqual(1, len(looks))
         np.testing.assert_array_equal((1.0, 2.0), looks[0])
 
         try:
-            util.await(lambda: len(self.intention.backend.motion.looks) > 1, max=5)
+            util.await_predicate(lambda: len(self.intention.backend.motion.looks) > 1, max=5)
         except unittest.TestCase.failureException:
             # Expect no more audio events
             pass
