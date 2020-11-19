@@ -1,31 +1,32 @@
 numpy==1.16.2
 scipy==1.2.3
-sklearn
+scikit-learn==0.23.2
 
 nltk==3.4
-fuzzywuzzy[speedup]
+fuzzywuzzy==0.18.0
+python-Levenshtein==0.12.0
 
-rdflib
-iribaker<0.2
-SPARQLWrapper
+rdflib==5.0.0
+iribaker==0.2
+SPARQLWrapper==1.8.5
 
-playsound
-webrtcvad
+playsound==1.2.2
+webrtcvad==2.0.10
 
-google-cloud-speech
-google-cloud-TextToSpeech
-google-cloud-translate
+google-cloud-speech==2.0.1
+google-cloud-texttospeech==2.2.0
+google-cloud-translate==3.0.1
 
-pillow
-opencv-python==4.2.0.32
+Pillow==5.4.1
+opencv-python==4.4.0.46
 
 tornado==5.1.1
-typing
-pyaudio
+typing==3.7.4.3
+PyAudio==0.2.11
 
-pycountry
-reverse_geocoder
+pycountry==20.7.3
+reverse-geocoder==1.5.1
 
-configparser
-mock
-importlib_resources
+configparser==5.0.1
+mock==4.0.2
+importlib-resources==3.3.0
