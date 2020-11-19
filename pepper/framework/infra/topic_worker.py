@@ -1,6 +1,6 @@
 import logging
 import threading
-from Queue import Queue, Empty, Full
+from queue import Queue, Empty, Full
 from threading import Thread
 from time import sleep
 
@@ -48,7 +48,7 @@ class TopicWorker(Thread):
         """
         super(TopicWorker, self).__init__(name=name if name else self.__class__.__name__)
         self._event_bus = event_bus
-        self._topics = topics if not isinstance(topics, basestring) else (topics,)
+        self._topics = topics if not isinstance(topics, str) else (topics,)
         self._interval = interval
         self._scheduled = scheduled
         self._buffer = Queue(maxsize=buffer_size)

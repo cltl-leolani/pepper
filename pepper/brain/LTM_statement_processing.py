@@ -284,7 +284,7 @@ def _create_attribution(self, utterance, mention, claim, claim_type=None, perspe
     attribution = self._rdf_builder.fill_entity(attribution_label, ['Attribution'], 'LTa')
     _link_entity(self, attribution, self.perspective_graph)
 
-    for typ, val in perspective_values.iteritems():
+    for typ, val in perspective_values.items():
         if typ in ['FactualityValue', 'CertaintyValue', 'TemporalValue', 'PolarityValue']:
             ns = 'GRASPf'
         elif typ in ['SentimentValue']:

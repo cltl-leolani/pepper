@@ -41,8 +41,8 @@ if __name__ == '__main__':
 
     for image, objects in read(r"C:\Users\Pepper\Documents\Pepper\pepper\tmp\data\20190930_125844"):
 
-        print(image.time, image, objects)
+        print((image.time, image, objects))
 
         for obj in objects:
-            print(obj.image_bounds, image.get_image(obj.image_bounds).shape)
+            print((obj.image_bounds, image.get_image(obj.image_bounds).shape))
 

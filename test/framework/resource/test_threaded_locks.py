@@ -19,7 +19,7 @@ TIMEOUT=1
 
 seed = random.randrange(sys.maxsize)
 rng = random.Random(seed)
-print(__name__, "Random seed: ", seed)
+print((__name__, "Random seed: ", seed))
 
 
 class TestActor(threading.Thread):

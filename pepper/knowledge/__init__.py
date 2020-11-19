@@ -3,6 +3,6 @@ The Pepper Knowledge Package contains hardcoded sentences, answers to questions 
 """
 
 
-from wikipedia import Wikipedia
-from wolfram import Wolfram
-from query import QnA
+from .wikipedia import Wikipedia
+from .wolfram import Wolfram
+from .query import QnA

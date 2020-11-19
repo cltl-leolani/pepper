@@ -86,7 +86,7 @@ class NameParser:
                     closest = distance
 
             if closest_name:
-                print("Closest Name:", closest_name)
+                print(("Closest Name:", closest_name))
                 return UtteranceHypothesis(hypotheses[toi].transcript.replace(words[0][0], closest_name), hypotheses[toi].confidence)
 
         return hypotheses[0]

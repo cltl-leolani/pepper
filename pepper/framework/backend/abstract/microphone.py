@@ -1,5 +1,5 @@
 import logging
-from Queue import Queue
+from queue import Queue
 from collections import deque
 from time import time, sleep
 

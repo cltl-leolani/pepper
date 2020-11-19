@@ -50,7 +50,7 @@ class TypeReasoner(BasicBrain):
 
         # Item is in the ontology already as a label, return the type
         mapping = self.get_labels_and_classes()
-        if item_label in mapping.keys():
+        if item_label in list(mapping.keys()):
             learned_type = mapping[item]
             text = ' I know about %s. It is of type %s. I will remember this object' % (item, learned_type)
 
@@ -156,10 +156,10 @@ class TypeReasoner(BasicBrain):
                 break
 
         if data is not None:
-            class_type = data[u'results'][u'bindings'][0][u'itemtypeLabel'][u'value'] \
-                if 'itemtypeLabel' in data[u'results'][u'bindings'][0].keys() else None
-            description = data[u'results'][u'bindings'][0][u'itemDescription'][u'value'] \
-                if 'itemDescription' in data[u'results'][u'bindings'][0].keys() else None
+            class_type = data['results']['bindings'][0]['itemtypeLabel']['value'] \
+                if 'itemtypeLabel' in list(data['results']['bindings'][0].keys()) else None
+            description = data['results']['bindings'][0]['itemDescription']['value'] \
+                if 'itemDescription' in list(data['results']['bindings'][0].keys()) else None
 
             return class_type, description
 

@@ -52,7 +52,7 @@ class BrainResponder(Responder):
                     reply = phrase_thoughts(brain_response_statement, True, True, True)
                     self._log.info("REPLY to statement: {}".format(reply))
 
-                if (isinstance(reply, str) or isinstance(reply, unicode)) and reply != "":
+                if (isinstance(reply, str) or isinstance(reply, str)) and reply != "":
                     # Return Score and Response
                     # Make sure to not execute the response here, but just to return the response function
                     return 1.0, lambda: app.say(re.sub(r"[\s+_]", " ", reply))
@@ -67,6 +67,6 @@ class BrainResponder(Responder):
                                                                choice(sentences.NO_ANSWER)), animations.ASHAMED)
 
         except Exception as e:
-            print(traceback.format_exc())
-            print("I FOUND AN ERROR! {}\n\t\t\t{}".format(e, sys.exc_info()[0]))
+            print((traceback.format_exc()))
+            print(("I FOUND AN ERROR! {}\n\t\t\t{}".format(e, sys.exc_info()[0])))
             self._log.error(e)

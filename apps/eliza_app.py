@@ -62,7 +62,7 @@ class ElizaIntention(ApplicationContainer,
             answer = eliza.analyze(question)
 
             if answer:
-                print("You said:", question)
+                print(("You said:", question))
                 # Tell Answer to Human
                 self.show_text(answer)
                 self.say(answer)

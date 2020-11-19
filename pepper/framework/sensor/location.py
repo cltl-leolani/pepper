@@ -133,4 +133,4 @@ class Location(object):
 if __name__ == '__main__':
     latlon = Location._get_lat_lon()
     result = reverse_geocoder.search(latlon, verbose=False)
-    print(result, latlon)
+    print((result, latlon))

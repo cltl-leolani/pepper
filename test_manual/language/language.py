@@ -94,17 +94,17 @@ def compare_triples(triple, gold):
     if str(triple.predicate) == gold['predicate']:
         correct += 1
     else:
-        print('MISMATCH: ', triple.predicate, gold['predicate'])
+        print(('MISMATCH: ', triple.predicate, gold['predicate']))
 
     if str(triple.subject) == gold['subject']:
         correct += 1
     else:
-        print('MISMATCH: ', triple.subject, gold['subject'])
+        print(('MISMATCH: ', triple.subject, gold['subject']))
 
     if str(triple.complement) == gold['complement']:
         correct += 1
     else:
-        print('MISMATCH: ', triple.complement, gold['complement'])
+        print(('MISMATCH: ', triple.complement, gold['complement']))
 
     return correct
 
@@ -146,7 +146,7 @@ def test_scenario(statement, questions, gold):
         if '-' in reply:
             reply = reply.replace('-', ' ')
         if reply.lower().strip() != gold.lower().strip():
-            print('MISMATCH RESPONSE ', reply.lower().strip(), gold.lower().strip())
+            print(('MISMATCH RESPONSE ', reply.lower().strip(), gold.lower().strip()))
         else:
             correct += 1
 
@@ -164,7 +164,7 @@ def test_scenarios():
     for sc in scenarios:
         correct += test_scenario(sc['statement'], sc['questions'], sc['reply'])
         total += len(sc['questions'])
-    print('CORRECT: ', correct, ',\tINCORRECT: ', total - correct)
+    print(('CORRECT: ', correct, ',\tINCORRECT: ', total - correct))
 
 
 def test_with_triples(path):
@@ -188,7 +188,7 @@ def test_with_triples(path):
         chat.last_utterance.analyze()
 
         if chat.last_utterance.triple == None:
-            print(chat.last_utterance, 'ERROR')
+            print((chat.last_utterance, 'ERROR'))
             incorrect += 3
             index += 1
             issues[chat.last_utterance.transcript] = 'NOT PARSED'
@@ -212,7 +212,7 @@ def test_with_triples(path):
                                          'sentiment': perspective.sentiment}
                 for key in extracted_perspective:
                     if float(extracted_perspective[key]) != gold[index]['perspective'][key]:
-                        print('MISMATCH PERSPECTIVE ', key, extracted_perspective[key], gold[index]['perspective'][key])
+                        print(('MISMATCH PERSPECTIVE ', key, extracted_perspective[key], gold[index]['perspective'][key]))
                         incorrect += 1
                         # print(issues[chat.last_utterance.transcript])
                         # print([extracted_perspective[key], gold[index]['perspective'][key]])
@@ -232,8 +232,8 @@ def test_with_triples(path):
         # print(reply)
         index += 1
 
-    print(correct, incorrect)
-    print('issues ', issues)
+    print((correct, incorrect))
+    print(('issues ', issues))
 
     return
 

@@ -1,4 +1,4 @@
-from Queue import Queue
+from queue import Queue
 
 import numpy as np
 from typing import Iterable
