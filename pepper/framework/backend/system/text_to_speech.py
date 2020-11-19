@@ -31,10 +31,10 @@ class SystemTextToSpeech(AbstractTextToSpeech):
         self._translator = translator
 
         self._client = texttospeech.TextToSpeechClient()
-        self._voice = texttospeech.types.VoiceSelectionParams(language_code=language, ssml_gender=self.GENDER)
+        self._voice = texttospeech.VoiceSelectionParams(language_code=language, ssml_gender=self.GENDER)
 
         # Select the type of audio file you want returned
-        self._audio_config = texttospeech.types.AudioConfig(audio_encoding=texttospeech.enums.AudioEncoding.MP3)
+        self._audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.LINEAR16)
 
         self._log.debug("Booted ({} -> {})".format(self._translator.source, self._translator.target))
 
@@ -51,8 +51,8 @@ class SystemTextToSpeech(AbstractTextToSpeech):
 
         for i in range(3):
             try:
-                synthesis_input = texttospeech.types.SynthesisInput(text=self._translator.translate(text))
-                response = self._client.synthesize_speech(synthesis_input, self._voice, self._audio_config)
+                synthesis_input = texttospeech.SynthesisInput(text=self._translator.translate(text))
+                response = self._client.synthesize_speech(input=synthesis_input, voice=self._voice, audio_config=self._audio_config)
                 self._play_sound(response.audio_content)
                 return
             except:

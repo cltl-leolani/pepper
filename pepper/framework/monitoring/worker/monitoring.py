@@ -93,7 +93,7 @@ class MonitoringWorker(TopicWorker):
         with BytesIO() as png:
             image.save(png, 'png')
             png.seek(0)
-            return base64.b64encode(png.read())
+            return base64.b64encode(png.read()).decode('utf-8')
 
     def add_items(self, items):
         # type: (List[Object]) -> None

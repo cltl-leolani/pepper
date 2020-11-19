@@ -22,7 +22,7 @@ class SynchronousEventBus(EventBus):
         self._handlers = {}
         self._topic_lock = RLock()
 
-    def publish(self, topic, event, async=False, timeout=-1):
+    def publish(self, topic, event, timeout=-1):
         for handler in self.__get_handlers(topic):
             handler(event.with_topic(topic))
 
@@ -58,4 +58,3 @@ class SynchronousEventBus(EventBus):
 
     def __format_name(self, handler):
         return (handler.__self__.__class__.__name__ + "." if hasattr(handler, "im_class") else "") + handler.__name__
-
