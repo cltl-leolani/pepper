@@ -2,10 +2,10 @@
 
 Repository for Robot Applications created as part of the [Computational Lexicology & Terminology Lab (CLTL)](http://www.cltl.nl) at the Vrije Universiteit, Amsterdam.
 
-| **This is a Python 3 version of the Leolani platform and is not intended for the robot use. It does not support the NAOqi backend!** |
+| **This is a Python 3 version of the Leolani platform and is not intended for the robot use. It does not support the NAOqi backend! Currently it's only tested on Linux and Mac.** |
 |---|
 
-![Pepper Robot Leolani](https://github.com/cltl/pepper/blob/develop/docs/images/pepper.png)
+![Pepper Robot Leolani](images/pepper.png)
 
 ## Features
  - A framework for creating interactive Robot Applications using Python, to enable:
@@ -68,7 +68,7 @@ We assume that the following steps are executed in in the directory where this `
 1. Install Java, and on Linux install portaudio by running
     > `sudo apt-get install portaudio19-dev default-jdk` 
 1. Install the required python modules by running 
-    > `pip install -r requirements.txt`
+    > `pip install -r linux_requirements.txt`
 
     on Linux or
     > `pip install -r mac_requirements.txt`
@@ -76,10 +76,13 @@ We assume that the following steps are executed in in the directory where this `
     on OS X.
 1. Clone the repo pepper_tensorflow into a separate workspace by running 
     > `cd .. && git clone https://github.com/leolani/pepper_tensorflow.git`
+
+    Keep in mind that this changes your current directory.
 1. Build the pepper_tensorflow docker image 
     > `cd pepper_tensorflow && docker build -t cltl/pepper_tensorflow .`
-1. Return to the root directory of this repository and download [GraphDB](https://www.ontotext.com/products/graphdb/graphdb-free/)
-    (choose the *standalone server* version) into the `setup/graphdb-docker/lib` folder. In the `setup/docker-compose.yml`
+
+1. **Return to the root directory of this repository** and download [GraphDB](https://www.ontotext.com/products/graphdb/graphdb-free/)
+    (You have to register your email and the link will be sent to your mailbox. Check the spam folder as well. Download the *standalone server* version). Move the zipfile to the `setup/graphdb-docker/lib` folder. In the `setup/docker-compose.yml`
     file adjust the GraphDB version to the version you just downloaded.
 
     If you use a local installation of GraphDB remove the GraphDB entry from `setup/docker-compose.yml` before starting
@@ -129,7 +132,7 @@ See [How to start](#how-to-start)
 
 ## Examples
 
-See number 11 and number 12 in [How to start](#how-to-start)
+See number 11 and number 13 in [How to start](#how-to-start)
 
 ## Contributing
 
