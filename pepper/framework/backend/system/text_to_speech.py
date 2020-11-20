@@ -2,15 +2,19 @@
 
 import os
 import tempfile
+import wave
 
+import pyaudio
 from google.cloud import texttospeech
-from playsound import playsound
 from typing import Union, Optional
 
 from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
 from pepper.framework.infra.event.api import EventBus
 from pepper.framework.infra.resource.api import ResourceManager
 from pepper.framework.sensor.asr import AbstractTranslator
+
+
+_AUDIO_FILE_BUFFER_SIZE = 1024
 
 
 class SystemTextToSpeech(AbstractTextToSpeech):
@@ -59,17 +63,40 @@ class SystemTextToSpeech(AbstractTextToSpeech):
                 self._log.exception("Couldn't Synthesize Speech ({})".format(i+1))
 
     def _play_sound(self, mp3):
+        tmp_file = None
         try:
             tmp_file = tempfile.NamedTemporaryFile(delete=False)
             with tmp_file:
                 tmp_file.write(mp3)
 
-            playsound(tmp_file.name)
+            self._play_file(tmp_file.name)
         except:
             self._log.exception("Failed to write temporary file")
         finally:
-            if os.path.exists(tmp_file.name):
+            if tmp_file and os.path.exists(tmp_file.name):
                 # TODO: Sometimes we need to save all data from an experiment. Comment the line below and pass
                 os.remove(tmp_file.name)
 
+    def _play_file(self, file):
+        with wave.open(file, 'rb') as wav_file:
+            width = wav_file.getsampwidth()
+            channels = wav_file.getnchannels()
+            rate = wav_file.getframerate()
+            pa = pyaudio.PyAudio()
+            pa_stream = pa.open(
+                format=pyaudio.get_format_from_width(width),
+                channels=channels,
+                rate=rate,
+                output=True)
 
+            data = wav_file.readframes(_AUDIO_FILE_BUFFER_SIZE)
+
+            # play stream (looping from beginning of file to the end)
+            while data != '':
+                # writing to the stream is what *actually* plays the sound.
+                pa_stream.write(data)
+                data = wav_file.readframes(_AUDIO_FILE_BUFFER_SIZE)
+
+            # cleanup stuff.
+            pa_stream.close()
+            pa.terminate()

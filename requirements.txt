@@ -10,7 +10,6 @@ rdflib==5.0.0
 iribaker==0.2
 SPARQLWrapper==1.8.5
 
-playsound==1.2.2
 webrtcvad==2.0.10
 
 google-cloud-speech==2.0.1
