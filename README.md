@@ -50,6 +50,12 @@ More information on the Pepper project at CLTL can be found on http://makerobots
 
 We assume that the following steps are executed in in the directory where this `README.md` is located.
 
+1. Clone this repo by running
+    > `git clone https://github.com/leolani/pepper.git`
+
+1. Checkout to this branch by running
+    > `git checkout feature/python3.7`
+
 1. Start from a python 3.7.9 environment (highly recommended).
     To create an isolated environment for the project run
     > `python -m venv venv` <br/> `source venv/bin/activate`
@@ -73,7 +79,10 @@ We assume that the following steps are executed in in the directory where this `
     on Linux or
     > `pip install -r mac_requirements.txt`
 
-    on OS X.
+    on OS X or
+    > `pip install -r windows_requirements.txt`
+
+
 1. Clone the repo pepper_tensorflow into a separate workspace by running 
     > `cd .. && git clone https://github.com/leolani/pepper_tensorflow.git`
 
