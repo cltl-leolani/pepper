@@ -82,6 +82,7 @@ We assume that the following steps are executed in in the directory where this `
     on OS X or
     > `pip install -r windows_requirements.txt`
 
+    on Windows
 
 1. Clone the repo pepper_tensorflow into a separate workspace by running 
     > `cd .. && git clone https://github.com/leolani/pepper_tensorflow.git`
