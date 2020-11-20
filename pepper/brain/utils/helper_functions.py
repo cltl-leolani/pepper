@@ -79,6 +79,7 @@ def hash_claim_id(triple):
 
 def confidence_to_certainty_value(confidence):
     if confidence is not None:
+        confidence = float(confidence)
         if confidence > .90:
             return 'CERTAIN'
         elif confidence >= .50:
@@ -90,6 +91,7 @@ def confidence_to_certainty_value(confidence):
 
 def polarity_to_polarity_value(polarity):
     if polarity is not None:
+        polarity = float(polarity)
         if polarity > 0:
             return 'POSITIVE'
         elif polarity < 0:
@@ -99,6 +101,7 @@ def polarity_to_polarity_value(polarity):
 
 def sentiment_to_sentiment_value(sentiment):
     if sentiment is not None:
+        sentiment = float(sentiment)
         if sentiment > 0:
             return 'POSITIVE'
         elif sentiment < 0:
