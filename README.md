@@ -142,7 +142,7 @@ See [How to start](#how-to-start)
 
 ## Examples
 
-See the few numbered lines in [How to start](#how-to-start)
+See the last numbered lines in [How to start](#how-to-start)
 
 ## Contributing
 
