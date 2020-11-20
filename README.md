@@ -21,3 +21,9 @@ Check out our [API Reference](https://cltl.github.io/pepper/) and [Sample Applic
 
 ## More information
 More information on the Pepper project at CLTL can be found on http://makerobotstalk.nl
+
+## Python3.7
+
+Currently the team is working on gettings things to run on python3.7.
+Check out the [branch](https://github.com/leolani/pepper/tree/feature/python3.7).
+The NAOqi framework only works on python2, which makes it very difficult to work along with python3. Therefore python3 will currently only support working on your local machine, not with the actual softbank robots.  
