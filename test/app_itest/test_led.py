@@ -60,34 +60,35 @@ class LedITest(unittest.TestCase):
     def setUp(self):
         self.intention = TestIntention()
         self.application = TestApplication(self.intention)
-        self.application.start()
+        self.application._start()
 
     def tearDown(self):
-        self.application.stop()
+        self.application._stop()
         del self.application
         DIContainer._singletons.clear()
 
     def test_activate(self):
         self.intention.activate_led([Led.LeftEarLed1, Led.RightEarLed2], (1, 2, 3), 4)
 
-        util.await(lambda: len(self.intention.backend.led.active) > 1, msg="point event")
+        util.await_predicate(lambda: len(self.intention.backend.led.active) > 1, msg="point event")
 
         active = self.intention.backend.led.active
         self.assertEqual(2, len(active))
-        np.testing.assert_array_equal([Led.LeftEarLed1, Led.RightEarLed2], tuple(active))
+        self.assertIn(Led.LeftEarLed1, active)
+        self.assertIn(Led.RightEarLed2, active)
 
         try:
-            util.await(lambda: len(self.intention.backend.led.active) > 1, max=5)
+            util.await_predicate(lambda: len(self.intention.backend.led.active) > 1, max=5)
         except unittest.TestCase.failureException:
             # Expect no more audio events
             pass
 
     def test_deactivate(self):
         self.intention.activate_led([Led.LeftEarLed1, Led.RightEarLed2], (1, 2, 3), 4)
-        util.await(lambda: len(self.intention.backend.led.active) > 1, msg="point event")
+        util.await_predicate(lambda: len(self.intention.backend.led.active) > 1, msg="point event")
 
         self.intention.deactivate_led([Led.LeftEarLed1])
-        util.await(lambda: len(self.intention.backend.led.active) < 2, msg="point event")
+        util.await_predicate(lambda: len(self.intention.backend.led.active) < 2, msg="point event")
 
         active = self.intention.backend.led.active
         self.assertEqual(1, len(active))
