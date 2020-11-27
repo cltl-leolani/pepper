@@ -7,8 +7,11 @@ import tornado.template
 import tornado.web
 import tornado.websocket
 
+import sys
+import asyncio
 logger = logging.getLogger(__name__)
-
+if sys.platform == 'win32':
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 class MonitoringServer(tornado.web.Application):
     """Display Server for :class:`~pepper.framework.component.display.display.DisplayComponent`"""
