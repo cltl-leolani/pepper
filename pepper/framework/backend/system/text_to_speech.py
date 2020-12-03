@@ -92,7 +92,7 @@ class SystemTextToSpeech(AbstractTextToSpeech):
             data = wav_file.readframes(_AUDIO_FILE_BUFFER_SIZE)
 
             # play stream (looping from beginning of file to the end)
-            while data != '':
+            while data != b'' and data != '':
                 # writing to the stream is what *actually* plays the sound.
                 pa_stream.write(data)
                 data = wav_file.readframes(_AUDIO_FILE_BUFFER_SIZE)
