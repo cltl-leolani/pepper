@@ -38,7 +38,7 @@ class ResourceManager(object):
         ----------
         blocking : bool
             Block until the resource is available or return immediately
-        timeout : float or None
+        timeout : float
             Wait at most the specified `timeout` in seconds until the resource
             is available if the specified timeout is positive, otherwise wait
             indefinitely.
@@ -59,7 +59,7 @@ class ResourceManager(object):
         ----------
         blocking : bool
             Block until the resource is available or return immediately
-        timeout : float or None
+        timeout : float
             Wait at most the specified `timeout` in seconds until the resource
             is available if the specified timeout is positive, otherwise wait
             indefinitely.
@@ -80,7 +80,7 @@ class ResourceManager(object):
         ----------
         blocking : bool
             Block until the resource is available or return immediately
-        timeout : float or None
+        timeout : float
             Wait at most the specified `timeout` in seconds until the resource
             is available if the specified timeout is positive, otherwise wait
             indefinitely.
@@ -121,7 +121,7 @@ class ResourceManager(object):
         force : bool
             Immediately retract the resource or block until all users released
             the released the resource.
-        timeout : float or None
+        timeout : float
             Wait at most the specified `timeout` in seconds until the resource
             is released if the specified timeout is positive, otherwise wait
             indefinitely.
@@ -176,7 +176,7 @@ class Lock(object):
     and :class:`ReadLock`.
     """
 
-    def acquire(self, blocking=True, timeout=None):
+    def acquire(self, blocking=True, timeout=-1):
         # type: (bool, float) -> bool
         """
         Acquire the lock. By defaults blocks and waits forever.
@@ -185,7 +185,7 @@ class Lock(object):
         ----------
         blocking : bool
             Block until lock is obtained or return immediately
-        timeout : float or None
+        timeout : float
             Wait at most the specified `timeout` in seconds to acquire the lock
             if the specified timeout is positive, otherwise wait indefinitely.
 
