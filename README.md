@@ -31,9 +31,9 @@ More information on the Pepper project at CLTL can be found on http://makerobots
 
 ## Features
  - A framework for creating interactive Robot Applications using Python, to enable:
-   - Human-Robot conversation using Speech-to-Text and Text-to-Speech
-   - Recognising friends by face and learning about them and the world through conversation
-   - Recognising and positioning the people and objects in its enviroment.
+ - Human-Robot conversation using Speech-to-Text and Text-to-Speech
+ - Recognising friends by face and learning about them and the world through conversation
+ - Recognising and positioning the people and objects in its enviroment.
  - Natural Language Understanding through Syntax Trees (Grammars)
  - Knowledge Representation of all learned facts through a RDF Graph: Pepper's Brain!
  - Curiosity based on Knowledge Gaps and Conflicts resulting from learned facts
