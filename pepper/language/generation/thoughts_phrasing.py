@@ -266,8 +266,8 @@ def _phrase_overlaps(all_overlaps, utterance):
         say = random.choice(HAPPY)
         sample = random.sample(overlaps, 2)
 
-        entity_0 = filter(str.isalpha, str(sample[0].entity_name))
-        entity_1 = filter(str.isalpha, str(sample[1].entity_name))
+        entity_0 = list(filter(str.isalpha, str(sample[0].entity_name)))
+        entity_1 = list(filter(str.isalpha, str(sample[1].entity_name)))
 
         say += ' Now I know %s items that %s %s, like %s and %s' % (len(overlaps), utterance.triple.subject_name,
                                                                     utterance.triple.predicate_name,

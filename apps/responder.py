@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 import os
 from random import choice
@@ -72,7 +72,7 @@ class DefaultIntention(ResponderIntention):
         self.show_on_display(IMAGE_VU)
 
     def on_chat_enter(self, name):
-        self._ignored_people = {n: t for n, t in self._ignored_people.items() if time() - t < self.IGNORE_TIMEOUT}
+        self._ignored_people = {n: t for n, t in list(self._ignored_people.items()) if time() - t < self.IGNORE_TIMEOUT}
 
         if name not in self._ignored_people:
             self.context.start_chat(name)
@@ -230,7 +230,7 @@ class MeetIntention(ResponderIntention):
 
     def _get_current_name(self):
         if self._possible_names:
-            return [n for n, c in sorted(self._possible_names.items(), key=lambda i: i[1], reverse=True)][0]
+            return [n for n, c in sorted(list(self._possible_names.items()), key=lambda i: i[1], reverse=True)][0]
 
     def _is_name_statement(self, hypotheses):
         for hypothesis in hypotheses:

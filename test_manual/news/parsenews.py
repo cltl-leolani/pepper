@@ -1,4 +1,4 @@
-from __future__ import print_function, unicode_literals
+
 
 from bs4 import BeautifulSoup
 import requests
@@ -216,7 +216,7 @@ if __name__ == '__main__':
     for item in os.listdir(DIR):
         with open(os.path.join(DIR, item)) as json_file:
             article = json.load(json_file)
-            if all([key in article for key in 'author', 'title', 'publisher', 'time']):
+            if all([key in article for key in ('author', 'title', 'publisher', 'time')]):
                 date = time.strftime('%A %B %d', time.strptime(article['time'], '%Y%m%dT%H%M%S'))
                 if article['author'] and article['title'] and article['publisher'] and article['time']:
                     print('    "On {}, {} wrote an article in {} titled: {}",'.format(

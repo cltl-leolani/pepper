@@ -1,16 +1,20 @@
-from __future__ import unicode_literals
+
 
 import os
 import tempfile
+import wave
 
+import pyaudio
 from google.cloud import texttospeech
-from playsound import playsound
 from typing import Union, Optional
 
 from pepper.framework.backend.abstract.text_to_speech import AbstractTextToSpeech
 from pepper.framework.infra.event.api import EventBus
 from pepper.framework.infra.resource.api import ResourceManager
 from pepper.framework.sensor.asr import AbstractTranslator
+
+
+_AUDIO_FILE_BUFFER_SIZE = 1024
 
 
 class SystemTextToSpeech(AbstractTextToSpeech):
@@ -31,10 +35,10 @@ class SystemTextToSpeech(AbstractTextToSpeech):
         self._translator = translator
 
         self._client = texttospeech.TextToSpeechClient()
-        self._voice = texttospeech.types.VoiceSelectionParams(language_code=language, ssml_gender=self.GENDER)
+        self._voice = texttospeech.VoiceSelectionParams(language_code=language, ssml_gender=self.GENDER)
 
         # Select the type of audio file you want returned
-        self._audio_config = texttospeech.types.AudioConfig(audio_encoding=texttospeech.enums.AudioEncoding.MP3)
+        self._audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.LINEAR16)
 
         self._log.debug("Booted ({} -> {})".format(self._translator.source, self._translator.target))
 
@@ -51,25 +55,48 @@ class SystemTextToSpeech(AbstractTextToSpeech):
 
         for i in range(3):
             try:
-                synthesis_input = texttospeech.types.SynthesisInput(text=self._translator.translate(text))
-                response = self._client.synthesize_speech(synthesis_input, self._voice, self._audio_config)
+                synthesis_input = texttospeech.SynthesisInput(text=self._translator.translate(text))
+                response = self._client.synthesize_speech(input=synthesis_input, voice=self._voice, audio_config=self._audio_config)
                 self._play_sound(response.audio_content)
                 return
             except:
                 self._log.exception("Couldn't Synthesize Speech ({})".format(i+1))
 
     def _play_sound(self, mp3):
+        tmp_file = None
         try:
             tmp_file = tempfile.NamedTemporaryFile(delete=False)
             with tmp_file:
                 tmp_file.write(mp3)
 
-            playsound(tmp_file.name)
+            self._play_file(tmp_file.name)
         except:
             self._log.exception("Failed to write temporary file")
         finally:
-            if os.path.exists(tmp_file.name):
+            if tmp_file and os.path.exists(tmp_file.name):
                 # TODO: Sometimes we need to save all data from an experiment. Comment the line below and pass
                 os.remove(tmp_file.name)
 
+    def _play_file(self, file):
+        with wave.open(file, 'rb') as wav_file:
+            width = wav_file.getsampwidth()
+            channels = wav_file.getnchannels()
+            rate = wav_file.getframerate()
+            pa = pyaudio.PyAudio()
+            pa_stream = pa.open(
+                format=pyaudio.get_format_from_width(width),
+                channels=channels,
+                rate=rate,
+                output=True)
 
+            data = wav_file.readframes(_AUDIO_FILE_BUFFER_SIZE)
+
+            # play stream (looping from beginning of file to the end)
+            while data != b'' and data != '':
+                # writing to the stream is what *actually* plays the sound.
+                pa_stream.write(data)
+                data = wav_file.readframes(_AUDIO_FILE_BUFFER_SIZE)
+
+            # cleanup stuff.
+            pa_stream.close()
+            pa.terminate()

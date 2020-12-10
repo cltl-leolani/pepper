@@ -15,7 +15,7 @@ class AbstractApplication(BackendContainer):
         intention.on_intention_change = self.__change_intention
         self._intention = intention
 
-    def __start(self):
+    def _start(self):
         try:
             self.backend.start()
             self._intention.start()
@@ -23,7 +23,7 @@ class AbstractApplication(BackendContainer):
             logger.exception("Failed to start application")
             self.__stop()
 
-    def __stop(self):
+    def _stop(self):
         try:
             self._intention.stop()
         finally:
@@ -47,7 +47,7 @@ class AbstractApplication(BackendContainer):
 
         Starts Camera & Microphone and Blocks Current Thread until KeyboardInterrupt
         """
-        self.__start()
+        self._start()
 
         try:
             while True:
@@ -55,6 +55,6 @@ class AbstractApplication(BackendContainer):
         except KeyboardInterrupt:
             pass
 
-        self.__stop()
+        self._stop()
 
         exit(0)

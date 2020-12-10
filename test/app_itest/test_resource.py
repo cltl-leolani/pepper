@@ -238,7 +238,7 @@ class ResourceITest(unittest.TestCase):
         setupTestComponents()
         self.intention = TestIntention()
         self.application = TestApplication(self.intention)
-        self.application.start()
+        self.application._start()
 
         sleep(1)
 
@@ -251,7 +251,7 @@ class ResourceITest(unittest.TestCase):
             thread.start()
 
     def tearDown(self):
-        self.application.stop()
+        self.application._stop()
 
         for thread in self.threads:
             thread.stop()
@@ -262,7 +262,7 @@ class ResourceITest(unittest.TestCase):
 
         # Try to ensure that the application is stopped
         try:
-            util.await(lambda: threading.active_count() < 2, max=100)
+            util.await_predicate(lambda: threading.active_count() < 2, max=100)
         except:
             sleep(1)
 
@@ -354,7 +354,7 @@ class ResourceITest(unittest.TestCase):
         self.assertEqual('Test one two', self.intention.hypotheses[1].transcript)
         self.assertEqual(1.0, self.intention.hypotheses[1].confidence)
 
-    def await(self, predicate, max=100, msg="predicate"):
+    def await_predicate(self, predicate, max=100, msg="predicate"):
         cnt = 0
         while not predicate() and cnt < max:
             sleep(0.01)

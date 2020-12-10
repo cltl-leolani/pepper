@@ -146,7 +146,7 @@ class FaceClassifier(object):
         self._n_neighbors = n_neighbors
 
         self._names = sorted(self.people.keys())
-        self._indices = range(len(self._names))
+        self._indices = list(range(len(self._names)))
 
         if self.people:
             self._labels = np.concatenate([[index] * len(self.people[name]) for name, index in zip(self._names, self._indices)])
@@ -184,7 +184,7 @@ class FaceClassifier(object):
         people[name] = vector
 
         self._names = sorted(self.people.keys())
-        self._indices = range(len(self._names))
+        self._indices = list(range(len(self._names)))
 
         if self.people:
             self._labels = np.concatenate([[index] * len(self.people[name]) for name, index in zip(self._names, self._indices)])

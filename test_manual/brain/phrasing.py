@@ -22,4 +22,4 @@ if __name__ == "__main__":
         x = brain.update(capsule, reason_types=True)
 
         for x in range(10):
-            print(phrase_thoughts(x, True, True))
+            print((phrase_thoughts(x, True, True)))

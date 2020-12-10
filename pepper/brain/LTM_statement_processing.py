@@ -4,7 +4,7 @@ from pepper.brain.utils.constants import NAMESPACE_MAPPING
 from pepper.brain.utils.helper_functions import hash_claim_id, casefold_text, get_object_id, \
     confidence_to_certainty_value, \
     polarity_to_polarity_value, sentiment_to_sentiment_value, emotion_to_emotion_value
-from api import UtteranceType
+from pepper.api import UtteranceType
 
 
 ######################################## Helpers for statement processing ########################################
@@ -284,7 +284,7 @@ def _create_attribution(self, utterance, mention, claim, claim_type=None, perspe
     attribution = self._rdf_builder.fill_entity(attribution_label, ['Attribution'], 'LTa')
     _link_entity(self, attribution, self.perspective_graph)
 
-    for typ, val in perspective_values.iteritems():
+    for typ, val in perspective_values.items():
         if typ in ['FactualityValue', 'CertaintyValue', 'TemporalValue', 'PolarityValue']:
             ns = 'GRASPf'
         elif typ in ['SentimentValue']:

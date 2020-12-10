@@ -36,7 +36,7 @@ object_dict = {}
 
 for path in LABELMAP_PATHS:
     with open(path) as json_file:
-        for item in [value['name'] for value in json.load(json_file).values()]:
+        for item in [value['name'] for value in list(json.load(json_file).values())]:
             synsets = flatten([wordnet.synsets(word, wordnet.NOUN) for word in item.split(" ")])
             hypernym_paths = flatten([synset.hypernym_paths() for synset in synsets])
 
@@ -45,7 +45,7 @@ for path in LABELMAP_PATHS:
                 'building': is_building(hypernym_paths)
             }
 
-            print('{:25s} {}'.format(item, hypernym_paths))
+            print(('{:25s} {}'.format(item, hypernym_paths)))
 
 with open('objects.py', 'w') as python_file:
     python_file.write("OBJECT_INFO = {}".format(object_dict))

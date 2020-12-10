@@ -383,7 +383,7 @@ class DefaultIntention(PresentTeamIntention):
         self.response_picker = ResponsePicker(self, RESPONDERS)
 
     def on_chat_enter(self, name):
-        self._ignored_people = {n: t for n, t in self._ignored_people.items() if time() - t < self.IGNORE_TIMEOUT}
+        self._ignored_people = {n: t for n, t in list(self._ignored_people.items()) if time() - t < self.IGNORE_TIMEOUT}
 
         if name not in self._ignored_people:
             self.context.start_chat(name)

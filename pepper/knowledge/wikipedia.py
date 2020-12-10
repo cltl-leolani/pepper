@@ -2,12 +2,12 @@
 Query the Wikipedia API using Natural Language.
 """
 
-from __future__ import unicode_literals
+
 
 import nltk
 
 import requests
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 import re
 
@@ -68,7 +68,7 @@ class Wikipedia:
         return None
 
     def _query(self, query):
-        query_websafe = urllib.quote(query)
+        query_websafe = urllib.parse.quote(query)
 
         try:
             # Query Summary
@@ -96,7 +96,7 @@ class Wikipedia:
 
     @staticmethod
     def _find_key(dictionary, key):
-        for k, v in dictionary.items():
+        for k, v in list(dictionary.items()):
             if k == key: return v
             if isinstance(v, dict): return Wikipedia._find_key(v, key)
         return None

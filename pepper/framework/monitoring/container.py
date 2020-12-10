@@ -50,10 +50,9 @@ class DefaultMonitoringWorkerContainer(MonitoringWorkerContainer, ContextContain
         logger.debug("Stopping workers")
 
         try:
-            DefaultMonitoringWorkerContainer.__worker.stop()
+            if DefaultMonitoringWorkerContainer.__worker:
+                DefaultMonitoringWorkerContainer.__worker.stop()
         finally:
             super(DefaultMonitoringWorkerContainer, self).stop()
-
-        DefaultMonitoringWorkerContainer.__worker.await_stop()
 
         logger.debug("Stopped workers")

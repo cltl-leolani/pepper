@@ -176,13 +176,13 @@ class ApplicationITest(unittest.TestCase):
         self.application = TestApplication(self.intention)
 
     def tearDown(self):
-        self.application.stop()
+        self.application._stop()
         del self.application
         DIContainer._singletons.clear()
 
         # Try to ensure that the application is stopped
         try:
-            util.await(lambda: threading.active_count() < 2, max=100)
+            util.await_predicate(lambda: threading.active_count() < 2, max=100)
         except:
             sleep(1)
 
@@ -192,19 +192,19 @@ class ApplicationITest(unittest.TestCase):
             mic_events.append(event)
 
         self.intention.event_bus.subscribe(MIC_TOPIC, handle_audio_event)
-        self.application.start()
+        self.application._start()
 
         mic = self.intention.backend.microphone
         audio_frame = np.random.rand(80).astype(np.int16)
         mic.on_audio(audio_frame)
 
-        util.await(lambda: len(mic_events) > 0, msg="mic event")
+        util.await_predicate(lambda: len(mic_events) > 0, msg="mic event")
 
         self.assertEqual(len(mic_events), 1)
         np.testing.assert_array_equal(mic_events[0].payload, audio_frame)
 
         try:
-            util.await(lambda: len(mic_events) > 1, max=5)
+            util.await_predicate(lambda: len(mic_events) > 1, max=5)
         except unittest.TestCase.failureException:
             # Expect no more audio events
             pass
@@ -216,7 +216,7 @@ class ApplicationITest(unittest.TestCase):
             image_events.append(event)
 
         self.intention.event_bus.subscribe(CAM_TOPIC, handle_image_event)
-        self.application.start()
+        self.application._start()
 
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
         image = AbstractImage(np.zeros((2, 2, 3)), bounds)
@@ -224,19 +224,19 @@ class ApplicationITest(unittest.TestCase):
         cam = self.intention.backend.camera
         cam.on_image(image)
 
-        util.await(lambda: len(image_events) > 0, msg="images")
+        util.await_predicate(lambda: len(image_events) > 0, msg="images")
 
         self.assertEqual(len(image_events), 1)
         np.testing.assert_array_equal(image_events[0].payload, image)
 
         try:
-            util.await(lambda: len(image_events) > 1, max=5)
+            util.await_predicate(lambda: len(image_events) > 1, max=5)
         except unittest.TestCase.failureException:
             # Expect no more audio events
             pass
 
     def test_object_events(self):
-        self.application.start()
+        self.application._start()
 
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
         image = AbstractImage(np.zeros((2, 2, 3)), bounds)
@@ -244,13 +244,13 @@ class ApplicationITest(unittest.TestCase):
         cam = self.intention.backend.camera
         cam.on_image(image)
 
-        util.await(lambda: len(self.intention.objects) > 1, msg="objects")
+        util.await_predicate(lambda: len(self.intention.objects) > 1, msg="objects")
 
         self.assertEqual(2, len(self.intention.objects))
         self.assertListEqual(2 * ["person"], [obj.name for obj in self.intention.objects])
 
     def test_face_events(self):
-        self.application.start()
+        self.application._start()
 
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
         image = AbstractImage(np.zeros((2, 2, 3)), bounds)
@@ -258,13 +258,13 @@ class ApplicationITest(unittest.TestCase):
         cam = self.intention.backend.camera
         cam.on_image(image)
 
-        util.await(lambda: len(self.intention.faces) > 0, msg="faces")
+        util.await_predicate(lambda: len(self.intention.faces) > 0, msg="faces")
 
         self.assertEqual(1, len(self.intention.faces))
         self.assertEqual(config.HUMAN_UNKNOWN, self.intention.faces[0].name)
 
     def test_face_new_events(self):
-        self.application.start()
+        self.application._start()
 
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
         image = AbstractImage(np.zeros((2, 2, 3)), bounds)
@@ -272,13 +272,13 @@ class ApplicationITest(unittest.TestCase):
         cam = self.intention.backend.camera
         cam.on_image(image)
 
-        util.await(lambda: len(self.intention.faces_new) > 0, msg="faces")
+        util.await_predicate(lambda: len(self.intention.faces_new) > 0, msg="faces")
 
         self.assertEqual(1, len(self.intention.faces_new))
         self.assertEqual(config.HUMAN_UNKNOWN, self.intention.faces_new[0].name)
 
     def test_face_known_events(self):
-        self.application.start()
+        self.application._start()
 
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
         image = AbstractImage(np.zeros((2, 2, 3)), bounds)
@@ -287,32 +287,32 @@ class ApplicationITest(unittest.TestCase):
         cam.on_image(image)
 
         try:
-            util.await(lambda: len(self.intention.faces_known) > 0, max=5, msg="faces")
+            util.await_predicate(lambda: len(self.intention.faces_known) > 0, max=5, msg="faces")
             raise unittest.TestCase.failureException("Unexpected faces: " + str(self.intention.faces_known))
         except:
             pass
 
     def test_speech_events(self):
-        self.application.start()
+        self.application._start()
 
         mic = self.intention.backend.microphone
         audio_frame = np.random.rand(80).astype(np.int16)
         mic.on_audio(audio_frame)
 
-        util.await(lambda: len(self.intention.hypotheses) > 0, msg="hypotheses")
+        util.await_predicate(lambda: len(self.intention.hypotheses) > 0, msg="hypotheses")
 
         self.assertEqual(1, len(self.intention.hypotheses))
         self.assertEqual("Test one two", self.intention.hypotheses[0].transcript)
 
     def test_context_on_chat_enter(self):
-        self.application.start()
+        self.application._start()
 
         bounds = Bounds(0.0, 0.0, 1.0, 1.0)
         image = AbstractImage(np.zeros((2, 2, 3)), bounds)
         cam = self.intention.backend.camera
         cam.on_image(image)
 
-        util.await(lambda: len(self.intention.chat_entries) > 0, msg="chat_enter", max=1000)
+        util.await_predicate(lambda: len(self.intention.chat_entries) > 0, msg="chat_enter", max=1000)
 
         self.assertEqual(1, len(self.intention.chat_entries))
         self.assertEqual(config.HUMAN_UNKNOWN, self.intention.chat_entries[0])
@@ -321,13 +321,13 @@ class ApplicationITest(unittest.TestCase):
         audio_frame = np.random.rand(80).astype(np.int16)
         mic.on_audio(audio_frame)
 
-        util.await(lambda: len(self.intention.chat_turns) > 0, msg="chat_turn", max=2000)
+        util.await_predicate(lambda: len(self.intention.chat_turns) > 0, msg="chat_turn", max=2000)
 
         self.assertEqual(1, len(self.intention.chat_turns))
         self.assertEqual("Test one two", self.intention.chat_turns[0].transcript)
         self.assertEqual(config.HUMAN_UNKNOWN, self.intention.chat_turns[0].chat_speaker)
 
-        util.await(lambda: self.intention.chat_exits > 0, msg="chat_exit", max=1000)
+        util.await_predicate(lambda: self.intention.chat_exits > 0, msg="chat_exit", max=1000)
 
         self.assertEqual(1, self.intention.chat_exits)
 

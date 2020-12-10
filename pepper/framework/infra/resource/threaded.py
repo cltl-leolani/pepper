@@ -1,6 +1,5 @@
 import logging
 import threading
-import time
 from collections import defaultdict
 from contextlib import contextmanager
 
@@ -24,10 +23,10 @@ class ThreadedResourceManager(ResourceManager):
         self._resources = {}
         self._resource_events = defaultdict(list)
 
-    def get_lock(self, name, blocking=True, timeout=None):
+    def get_lock(self, name, blocking=True, timeout=-1):
         return self.get_write_lock(name, blocking, timeout, writer_interrupts=True)
 
-    def get_read_lock(self, name, blocking=True, timeout=None):
+    def get_read_lock(self, name, blocking=True, timeout=-1):
         if blocking:
             self._await_resource(name, timeout)
 
@@ -38,7 +37,7 @@ class ThreadedResourceManager(ResourceManager):
 
         return ThreadedReadLock(self._locks[name], name)
 
-    def get_write_lock(self, name, blocking=True, timeout=None, writer_interrupts=False):
+    def get_write_lock(self, name, blocking=True, timeout=-1, writer_interrupts=False):
         if blocking:
             self._await_resource(name, timeout)
 
@@ -61,7 +60,7 @@ class ThreadedResourceManager(ResourceManager):
                 [event.set() for event in self._resource_events[name]]
                 del self._resource_events[name]
 
-    def retract_resource(self, name, force=True, timeout=None):
+    def retract_resource(self, name, force=True, timeout=-1):
         with self._registry_lock:
             lock = self._acquire_lock(force, name, timeout)
             try:
@@ -85,14 +84,14 @@ class ThreadedResourceManager(ResourceManager):
 
     @property
     def resources(self):
-        return self._resources.viewkeys()
+        return self._resources.keys()
 
     def _init_lock(self, name, factory):
         with self._registry_lock:
             if name not in self._locks:
-                self._locks[name]= factory()
+                self._locks[name] = factory()
 
-    def _await_resource(self, name, timeout=None):
+    def _await_resource(self, name, timeout=-1):
         if self.has_resource(name):
             return
 
@@ -102,7 +101,7 @@ class ThreadedResourceManager(ResourceManager):
                 event = threading.Event()
                 self._resource_events[name].append(event)
 
-        if event and not event.wait(timeout=timeout):
+        if event and not event.wait(timeout=timeout if timeout >= 0 else None):
             raise LockTimeoutError(name)
 
 
@@ -113,7 +112,7 @@ class ThreadedReadLock(ReadLock):
         self._rw_lock = rw_lock
         self._lock = threading.Lock()
 
-    def acquire(self, blocking=True, timeout=None):
+    def acquire(self, blocking=True, timeout=-1):
         logger.debug("Trying to acquire read-lock for resource %s from thread %s", self._resource_name, threading.current_thread().name)
         if self._rw_lock.reader_acquire(blocking=blocking, timeout=timeout):
             self._lock.acquire()
@@ -148,7 +147,7 @@ class ThreadedWriteLock(WriteLock):
         self._rw_lock = lock
         self._lock = threading.Lock()
 
-    def acquire(self, blocking=True, timeout=None):
+    def acquire(self, blocking=True, timeout=-1):
         logger.debug("Trying to acquire write-lock for resource %s from thread %s", self._resource_name, threading.current_thread().name)
         if self._rw_lock.writer_acquire(blocking=blocking, timeout=timeout):
             self._lock.acquire()
@@ -213,13 +212,13 @@ class _RWLock(object):
         """A lock giving an even higher priority to the writer in certain
         cases (see [2] for a discussion)"""
 
-    def reader_acquire(self, blocking=True, timeout=None):
+    def reader_acquire(self, blocking=True, timeout=-1):
         with self.__state_lock:
             if self.__readers_interrupted:
                 return False
 
         with _acquire(self.__readers_queue, blocking, timeout) as acquired_queue, \
-                _acquire(self.__block_readers, blocking) as acquired_block:
+                _acquire(self.__block_readers, blocking, timeout) as acquired_block:
             if acquired_queue and acquired_block:
                 return self.__read_switch.acquire(self.__block_resource, blocking=blocking, timeout=timeout)
 
@@ -228,14 +227,14 @@ class _RWLock(object):
     def reader_release(self):
         self.__read_switch.release(self.__block_resource)
 
-    def writer_acquire(self, blocking=True, timeout=None):
+    def writer_acquire(self, blocking=True, timeout=-1):
         with self.__state_lock:
             if self.__writers_interrupted:
                 return False
 
         switch_acquired = self.__write_switch.acquire(self.__block_readers, blocking=blocking, timeout=timeout)
         if switch_acquired:
-            if _acquire_lock(self.__block_resource, blocking, timeout):
+            if self.__block_resource.acquire(blocking, timeout):
                 return True
             else:
                 self.__write_switch.release(self.__block_readers)
@@ -286,12 +285,12 @@ class _LightSwitch:
         self.__is_on = False
         self.__mutex = threading.Lock()
 
-    def acquire(self, lock, blocking=True, timeout=None):
+    def acquire(self, lock, blocking=True, timeout=-1):
         with _acquire(self.__mutex, blocking, timeout) as acquired_mutex:
             if acquired_mutex:
                 self.__acquired += 1
                 if self.__acquired == 1:
-                    if _acquire_lock(lock, blocking, timeout):
+                    if lock.acquire(blocking, timeout):
                         self.__is_on = True
                     else:
                         self.__acquired -= 1
@@ -324,25 +323,8 @@ class _LightSwitch:
 
 
 @contextmanager
-def _acquire(lock, blocking, timeout=None):
-    result = _acquire_lock(lock, blocking, timeout)
+def _acquire(lock, blocking, timeout=-1):
+    result = lock.acquire(blocking, timeout)
     yield result
     if result:
         lock.release()
-
-
-def _acquire_lock(lock, blocking, timeout):
-    if not blocking or not timeout:
-        return lock.acquire(blocking)
-
-    cond = threading.Condition(threading.Lock())
-
-    with cond:
-        current_time = start_time = time.time()
-        while current_time < start_time + timeout:
-            if lock.acquire(False):
-                return True
-            else:
-                cond.wait(timeout - current_time + start_time)
-                current_time = time.time()
-    return False

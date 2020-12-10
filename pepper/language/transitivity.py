@@ -35,7 +35,7 @@ def get_transitivity(verb):
     for class_id in class_ids:
         frames = vn.frames(class_id)
         for frame in frames:
-            print (frame["description"]["primary"])
+            print((frame["description"]["primary"]))
             #print(frame['description']['secondary'])
             if frame["description"]["primary"] == "NP V NP":
                 entry = class_id, frame

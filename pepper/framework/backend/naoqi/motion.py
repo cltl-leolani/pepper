@@ -8,7 +8,7 @@ import qi
 import numpy as np
 
 from threading import Thread
-from Queue import Queue
+from queue import Queue
 
 from typing import Tuple
 

@@ -1,7 +1,7 @@
-from __future__ import unicode_literals
+
 
 import re
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from threading import Timer
 
 from typing import Optional
@@ -60,7 +60,7 @@ class SubtitlesWorker(TopicWorker):
         if self._subtitles_timeout_timer: self._subtitles_timeout_timer.cancel()
 
         # Show Subtitles
-        text_websafe = urllib.quote(''.join([i for i in re.sub(r'\\\\\S+\\\\', "", text) if ord(i) < 128]))
+        text_websafe = urllib.parse.quote(''.join([i for i in re.sub(r'\\\\\S+\\\\', "", text) if ord(i) < 128]))
         event = Event({'url': self._url.format(text_websafe)}, None)
         self.event_bus.publish(TABLET_TOPIC, event)
 

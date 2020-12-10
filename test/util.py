@@ -25,7 +25,7 @@ class TestConfiguration(Configuration):
         return self.get(key)
 
 
-def await(predicate, msg="predicate", max=100, sleep_interval = 0.01):
+def await_predicate(predicate, msg="predicate", max=100, sleep_interval = 0.01):
     cnt = 0
     while not predicate() and cnt < max:
         sleep(sleep_interval)

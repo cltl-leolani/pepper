@@ -1,5 +1,5 @@
 import logging
-from Queue import Queue, Empty
+from queue import Queue, Empty
 from time import sleep
 
 from typing import Optional, Union

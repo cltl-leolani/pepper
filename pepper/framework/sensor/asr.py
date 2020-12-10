@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 
 import logging
 
@@ -242,10 +242,10 @@ class BaseGoogleASR(AbstractASR, GoogleTranslator):
         GoogleTranslator.__init__(self, application_language[:2], internal_language[:2])
 
         self._client = speech.SpeechClient()
-        self._config = speech.types.RecognitionConfig(
+        self._config = speech.RecognitionConfig(
 
             # Each Sample is of dtype int16
-            encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
+            encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
 
             # The are 'sample_rate' samples per second
             sample_rate_hertz=sample_rate,
@@ -258,7 +258,7 @@ class BaseGoogleASR(AbstractASR, GoogleTranslator):
             max_alternatives=self.MAX_ALTERNATIVES,
 
             # Particular words or phrases the Speech Recognition should be extra sensitive to
-            speech_contexts=[speech.types.SpeechContext(phrases=hints)])
+            speech_contexts=[speech.SpeechContext(phrases=hints)])
 
         self._log = logger.getChild(self.__class__.__name__)
         self._log.debug("Booted ({} -> {})".format(self.source, self.target))
@@ -308,7 +308,7 @@ class StreamedGoogleASR(BaseGoogleASR):
         # Use the transcribe method instead!
         self._live = ""
 
-        self._streaming_config = speech.types.StreamingRecognitionConfig(
+        self._streaming_config = speech.StreamingRecognitionConfig(
 
             # The Config from BaseGoogleASR
             config=self._config,
@@ -414,7 +414,7 @@ class StreamedGoogleASR(BaseGoogleASR):
         ----------
         audio: Iterable[np.ndarray]
         """
-        return (speech.types.StreamingRecognizeRequest(audio_content=frame.tobytes())
+        return (speech.StreamingRecognizeRequest(audio_content=frame.tobytes())
                 for frame in audio)
 
 class SynchronousGoogleASR(BaseGoogleASR):
@@ -467,6 +467,6 @@ class SynchronousGoogleASR(BaseGoogleASR):
 
         Returns
         -------
-        request: speech.types.RecognitionAudio
+        request: speech.RecognitionAudio
         """
-        return speech.types.RecognitionAudio(content=audio.tobytes())
+        return speech.RecognitionAudio(content=audio.tobytes())

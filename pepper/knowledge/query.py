@@ -22,9 +22,9 @@ class QnA:
         "How many friends?": lambda context: "I have {} friends".format(len(context.friends)),
         "Who are your friends?": lambda context: "My friends are {}. I like my friends!".format(
             ", ".join(context.friends)),
-        "How many people did you meet?": lambda context: "I met {} people today!".format(len(context.all_people()) - 1),
+        "How many people did you meet?": lambda context: "I met {} people today!".format(len(context.all_people) - 1),
         "Who did you meet?": lambda context: "I met {}!".format(
-            ", ".join(p.name for p in context.all_people())),
+            ", ".join(p.name for p in context.all_people)),
         "Tell me a joke!": lambda context: choice(JOKE)
     }
 
@@ -112,13 +112,13 @@ class QnA:
         answer = None
 
         # Fuzzily try to find best matching query
-        for Q, A in self.QNA_STATIC.items():
+        for Q, A in list(self.QNA_STATIC.items()):
             r = fuzz.partial_ratio(query, Q)
             if r > ratio:
                 answer = A
                 ratio = r
 
-        for Q, A in self.QNA_DYNAMIC.items():
+        for Q, A in list(self.QNA_DYNAMIC.items()):
             r = fuzz.partial_ratio(query, Q)
             if r > ratio:
                 answer = A(context)

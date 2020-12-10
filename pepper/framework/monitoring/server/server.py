@@ -1,16 +1,19 @@
 import logging
-
-import tornado.ioloop
-import tornado.web
-import tornado.websocket
-import tornado.template
-
+import os
+import sys
 import webbrowser
 
-import os
-
+import tornado.ioloop
+import tornado.template
+import tornado.web
+import tornado.websocket
 
 logger = logging.getLogger(__name__)
+
+
+if sys.platform == 'win32':
+    import asyncio
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
 class MonitoringServer(tornado.web.Application):
@@ -22,6 +25,8 @@ class MonitoringServer(tornado.web.Application):
 
     def __init__(self):
         # Host web/index.html
+        self.event_loop = None
+
         class BaseHandler(tornado.web.RequestHandler):
             def get(self):
                 loader = tornado.template.Loader(MonitoringServer.ROOT)
@@ -43,10 +48,14 @@ class MonitoringServer(tornado.web.Application):
     def start(self):
         # type: () -> None
         """Start WebServer"""
+        tornado.ioloop.IOLoop().make_current()
+        self.event_loop = tornado.ioloop.IOLoop.current()
+
         self.listen(self.PORT)
         webbrowser.open("http://localhost:{}".format(self.PORT))
+
         logger.debug("Starting tornado server on %s", self.PORT)
-        tornado.ioloop.IOLoop.instance().start()
+        tornado.ioloop.IOLoop.current().start()
         logger.debug("Stopped tornado server on %s", self.PORT)
 
     def stop(self):
@@ -56,6 +65,6 @@ class MonitoringServer(tornado.web.Application):
     def update(self, json):
         # type: (str) -> None
         """Update WebServer"""
-        if json:
+        if self.event_loop and json:
             for handler in self.HANDLERS:
-                handler.write_message(json)
+                self.event_loop.add_callback(lambda: handler.write_message(json))

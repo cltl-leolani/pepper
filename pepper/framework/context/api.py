@@ -174,7 +174,7 @@ class Context(object):
         """
         current_time = time()
 
-        return [person for person, t in self._people.values() if (current_time - t) < Context.OBSERVATION_TIMEOUT]
+        return [person for person, t in list(self._people.values()) if (current_time - t) < Context.OBSERVATION_TIMEOUT]
 
     @property
     def friends(self):
@@ -204,7 +204,7 @@ class Context(object):
 
         current_time = time()
 
-        return [person for person, t in self._people.values()
+        return [person for person, t in list(self._people.values())
                       if current_time - t <= timeout and (not in_chat or t >= self._chat_start)]
 
     @property
@@ -218,7 +218,7 @@ class Context(object):
         people: list of Face
             List of all People seen since beginning of Context
         """
-        return [person for person, t in self._people.values()]
+        return [person for person, t in list(self._people.values())]
 
     @property
     def objects(self):  # What
@@ -329,7 +329,7 @@ class Observations:
         """
         instances = []
 
-        for object_observations in self._object_observations.values():
+        for object_observations in list(self._object_observations.values()):
             instances.extend(object_observations.instances)
 
         return instances
@@ -349,7 +349,7 @@ class Observations:
                 self._object_observations[obj.name] = ObjectObservations(obj.name)
             self._object_observations[obj.name].add_observation(obj)
 
-        for object_observations in self._object_observations.values():
+        for object_observations in list(self._object_observations.values()):
             object_observations.update_view(image)
 
 
