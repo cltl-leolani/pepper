@@ -334,7 +334,7 @@ class Triple(object):
         return iter([('subject', self.subject), ('predicate', self.predicate), ('complement', self.complement)])
 
     def __repr__(self):
-        return '{} [{}])'.format(hash_claim_id([self.subject_name
+        return '{} [{}]'.format(hash_claim_id([self.subject_name
                                                 if self.subject_name is not None
                                                    and self.subject_name not in ['', Literal('')] else '?',
                                                 self.predicate_name
