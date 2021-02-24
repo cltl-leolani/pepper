@@ -1,13 +1,11 @@
+from random import choice
+
 from pepper.brain.long_term_memory import LongTermMemory
 from pepper.brain.utils.base_cases import statements
-
 from pepper.language.generation.thoughts_phrasing import phrase_thoughts, _phrase_cardinality_conflicts, \
     _phrase_negation_conflicts, _phrase_statement_novelty, _phrase_type_novelty, _phrase_subject_gaps, \
     _phrase_complement_gaps, _phrase_overlaps, _phrase_trust
-
 from test_manual.brain.utils import transform_capsule, binary_values
-
-from random import choice
 
 if __name__ == "__main__":
 

@@ -5,8 +5,8 @@ from iribaker import to_iri
 from rdflib import Dataset, Namespace, OWL
 from rdflib import URIRef, Literal
 
-from pepper.brain.utils.helper_functions import casefold_text
 from pepper.brain.infrastructure import Predicate, Entity, Triple, Provenance
+from pepper.brain.utils.helper_functions import casefold_text
 
 logger = logging.getLogger(__name__)
 

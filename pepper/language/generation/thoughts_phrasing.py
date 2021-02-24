@@ -276,7 +276,7 @@ def _phrase_overlaps(all_overlaps, utterance):
     elif entity_role == 'complement':
         say = random.choice(HAPPY)
         sample = random.sample(overlaps, 2)
-        types = sample[0].entity_types[0] if sample[0].entity_types  else 'things'
+        types = sample[0].entity_types[0] if sample[0].entity_types else 'things'
         say += ' Now I know %s %s that %s %s, like %s and %s' % (len(overlaps), types,
                                                                  utterance.triple.predicate_name,
                                                                  utterance.triple.complement_name,
@@ -311,9 +311,9 @@ def phrase_thoughts(update, entity_only=False, proactive=True, persist=False):
 
     """
     if entity_only:
-        options = ['cardinality_conflicts', 'negation_conflicts', 'statement_novelty', 'entity_novelty', 'trust']
-    else:
         options = ['cardinality_conflicts', 'entity_novelty', 'trust']
+    else:
+        options = ['cardinality_conflicts', 'negation_conflicts', 'statement_novelty', 'entity_novelty', 'trust']
 
     if proactive:
         options.extend(['subject_gaps', 'complement_gaps', 'overlaps'])

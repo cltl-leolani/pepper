@@ -2,7 +2,7 @@
 
 Repository for Robot Applications created as part of the [Computational Lexicology & Terminology Lab (CLTL)](http://www.cltl.nl) at the Vrije Universiteit, Amsterdam.
 
-| **This is a Python 3 version of the Leolani platform and is not intended for the robot use. It does not support the NAOqi backend! Currently it's only tested on Linux and Mac.** |
+| **This is a Python 3 version of the Leolani platform and is not intended for the robot use. It does not support the NAOqi backend! It has been tested on Windows, Linux and Mac.** |
 |---|
 
 ![Pepper Robot Leolani](images/pepper.png)
@@ -18,9 +18,7 @@ Repository for Robot Applications created as part of the [Computational Lexicolo
  - Realtime visualisation in web browser
 
 ## Getting started
-Check out our [WIKI](https://github.com/cltl/pepper/wiki) for information on [how it works](https://github.com/cltl/pepper/wiki/2.-Code-Structure).
-
-Check out our [API Reference](https://cltl.github.io/pepper/) and [Sample Applications](https://github.com/cltl/pepper/tree/develop/apps/examples)!
+Check out our [(old) WIKI](https://github.com/cltl/pepper/wiki) for information on [how it works](https://github.com/cltl/pepper/wiki/2.-Code-Structure).
 
 | **Part of the WIKI still references the Python 2.7 version of Leolani!** |
 |---|
@@ -52,9 +50,6 @@ We assume that the following steps are executed in in the directory where this `
 
 1. Clone this repo by running
     > `git clone https://github.com/leolani/pepper.git`
-
-1. Checkout to this branch by running
-    > `git checkout feature/python3.7`
 
 1. Start from a python 3.7.9 environment (highly recommended).
     To create an isolated environment for the project run
