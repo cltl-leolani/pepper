@@ -1,0 +1,1658 @@
+[ {
+  "@id" : "_:genid1",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#intersectionOf" : [ {
+    "@list" : [ {
+      "@id" : "http://cltl.nl/leolani/n2mu/agent"
+    }, {
+      "@id" : "_:genid3"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid11",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Restriction" ],
+  "http://www.w3.org/2002/07/owl#onProperty" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/like"
+  } ],
+  "http://www.w3.org/2002/07/owl#someValuesFrom" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest"
+  } ]
+}, {
+  "@id" : "_:genid13",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#intersectionOf" : [ {
+    "@list" : [ {
+      "@id" : "http://cltl.nl/leolani/n2mu/agent"
+    }, {
+      "@id" : "_:genid15"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid15",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Restriction" ],
+  "http://www.w3.org/2002/07/owl#onProperty" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/like"
+  } ],
+  "http://www.w3.org/2002/07/owl#someValuesFrom" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest"
+  } ]
+}, {
+  "@id" : "_:genid17",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#intersectionOf" : [ {
+    "@list" : [ {
+      "@id" : "http://cltl.nl/leolani/n2mu/agent"
+    }, {
+      "@id" : "http://groundedannotationframework.org/gaf#Instance"
+    }, {
+      "@id" : "http://groundedannotationframework.org/grasp#Source"
+    }, {
+      "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Actor"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid22",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#intersectionOf" : [ {
+    "@list" : [ {
+      "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+    }, {
+      "@id" : "http://groundedannotationframework.org/gaf#Instance"
+    }, {
+      "@id" : "http://groundedannotationframework.org/grasp#Source"
+    }, {
+      "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Actor"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid27",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#intersectionOf" : [ {
+    "@list" : [ {
+      "@id" : "http://groundedannotationframework.org/gaf#Instance"
+    }, {
+      "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Place"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid3",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Restriction" ],
+  "http://www.w3.org/2002/07/owl#onProperty" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/be-member-of"
+  } ],
+  "http://www.w3.org/2002/07/owl#someValuesFrom" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/institution"
+  } ]
+}, {
+  "@id" : "_:genid30",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Restriction" ],
+  "http://www.w3.org/2002/07/owl#onProperty" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/like-by"
+  } ],
+  "http://www.w3.org/2002/07/owl#someValuesFrom" : [ {
+    "@id" : "http://xmlns.com/foaf/0.1/Agent"
+  } ]
+}, {
+  "@id" : "_:genid31",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Restriction" ],
+  "http://www.w3.org/2002/07/owl#onProperty" : [ {
+    "@id" : "_:genid32"
+  } ],
+  "http://www.w3.org/2002/07/owl#someValuesFrom" : [ {
+    "@id" : "http://xmlns.com/foaf/0.1/Agent"
+  } ]
+}, {
+  "@id" : "_:genid32",
+  "http://www.w3.org/2002/07/owl#inverseOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/like"
+  } ]
+}, {
+  "@id" : "_:genid33",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Restriction" ],
+  "http://www.w3.org/2002/07/owl#onProperty" : [ {
+    "@id" : "_:genid34"
+  } ],
+  "http://www.w3.org/2002/07/owl#someValuesFrom" : [ {
+    "@id" : "http://xmlns.com/foaf/0.1/Agent"
+  } ]
+}, {
+  "@id" : "_:genid34",
+  "http://www.w3.org/2002/07/owl#inverseOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/be-from"
+  } ]
+}, {
+  "@id" : "_:genid35",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#intersectionOf" : [ {
+    "@list" : [ {
+      "@id" : "http://cltl.nl/leolani/n2mu/interest"
+    }, {
+      "@id" : "_:genid37"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid37",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Restriction" ],
+  "http://www.w3.org/2002/07/owl#minQualifiedCardinality" : [ {
+    "@type" : "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+    "@value" : "4"
+  } ],
+  "http://www.w3.org/2002/07/owl#onClass" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2002/07/owl#onProperty" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/like-by"
+  } ]
+}, {
+  "@id" : "_:genid39",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Restriction" ],
+  "http://www.w3.org/2002/07/owl#onProperty" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#denotedBy"
+  } ],
+  "http://www.w3.org/2002/07/owl#someValuesFrom" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Mention"
+  } ]
+}, {
+  "@id" : "_:genid40",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Restriction" ],
+  "http://www.w3.org/2002/07/owl#onProperty" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#denotes"
+  } ],
+  "http://www.w3.org/2002/07/owl#someValuesFrom" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Instance"
+  } ]
+}, {
+  "@id" : "_:genid41",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#intersectionOf" : [ {
+    "@list" : [ {
+      "@id" : "_:genid46"
+    }, {
+      "@id" : "_:genid43"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid43",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Restriction" ],
+  "http://www.w3.org/2002/07/owl#onProperty" : [ {
+    "@id" : "_:genid44"
+  } ],
+  "http://www.w3.org/2002/07/owl#someValuesFrom" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Mention"
+  } ]
+}, {
+  "@id" : "_:genid44",
+  "http://www.w3.org/2002/07/owl#inverseOf" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#hasAttribution"
+  } ]
+}, {
+  "@id" : "_:genid46",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Restriction" ],
+  "http://www.w3.org/2002/07/owl#onProperty" : [ {
+    "@id" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#value"
+  } ],
+  "http://www.w3.org/2002/07/owl#someValuesFrom" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#AttributionValue"
+  } ]
+}, {
+  "@id" : "_:genid47",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#oneOf" : [ {
+    "@list" : [ {
+      "@id" : "http://groundedannotationframework.org/grasp/factuality#certain"
+    }, {
+      "@id" : "http://groundedannotationframework.org/grasp/factuality#possible"
+    }, {
+      "@id" : "http://groundedannotationframework.org/grasp/factuality#probable"
+    }, {
+      "@id" : "http://groundedannotationframework.org/grasp/factuality#underspecified"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid5",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#intersectionOf" : [ {
+    "@list" : [ {
+      "@id" : "http://cltl.nl/leolani/n2mu/agent"
+    }, {
+      "@id" : "_:genid7"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid52",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#oneOf" : [ {
+    "@list" : [ {
+      "@id" : "http://groundedannotationframework.org/grasp/emotion#anger"
+    }, {
+      "@id" : "http://groundedannotationframework.org/grasp/emotion#disgust"
+    }, {
+      "@id" : "http://groundedannotationframework.org/grasp/emotion#fear"
+    }, {
+      "@id" : "http://groundedannotationframework.org/grasp/emotion#happiness"
+    }, {
+      "@id" : "http://groundedannotationframework.org/grasp/emotion#sadness"
+    }, {
+      "@id" : "http://groundedannotationframework.org/grasp/emotion#surprise"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid59",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#oneOf" : [ {
+    "@list" : [ {
+      "@id" : "http://groundedannotationframework.org/grasp/factuality#negative"
+    }, {
+      "@id" : "http://groundedannotationframework.org/grasp/factuality#positive"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid62",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#oneOf" : [ {
+    "@list" : [ {
+      "@id" : "http://groundedannotationframework.org/grasp/sentiment#negative"
+    }, {
+      "@id" : "http://groundedannotationframework.org/grasp/sentiment#positive"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid65",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#oneOf" : [ {
+    "@list" : [ {
+      "@id" : "http://groundedannotationframework.org/grasp/factuality#future"
+    }, {
+      "@id" : "http://groundedannotationframework.org/grasp/factuality#non-future"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid68",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AllDisjointClasses" ],
+  "http://www.w3.org/2002/07/owl#members" : [ {
+    "@list" : [ {
+      "@id" : "http://cltl.nl/leolani/n2mu/book"
+    }, {
+      "@id" : "http://cltl.nl/leolani/n2mu/dish"
+    }, {
+      "@id" : "http://cltl.nl/leolani/n2mu/movie"
+    }, {
+      "@id" : "http://cltl.nl/leolani/n2mu/song"
+    }, {
+      "@id" : "http://cltl.nl/leolani/n2mu/sports-team"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid7",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Restriction" ],
+  "http://www.w3.org/2002/07/owl#onProperty" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/be-member-of"
+  } ],
+  "http://www.w3.org/2002/07/owl#someValuesFrom" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/institution"
+  } ]
+}, {
+  "@id" : "_:genid74",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AllDisjointClasses" ],
+  "http://www.w3.org/2002/07/owl#members" : [ {
+    "@list" : [ {
+      "@id" : "http://cltl.nl/leolani/n2mu/cuisine"
+    }, {
+      "@id" : "http://cltl.nl/leolani/n2mu/film-genre"
+    }, {
+      "@id" : "http://cltl.nl/leolani/n2mu/literature-genre"
+    }, {
+      "@id" : "http://cltl.nl/leolani/n2mu/music-genre"
+    }, {
+      "@id" : "http://cltl.nl/leolani/n2mu/sport"
+    } ]
+  } ]
+}, {
+  "@id" : "_:genid9",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#intersectionOf" : [ {
+    "@list" : [ {
+      "@id" : "http://cltl.nl/leolani/n2mu/agent"
+    }, {
+      "@id" : "_:genid11"
+    } ]
+  } ]
+}, {
+  "@id" : "http://cltl.nl/episodicawareness/Context",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ]
+}, {
+  "@id" : "http://cltl.nl/episodicawareness/contextProperty",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "Context properties connect Context to other SEM Core entities."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "context property"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/episodicawareness/hasContext",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Instance"
+  }, {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Event"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/episodicawareness/Context"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/episodicawareness/hasDetection",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/episodicawareness/Context"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  }, {
+    "@id" : "http://cltl.nl/leolani/n2mu/person"
+  }, {
+    "@id" : "http://groundedannotationframework.org/grasp#Detection"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/episodicawareness/contextProperty"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Ontology" ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/acknowledge",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/robot"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/smell"
+  }, {
+    "@id" : "http://cltl.nl/leolani/n2mu/taste"
+  }, {
+    "@id" : "http://cltl.nl/leolani/n2mu/touch"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/perceive"
+  } ],
+  "http://www.w3.org/2002/07/owl#propertyDisjointWith" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/experience"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/agent",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#equivalentClass" : [ {
+    "@id" : "http://xmlns.com/foaf/0.1/Agent"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/animal",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/band",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/be-ancestor-of",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/person"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/person"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/be-family-of"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/be-child-of",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/be-family-of"
+  } ],
+  "http://www.w3.org/2002/07/owl#propertyDisjointWith" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/be-parent-of"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/be-colleague-of",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "_:genid1"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "_:genid5"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/know"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/be-family-of",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/person"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/person"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/know"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/be-friends-with",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/person"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/person"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/know"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/be-from",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  }, {
+    "@id" : "http://cltl.nl/leolani/n2mu/cuisine"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/location"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/be-member-of",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/institution"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/be-parent-of",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/person"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/person"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/be-family-of"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/birthday",
+  "@type" : [ "http://www.w3.org/2002/07/owl#DatatypeProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/book",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest-occurrence"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/born-in",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/person"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/location"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/be-from"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/chair",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/city",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/location"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/color",
+  "@type" : [ "http://www.w3.org/2002/07/owl#DatatypeProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/physical_feature"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/company",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/institution"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/cook-by",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/dish"
+  }, {
+    "@id" : "http://cltl.nl/leolani/n2mu/food"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/country",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/location"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/cuisine",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest-field"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/device",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/dish",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest-occurrence"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/dislike",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  }, {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/electricity",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/equilibrium",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/experience",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/person"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/smell"
+  }, {
+    "@id" : "http://cltl.nl/leolani/n2mu/taste"
+  }, {
+    "@id" : "http://cltl.nl/leolani/n2mu/touch"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/perceive"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/favorite",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/like"
+  } ],
+  "http://www.w3.org/2002/07/owl#inverseOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/favorite-of"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/favorite-of",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/like-by"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/film-genre",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest-field"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/food",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest-occurrence"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/gravity",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/hight",
+  "@type" : [ "http://www.w3.org/2002/07/owl#DatatypeProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/physical_feature"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/in",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty", "http://www.w3.org/2002/07/owl#TransitiveProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/city"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/country"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/institution",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/interest",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#equivalentClass" : [ {
+    "@id" : "_:genid30"
+  }, {
+    "@id" : "_:genid31"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/interest-field",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/interest-occurrence",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/know",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/light",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/like",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  }, {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/like-by",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  }, {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/literature-genre",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest-field"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/live-in",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/location"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/locate-in",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/institution"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/location"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/location",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#equivalentClass" : [ {
+    "@id" : "http://schema.org/Place"
+  }, {
+    "@id" : "_:genid33"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/mammal",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/manufacture-in",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/robot"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/location"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/be-from"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/movie",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest-occurrence"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/music-genre",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest-field"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/musical-work",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/name",
+  "@type" : [ "http://www.w3.org/2002/07/owl#DatatypeProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/object",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/own",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  }, {
+    "@id" : "http://cltl.nl/leolani/n2mu/person"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/pain",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/perceive",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/person",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/physical_feature",
+  "@type" : [ "http://www.w3.org/2002/07/owl#DatatypeProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/plant",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/play",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/song"
+  }, {
+    "@id" : "http://cltl.nl/leolani/n2mu/sport"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/popular-interest",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest"
+  } ],
+  "http://www.w3.org/2002/07/owl#equivalentClass" : [ {
+    "@id" : "_:genid35"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/read-by",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/book"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/robot",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/sense",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/perceive"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/sensor",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2002/07/owl#equivalentClass" : [ {
+    "@id" : "http://purl.obolibrary.org/obo/MF_0000019"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/shape",
+  "@type" : [ "http://www.w3.org/2002/07/owl#DatatypeProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/physical_feature"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/share-interest",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "_:genid9"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "_:genid13"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/size",
+  "@type" : [ "http://www.w3.org/2002/07/owl#DatatypeProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/physical_feature"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/smell",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/song",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest-occurrence"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/sound",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/sport",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest-field"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/sports-team",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/interest-occurrence"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/study-at",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/institution"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/be-member-of"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/taste",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/temperature",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/touch",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/travel-to",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/location"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/university",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/institution"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/visual",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/weight",
+  "@type" : [ "http://www.w3.org/2002/07/owl#DatatypeProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/object"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/physical_feature"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/work-at",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/agent"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/institution"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/be-member-of"
+  } ]
+}, {
+  "@id" : "http://cltl.nl/leolani/n2mu/write-by",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/book"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/person"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/gaf#Assertion",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Instance"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/gaf#Instance",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "Instances are statements about real world entities, including actions, processes and abstract notions. They are the primary subject of individuals of type gaf:Mention that can denote them."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Instance"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://www.w3.org/2002/07/owl#Thing"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#AttributionValue"
+  } ],
+  "http://www.w3.org/2002/07/owl#equivalentClass" : [ {
+    "@id" : "_:genid39"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/gaf#Mention",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "Mentions are references to members of the gaf:Instance class as they occur in (web) media such as texts, video, audio, images, etc. Mentions denote gaf:Instances.\n\nA Mention uniquely identifies the (part of a) web source that denotes the mention. We refer to the standard use of fragment identifiers for different media types. "
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Mention"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://www.w3.org/2002/07/owl#Thing"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#AttributionValue"
+  } ],
+  "http://www.w3.org/2002/07/owl#equivalentClass" : [ {
+    "@id" : "_:genid40"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/gaf#containsDenotation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Mention"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Instance"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/gaf#denotedBy",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Instance"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Mention"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#denotedIn"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/gaf#denotedIn",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Instance"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Mention"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/gaf#denotes",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Mention"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Instance"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#containsDenotation"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#Attribution",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "A grasp:Attribution reflects the attribution of some interpretation, some perspective to a gaf:Mention. An attribution expresses such things as certainty, emotion, polarity, sentiment, temporality."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Attribution"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://www.w3.org/2002/07/owl#Thing"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#AttributionValue"
+  } ],
+  "http://www.w3.org/2002/07/owl#equivalentClass" : [ {
+    "@id" : "_:genid41"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#AttributionValue",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The value of a grasp:Attribution"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Attribution value"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://www.w3.org/2002/07/owl#Thing"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#CertaintyValue",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The level of certainty of a gaf:Mention"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Certainty Value"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#FactualityValue"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#PolarityValue"
+  }, {
+    "@id" : "http://groundedannotationframework.org/grasp#TemporalValue"
+  } ],
+  "http://www.w3.org/2002/07/owl#equivalentClass" : [ {
+    "@id" : "_:genid47"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#Chat",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Event"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#Detection",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Event"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#EmotionValue",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The emotion expressed in a gaf:Mention"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Emotion Value"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#AttributionValue"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#FactualityValue"
+  }, {
+    "@id" : "http://groundedannotationframework.org/grasp#SentimentValue"
+  } ],
+  "http://www.w3.org/2002/07/owl#equivalentClass" : [ {
+    "@id" : "_:genid52"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#Experience",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Mention"
+  }, {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Event"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#FactualityValue",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Factuality value"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#AttributionValue"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#SentimentValue"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#PolarityValue",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The polarity of a gaf:Mention (e.g. if something is or isn't the case)"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Polarity Value"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#FactualityValue"
+  } ],
+  "http://www.w3.org/2002/07/owl#disjointWith" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#TemporalValue"
+  } ],
+  "http://www.w3.org/2002/07/owl#equivalentClass" : [ {
+    "@id" : "_:genid59"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#SentimentValue",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The sentiment expressed by a gaf:Mention"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Sentiment Value"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#AttributionValue"
+  } ],
+  "http://www.w3.org/2002/07/owl#equivalentClass" : [ {
+    "@id" : "_:genid62"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#Source",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : ""
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Source"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://www.w3.org/2002/07/owl#Thing"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#Statement",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Mention"
+  }, {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Event"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#TemporalValue",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "The temporal property of a gaf:Mention"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Temporal Value"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#FactualityValue"
+  } ],
+  "http://www.w3.org/2002/07/owl#equivalentClass" : [ {
+    "@id" : "_:genid65"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#Utterance",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Event"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#Visual",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#subClassOf" : [ {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Event"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#hasAttribution",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Mention"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#Attribution"
+  } ],
+  "http://www.w3.org/2002/07/owl#inverseOf" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#isAttributionFor"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#isAttributionFor",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#Attribution"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Mention"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://www.w3.org/2002/07/owl#topObjectProperty"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp#wasAttributedTo",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "States that a gaf:Mention was attributed to a gaf:Instance. This is a sub property of the prov:wasAttributedTo relation that can be used to relate any prov:Entity to any prov:Agent."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Mention"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "was attributed to"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/sensor"
+  }, {
+    "@id" : "http://groundedannotationframework.org/grasp#Source"
+  }, {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Actor"
+  }, {
+    "@id" : "_:genid17"
+  }, {
+    "@id" : "_:genid22"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://www.w3.org/ns/prov#wasAttributedTo"
+  } ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/emotion#anger",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#EmotionValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/emotion#disgust",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#EmotionValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/emotion#fear",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#EmotionValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/emotion#happiness",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#EmotionValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/emotion#sadness",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#EmotionValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/emotion#surprise",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#EmotionValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/factuality#certain",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#CertaintyValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/factuality#future",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#TemporalValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/factuality#negative",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#PolarityValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/factuality#non-future",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#TemporalValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/factuality#positive",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#PolarityValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/factuality#possible",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#CertaintyValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/factuality#probable",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#CertaintyValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/factuality#underspecified",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#CertaintyValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/sentiment#negative",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#SentimentValue" ]
+}, {
+  "@id" : "http://groundedannotationframework.org/grasp/sentiment#positive",
+  "@type" : [ "http://www.w3.org/2002/07/owl#NamedIndividual", "http://groundedannotationframework.org/grasp#SentimentValue" ]
+}, {
+  "@id" : "http://purl.obolibrary.org/obo/MF_0000019",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ]
+}, {
+  "@id" : "http://schema.org/Place",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ]
+}, {
+  "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Actor",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "Actors are entities that take part in an Event, either actively or passively. Actors do not necessarily have to be sentient. They can also be objects. Actors are a thing, animate or inanimate, physical or non-physical.\n"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Actor"
+  } ],
+  "http://www.w3.org/2004/02/skos/core#broadMatch" : [ {
+    "@id" : "http://sw.opencyc.org/2009/04/07/concept/en/SomethingExisting"
+  }, {
+    "@id" : "http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#endurant"
+  } ],
+  "http://www.w3.org/2004/02/skos/core#closeMatch" : [ {
+    "@id" : "http://purl.org/dc/terms/Agent"
+  }, {
+    "@id" : "http://purl.org/dc/terms/AgentClass"
+  }, {
+    "@id" : "http://sw.opencyc.org/2009/04/07/concept/en/Agent-Generic"
+  }, {
+    "@id" : "http://www.ontologyportal.org/translations/SUMO.owl.txt#Agent"
+  }, {
+    "@id" : "http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E39.Actor"
+  }, {
+    "@id" : "http://xmlns.com/foaf/0.1/Agent"
+  } ]
+}, {
+  "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Event",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "Events are things that happen. This comprises everything from historical events to web site sessions and mythical journeys. Event is the central class of SEM."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Event"
+  } ],
+  "http://www.w3.org/2004/02/skos/core#broadMatch" : [ {
+    "@id" : "http://linkedevents.org/ontology/Event"
+  }, {
+    "@id" : "http://purl.org/NET/c4dm/event.owl#Event"
+  } ],
+  "http://www.w3.org/2004/02/skos/core#closeMatch" : [ {
+    "@id" : "http://purl.org/dc/dcmitype/Event"
+  }, {
+    "@id" : "http://sw.opencyc.org/2009/04/07/concept/en/Situation"
+  }, {
+    "@id" : "http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#perdurant"
+  }, {
+    "@id" : "http://www.ontologyportal.org/translations/SUMO.owl.txt#Process"
+  }, {
+    "@id" : "http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E5.Event"
+  } ]
+}, {
+  "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Place",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "Places are locations where an Event happens. They do not need to be physical places and hence do not necessarily need coordinates. Neither do they need to have any significance apart from them being the location of an Event."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Place"
+  } ],
+  "http://www.w3.org/2004/02/skos/core#closeMatch" : [ {
+    "@id" : "http://purl.org/dc/terms/Location"
+  }, {
+    "@id" : "http://sw.opencyc.org/2009/04/07/concept/en/EnduringThing-Localized"
+  }, {
+    "@id" : "http://www.ontologyportal.org/translations/SUMO.owl.txt#GeographicArea"
+  }, {
+    "@id" : "http://www8.informatik.uni-erlangen.de/IMMD8/Services/cidoc-crm/erlangen-crm_090330_5_0_1.owl#E53.Place"
+  } ],
+  "http://www.w3.org/2004/02/skos/core#narrowMatch" : [ {
+    "@id" : "http://www.loa-cnr.it/ontologies/DOLCE-Lite.owl#PhysicalRegion"
+  }, {
+    "@id" : "http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing"
+  } ]
+}, {
+  "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Time",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "Time contains symbolic representations of when an Event took place. Time instances do not necessarily need to have a timestamp associated with them. The Time class exists to represent semantics of time, e.g. that one thing happens before another, even though the exact timestamps are unknown."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "Time"
+  } ],
+  "http://www.w3.org/2004/02/skos/core#broadMatch" : [ {
+    "@id" : "http://www.w3.org/2006/timeTemporalEntity"
+  } ]
+}, {
+  "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@value" : "Event properties connect Events to other SEM Core entities."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "event property"
+  } ]
+}, {
+  "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/hasActor",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#Chat"
+  }, {
+    "@id" : "http://groundedannotationframework.org/grasp#Utterance"
+  }, {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Event"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Actor"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty"
+  } ]
+}, {
+  "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/hasPlace",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/episodicawareness/Context"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://cltl.nl/leolani/n2mu/location"
+  }, {
+    "@id" : "_:genid27"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/episodicawareness/contextProperty"
+  } ]
+}, {
+  "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/hasSubEvent",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#Chat"
+  }, {
+    "@id" : "http://groundedannotationframework.org/grasp#Visual"
+  }, {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Event"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#Detection"
+  }, {
+    "@id" : "http://groundedannotationframework.org/grasp#Utterance"
+  }, {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Event"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/eventProperty"
+  } ]
+}, {
+  "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/hasTime",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://cltl.nl/episodicawareness/Context"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://semanticweb.cs.vu.nl/2009/11/sem/Time"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://cltl.nl/episodicawareness/contextProperty"
+  } ]
+}, {
+  "@id" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#value",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ]
+}, {
+  "@id" : "http://www.w3.org/2004/02/skos/core#broadMatch",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://www.w3.org/2004/02/skos/core#closeMatch",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://www.w3.org/2004/02/skos/core#narrowMatch",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://www.w3.org/ns/prov#category",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://www.w3.org/ns/prov#component",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://www.w3.org/ns/prov#definition",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://www.w3.org/ns/prov#hadDerivation",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2002/07/owl#inverseOf" : [ {
+    "@id" : "http://www.w3.org/ns/prov#wasDerivedFrom"
+  } ]
+}, {
+  "@id" : "http://www.w3.org/ns/prov#inverse",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://www.w3.org/ns/prov#qualifiedForm",
+  "@type" : [ "http://www.w3.org/2002/07/owl#AnnotationProperty" ]
+}, {
+  "@id" : "http://www.w3.org/ns/prov#wasAttributedTo",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ]
+}, {
+  "@id" : "http://www.w3.org/ns/prov#wasDerivedFrom",
+  "@type" : [ "http://www.w3.org/2002/07/owl#ObjectProperty" ],
+  "http://www.w3.org/2000/01/rdf-schema#comment" : [ {
+    "@language" : "en",
+    "@value" : "The more specific subproperties of prov:wasDerivedFrom (i.e., prov:wasQuotedFrom, prov:wasRevisionOf, prov:hadPrimarySource) should be used when applicable."
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#domain" : [ {
+    "@id" : "http://groundedannotationframework.org/gaf#Mention"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+    "@value" : "wasDerivedFrom"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#range" : [ {
+    "@id" : "http://groundedannotationframework.org/grasp#Detection"
+  }, {
+    "@id" : "http://groundedannotationframework.org/grasp#Utterance"
+  } ],
+  "http://www.w3.org/2000/01/rdf-schema#subPropertyOf" : [ {
+    "@id" : "http://www.w3.org/2002/07/owl#topObjectProperty"
+  } ],
+  "http://www.w3.org/ns/prov#category" : [ {
+    "@value" : "starting-point"
+  } ],
+  "http://www.w3.org/ns/prov#component" : [ {
+    "@value" : "derivations"
+  } ],
+  "http://www.w3.org/ns/prov#definition" : [ {
+    "@language" : "en",
+    "@value" : "A derivation is a transformation of an entity into another, an update of an entity resulting in a new one, or the construction of a new entity based on a pre-existing entity."
+  } ],
+  "http://www.w3.org/ns/prov#inverse" : [ {
+    "@value" : "hadDerivation"
+  } ],
+  "http://www.w3.org/ns/prov#qualifiedForm" : [ {
+    "@id" : "http://www.w3.org/ns/prov#Derivation"
+  } ]
+}, {
+  "@id" : "http://xmlns.com/foaf/0.1/Agent",
+  "@type" : [ "http://www.w3.org/2002/07/owl#Class" ]
+} ]
