@@ -2,8 +2,7 @@ import logging
 import os
 
 from iribaker import to_iri
-from rdflib import Dataset, Namespace, OWL
-from rdflib import URIRef, Literal
+from rdflib import Dataset, Namespace, OWL, URIRef, Literal
 
 from pepper.brain.infrastructure import Predicate, Entity, Triple, Provenance
 from pepper.brain.utils.helper_functions import casefold_text

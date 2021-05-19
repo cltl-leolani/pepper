@@ -1,13 +1,12 @@
-from pepper.framework.infra.util import Bounds, spherical2cartesian
-from pepper import ObjectDetectionTarget
+import json
+from random import getrandbits
+from socket import socket, error as socket_error
 
 import numpy as np
-
-from socket import socket, error as socket_error
-from random import getrandbits
-import json
-
 from typing import List, Tuple, Dict
+
+from pepper import ObjectDetectionTarget
+from pepper.framework.infra.util import Bounds, spherical2cartesian
 
 
 class Object(object):

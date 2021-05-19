@@ -1,13 +1,16 @@
-import requests
-import pycountry
-import platform
-import subprocess
+import logging
 import os
+import platform
 import re
-import reverse_geocoder
+import subprocess
 from random import getrandbits
 
+import pycountry
+import requests
+import reverse_geocoder
 from typing import Optional, Tuple
+
+logger = logging.getLogger(__name__)
 
 
 class Location(object):
@@ -27,6 +30,7 @@ class Location(object):
             self._region = loc['region']
             self._city = loc['city']
         except:
+            self._log = logger.getChild(self.__class__.__name__)
             self._log.exception("Failed to get location information")
             self._country = self.UNKNOWN
             self._region = self.UNKNOWN

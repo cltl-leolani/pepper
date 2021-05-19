@@ -59,7 +59,7 @@ class Context(object):
     _objects = None  # type: Observations
 
     def __init__(self, name, friends):
-        #type: (str, Iterable[str]) -> None
+        # type: (str, Iterable[str]) -> None
         self._id = getrandbits(128)
         self._datetime = datetime.now()
 
@@ -205,7 +205,7 @@ class Context(object):
         current_time = time()
 
         return [person for person, t in list(self._people.values())
-                      if current_time - t <= timeout and (not in_chat or t >= self._chat_start)]
+                if current_time - t <= timeout and (not in_chat or t >= self._chat_start)]
 
     @property
     def all_people(self):
@@ -459,7 +459,7 @@ class ObjectObservations:
         except:
             observation_area = 0
 
-        if observation_area > self.OBSERVATION_BOUNDS_AREA_THRESHOLD:
+        if observation_area > self.OBSERVATION_BOUNDS_AREA_THRESHOLD or observation_area == 0:
             self._instances = [observation]
             return
 

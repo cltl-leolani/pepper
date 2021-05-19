@@ -60,7 +60,6 @@ class Face(Object):
 
 # TODO: class is not in use, improve it and use it?
 class FaceStore(object):
-
     EXTENSION = ".bin"
 
     @staticmethod
@@ -87,7 +86,7 @@ class FaceStore(object):
         """
         faces = {}
         faces.update(FaceStore.load_face(os.path.join(directory, path))
-                for path in os.listdir(directory) if path.endswith(FaceStore.EXTENSION))
+                     for path in os.listdir(directory) if path.endswith(FaceStore.EXTENSION))
         return faces
 
     @staticmethod
@@ -149,7 +148,8 @@ class FaceClassifier(object):
         self._indices = list(range(len(self._names)))
 
         if self.people:
-            self._labels = np.concatenate([[index] * len(self.people[name]) for name, index in zip(self._names, self._indices)])
+            self._labels = np.concatenate(
+                [[index] * len(self.people[name]) for name, index in zip(self._names, self._indices)])
             self._features = np.concatenate([self.people[name] for name in self._names])
             self._classifier = KNeighborsClassifier(self._n_neighbors)
             self._classifier.fit(self._features, self._labels)
@@ -187,7 +187,8 @@ class FaceClassifier(object):
         self._indices = list(range(len(self._names)))
 
         if self.people:
-            self._labels = np.concatenate([[index] * len(self.people[name]) for name, index in zip(self._names, self._indices)])
+            self._labels = np.concatenate(
+                [[index] * len(self.people[name]) for name, index in zip(self._names, self._indices)])
             self._features = np.concatenate([self.people[name] for name in self._names])
             self._classifier = KNeighborsClassifier(self._n_neighbors)
             self._classifier.fit(self._features, self._labels)

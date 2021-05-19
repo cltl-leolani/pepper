@@ -1,5 +1,3 @@
-
-
 import logging
 
 import numpy as np
@@ -10,6 +8,7 @@ from typing import List, Tuple, Iterable, Union
 from pepper.framework.infra.config.api import ConfigurationManager
 
 logger = logging.getLogger(__name__)
+
 
 class UtteranceHypothesis(object):
     """
@@ -416,6 +415,7 @@ class StreamedGoogleASR(BaseGoogleASR):
         """
         return (speech.StreamingRecognizeRequest(audio_content=frame.tobytes())
                 for frame in audio)
+
 
 class SynchronousGoogleASR(BaseGoogleASR):
     """
